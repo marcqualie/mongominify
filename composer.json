@@ -1,0 +1,8 @@
+{
+	"name": "marcqualie/mongominify",
+	"autoload": {
+		"psr-0": {
+			"MongoMinify": "lib/"
+		}
+	}
+}
