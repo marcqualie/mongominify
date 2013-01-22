@@ -35,6 +35,7 @@ class Collection {
 	 */
 	public function setSchema(Array $schema)
 	{
+		$this->schema = array();
 		$this->schema_raw = $schema;
 		$this->setSchemaArray($schema);
 	}

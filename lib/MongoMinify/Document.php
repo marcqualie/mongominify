@@ -33,7 +33,7 @@ class Document {
 		{
 			foreach ($document as $key => $value)
 			{
-				$document[$key] = $this->compress($value, $parent);
+				$document[$key] = $this->applyCompression($value, $parent);
 			}
 			return $document;
 		}
@@ -45,7 +45,7 @@ class Document {
 			$namespace = ($parent ? $parent . '.' : ''). $key;
 			if (is_array($value))
 			{
-				$value = $this->compress($value, $namespace);
+				$value = $this->applyCompression($value, $namespace);
 			}
 			$short = isset($this->collection->schema[$namespace]['short']) ? $this->collection->schema[$namespace]['short'] : $key;
 			if ($this->collection->client->debug)
