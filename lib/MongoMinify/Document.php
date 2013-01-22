@@ -47,6 +47,18 @@ class Document {
 			{
 				$value = $this->applyCompression($value, $namespace);
 			}
+			else
+			{
+				$values = isset($this->collection->schema[$namespace]['values']) ? $this->collection->schema[$namespace]['values'] : false;
+				if ($values)
+				{
+					$position = array_search($value, $values);
+					if ($position !== false)
+					{
+						$value = $position;
+					}
+				}
+			}
 			$short = isset($this->collection->schema[$namespace]['short']) ? $this->collection->schema[$namespace]['short'] : $key;
 			if ($this->collection->client->debug)
 			{
