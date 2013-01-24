@@ -16,8 +16,23 @@ class Client {
 	 */
 	public function __construct(Array $options = array())
 	{
+		if ( ! isset($options['host']))
+		{
+			$options['host'] = 'localhost';
+		}
+		if ( ! isset($options['port']))
+		{
+			$options['port'] = 27017;
+		}
+		if ( ! isset($options['db']))
+		{
+			$options['db'] = '';
+		}
 		$this->native = new \MongoClient('mongodb://' . $options['host'] . ':' . $options['port'] . '/' . $options['db']);
-		$this->db = $this->selectDb($options['db']);
+		if ($options['db'])
+		{
+			$this->db = $this->selectDb($options['db']);
+		}
 	}
 
 
