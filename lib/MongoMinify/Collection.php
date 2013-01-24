@@ -5,16 +5,50 @@ namespace MongoMinify;
 class Collection {
 	
 	public $name = '';
-	public $mongo;
-	public $instance;
+	public $namespace = '';
+	public $db;
+	public $native;
 
-	public function __construct($name, $client)
+
+	public function __construct($name, $db)
 	{
 		$this->name = $name;
-		$this->client = $client;
-		$this->native = $this->client->db->selectCollection($this->name);
+		$this->db = $db;
+		$this->client = $db->client;
+		$this->namespace = $db->name . '.' . $this->name;
+		$this->native = $db->native->selectCollection($this->name);
+
+		// Apply schema to collection
+		if (isset($this->client->schema_dir))
+		{
+			$schema_file = $this->client->schema_dir . '/' . $this->namespace . '.php';
+			if (file_exists($schema_file))
+			{
+				$schema = include $schema_file;
+				$this->setSchema($schema);
+			}
+		}
 	}
 
+
+	/**
+	 * Compression
+	 * This is useful for testing what a document will look like during development or debugging
+	 */
+	public function compress($data)
+	{
+		$document = new Document($data, $this);
+		$document->compress();
+		return $document->data;
+	}
+
+
+	/**
+	 * Save Document
+	 * @param  [type] $data    [description]
+	 * @param  array  $options [description]
+	 * @return [type]          [description]
+	 */
 	public function save(&$data, Array $options = array())
 	{
 		$document = new Document($data, $this);
@@ -24,10 +58,33 @@ class Collection {
 		return $save;
 	}
 
-	public function find($document)
-	{
 
+	/**
+	 * Insert new document
+	 * @param  [type] $document [description]
+	 * @param  array  $options  [description]
+	 * @return [type]           [description]
+	 */
+	public function insert(&$data, Array $options = array())
+	{
+		$document = new Document($data, $this);
+		$document->compress();
+		$insert = $this->native->insert($document->data, $options);
+		$data = $document->data;
+		return $insert;
 	}
+
+
+	/**
+	 * Find document
+	 * @param  array  $document [description]
+	 * @return [type]           [description]
+	 */
+	public function find(Array $document = array())
+	{
+		return array();
+	}
+
 
 	/**
 	 * Apply internal schema
@@ -38,6 +95,7 @@ class Collection {
 		$this->schema = array();
 		$this->schema_raw = $schema;
 		$this->setSchemaArray($schema);
+//		$this->client->schema[$this->client->db->name . '.' . $this->name] = $schema;
 	}
 	private function setSchemaArray(Array $array, $namespace = null)
 	{
@@ -51,6 +109,40 @@ class Collection {
 			}
 			$this->schema[$subkey] = $value;
 		}
+	}
+
+
+	/**
+	 * Batch Insert
+	 */
+	public function batchInsert(Array &$documents, Array $options = array())
+	{
+		$documents_compressed = array();
+		foreach ($documents as $data)
+		{
+			$document = new Document($data, $this);
+			$document->compress();
+			$documents_compressed[] = $document->data;
+		}
+		$this->native->batchInsert($documents_compressed);
+	}
+
+
+	/**
+	 * Drop
+	 */
+	public function drop()
+	{
+		$this->native->drop();
+	}
+
+
+	/**
+	 * Ensure Index
+	 */
+	public function ensureIndex(Array $keys, Array $options = array())
+	{
+		$this->native->ensureIndex($keys, $options);
 	}
 
 }

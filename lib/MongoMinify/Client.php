@@ -5,8 +5,7 @@ namespace MongoMinify;
 class Client {
 
 	public $native;
-	public $db;
-
+	public $db = null;
 	public $debug = false;
 	
 
@@ -31,8 +30,17 @@ class Client {
 		$this->native = new \MongoClient('mongodb://' . $options['host'] . ':' . $options['port'] . '/' . $options['db']);
 		if ($options['db'])
 		{
-			$this->db = $this->selectDb($options['db']);
+			$this->selectDb($options['db']);
 		}
+	}
+
+
+	/**
+	 * Select Database
+	 */
+	public function __get($name)
+	{
+		return $this->selectDb($name);
 	}
 
 
@@ -41,18 +49,8 @@ class Client {
 	 */
 	public function selectDb($name)
 	{
-		$this->db = $this->native->selectDb($name);
+		$this->db = new Db($name, $this);
 		return $this->db;
-	}
-
-
-	/**
-	 * Select Collection
-	 */
-	public function selectCollection($name)
-	{
-		$collection = new Collection($name, $this);
-		return $collection;
 	}
 
 }
