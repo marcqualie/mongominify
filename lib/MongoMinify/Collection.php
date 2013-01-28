@@ -72,9 +72,17 @@ class Collection {
 	 * @param  array  $document [description]
 	 * @return [type]           [description]
 	 */
-	public function find(Array $document = array())
+	public function findOne(Array $query = array(), Array $options = array())
 	{
-		return array();
+		$cursor = $this->find($query, $options);
+		return $cursor->getNext();
+	}
+	public function find(Array $query = array(), Array $options = array())
+	{
+		$document = new Document($query, $this);
+		$document->compress();
+		$cursor = $this->native->find($document->data, $options);
+		return $cursor;
 	}
 
 
