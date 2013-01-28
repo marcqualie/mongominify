@@ -19,15 +19,7 @@ class Collection {
 		$this->native = $db->native->selectCollection($this->name);
 
 		// Apply schema to collection
-		if (isset($this->client->schema_dir))
-		{
-			$schema_file = $this->client->schema_dir . '/' . $this->namespace . '.php';
-			if (file_exists($schema_file))
-			{
-				$schema = include $schema_file;
-				$this->setSchema($schema);
-			}
-		}
+		$this->setSchemaByName($this->namespace);
 	}
 
 
@@ -90,12 +82,28 @@ class Collection {
 	 * Apply internal schema
 	 * @param [type] $schema [description]
 	 */
-	public function setSchema(Array $schema)
+	public function setSchemaByName($schema_name = null)
+	{
+		if ( ! $schema_name)
+		{
+			$schema_name = $this->namespace;
+		}
+		if (strpos($schema_name, '.') === false)
+		{
+			$schema_name = $this->db->name . '.' . $schema_name;
+		}
+		$schema_file = $this->client->schema_dir . '/' . $schema_name . '.php';
+		if (file_exists($schema_file))
+		{
+			$schema = include $schema_file;
+			$this->setSchema($schema);
+		}
+	}
+	public function setSchema(Array $schema = array())
 	{
 		$this->schema = array();
 		$this->schema_raw = $schema;
 		$this->setSchemaArray($schema);
-//		$this->client->schema[$this->client->db->name . '.' . $this->name] = $schema;
 	}
 	private function setSchemaArray(Array $array, $namespace = null)
 	{

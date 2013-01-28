@@ -7,6 +7,7 @@ class Client {
 	public $native;
 	public $db = null;
 	public $debug = false;
+	public $schema_dir = './';
 	
 
 	/**
