@@ -134,6 +134,13 @@ class Collection {
 			}
 		}
 	}
+
+
+	/**
+	 * Get short definitions based on full key
+	 * @param  [type] $full [description]
+	 * @return [type]       [description]
+	 */
 	public function getShort($full)
 	{
 		if (isset($this->schema[$full]))
@@ -147,7 +154,7 @@ class Collection {
 	/**
 	 * Batch Insert
 	 */
-	public function batchInsert(Array &$documents, Array $options = array())
+	public function batchInsert(array &$documents, array $options = array())
 	{
 		$documents_compressed = array();
 		foreach ($documents as $data)
@@ -176,11 +183,21 @@ class Collection {
 	/**
 	 * Ensure Index
 	 */
-	public function ensureIndex(Array $keys, Array $options = array())
+	public function ensureIndex(array $keys, array $options = array())
 	{
-		$query = new Document($keys, $this);
-		$query->compress();
-		$this->native->ensureIndex($query->compressed, $options);
+		$document = new Document($keys, $this);
+		$document->compress();
+		$flat = $document->asDotSyntax();
+		$this->native->ensureIndex($flat, $options);
+	}
+
+
+	/**
+	 * Get all indexes
+	 */
+	public function getIndexInfo()
+	{
+		return $this->native->getIndexInfo();
 	}
 
 }

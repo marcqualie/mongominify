@@ -56,6 +56,21 @@ class Document {
 			return $document;
 		}
 
+		// Normalize doc delimited keys
+		foreach ($document as $key => $value)
+		{
+			if (strpos($key, '.') !== false)
+			{
+				list ($parent_key, $child_key) = explode('.', $key, 2);
+				if ( ! isset($document[$parent_key]))
+				{
+					$document[$parent_key] = array();
+				}
+				$document[$parent_key][$child_key] = $value;
+				unset($document[$key]);
+			}
+		}
+
 		// Documents are applied as key/value
 		$doc = array();
 		foreach ($document as $key => $value)
@@ -129,6 +144,31 @@ class Document {
 			}
 		}
 		return $document;
+	}
+
+
+	/**
+	 * As dot syntax for index ensuring
+	 * TODO: This is a quick hack to get indexes working with embedded document syntax
+	 */
+	public function asDotSyntax()
+	{
+		$dotSyntax = array();
+		foreach ($this->compressed as $key => $value)
+		{
+			if (is_array($value))
+			{
+				foreach ($value as $subkey => $subval)
+				{
+					$dotSyntax[$key . '.' . $subkey] = $subval;
+				}
+			}
+			else
+			{
+				$dotSyntax[$key] = $value;
+			}
+		}
+		return $dotSyntax;
 	}
 
 }
