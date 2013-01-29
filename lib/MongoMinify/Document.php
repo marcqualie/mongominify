@@ -4,14 +4,32 @@ namespace MongoMinify;
 
 class Document {
 	
-	public $state = 'standard';
+	public $state = 'normal';
 	public $data = array();
-	public $collection = array();
+	public $compressed = array();
+	protected $collection = array();
 
-	public function __construct(Array $data = array(), $collection)
+	public function __construct(Array &$data = array(), &$collection = null)
 	{
-		$this->data = $data;
 		$this->collection = $collection;
+		$this->data = $data;
+		$this->compressed = $data;
+	}
+
+	/**
+	 * Save
+	 */
+	public function save(Array $options = array())
+	{
+		$this->compress();
+		$this->collection->native->save($this->compressed, $options);
+		$this->data['_id'] = $this->compressed['_id'];
+	}
+	public function insert(Array $options = array())
+	{
+		$this->compress();
+		$this->collection->native->insert($this->compressed, $options);
+		$this->data['_id'] = $this->compressed['_id'];
 	}
 
 	/**
@@ -19,9 +37,9 @@ class Document {
 	 */
 	public function compress()
 	{
-		if ($this->state !== 'compressed')
+		if ($this->state !== 'compressed' && $this->collection)
 		{
-			$this->data = $this->applyCompression($this->data);
+			$this->compressed = $this->applyCompression($this->data);
 			$this->state = 'compressed';
 		}
 	}
@@ -67,6 +85,23 @@ class Document {
 			$doc[$short] = $value;
 		}
 		return $doc;
+	}
+
+
+	/**
+	 * Data Decompression
+	 */
+	public function decompress()
+	{
+		if ($this->state !== 'normal' && $this->collection)
+		{
+			$this->data = $this->applyDecompression($this->data);
+			$this->state = 'normal';
+		}
+	}
+	private function applyDecompression($data)
+	{
+		return $data;
 	}
 
 }

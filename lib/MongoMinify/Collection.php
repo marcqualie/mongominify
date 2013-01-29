@@ -9,6 +9,9 @@ class Collection {
 	public $db;
 	public $native;
 
+	public $schema = array();
+	public $schema_reverse_index = array();
+
 
 	public function __construct($name, $db)
 	{
@@ -44,8 +47,7 @@ class Collection {
 	public function save(&$data, Array $options = array())
 	{
 		$document = new Document($data, $this);
-		$document->compress();
-		$save = $this->native->save($document->data, $options);
+		$save = $document->save($options);
 		$data = $document->data;
 		return $save;
 	}
@@ -60,8 +62,7 @@ class Collection {
 	public function insert(&$data, Array $options = array())
 	{
 		$document = new Document($data, $this);
-		$document->compress();
-		$insert = $this->native->insert($document->data, $options);
+		$insert = $document->insert($options);
 		$data = $document->data;
 		return $insert;
 	}
@@ -81,7 +82,7 @@ class Collection {
 	{
 		$document = new Document($query, $this);
 		$document->compress();
-		$cursor = $this->native->find($document->data, $options);
+		$cursor = $this->native->find($document->compressed, $options);
 		return $cursor;
 	}
 
@@ -111,6 +112,7 @@ class Collection {
 	{
 		$this->schema = array();
 		$this->schema_raw = $schema;
+		$this->schema_reverse_index = array();
 		$this->setSchemaArray($schema);
 	}
 	private function setSchemaArray(Array $array, $namespace = null)
@@ -138,9 +140,13 @@ class Collection {
 		{
 			$document = new Document($data, $this);
 			$document->compress();
-			$documents_compressed[] = $document->data;
+			$documents_compressed[] = $document->compressed;
 		}
 		$this->native->batchInsert($documents_compressed);
+		foreach ($documents_compressed as $key => $document)
+		{
+			$documents[$key]['_id'] = $document['_id'];
+		}
 	}
 
 
@@ -158,7 +164,9 @@ class Collection {
 	 */
 	public function ensureIndex(Array $keys, Array $options = array())
 	{
-		$this->native->ensureIndex($keys, $options);
+		$query = new Document($keys, $this);
+		$query->compress();
+		$this->native->ensureIndex($query->compressed, $options);
 	}
 
 }

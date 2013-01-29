@@ -14,25 +14,9 @@ class Client {
 	 * Initializer
 	 * @param Array $options Connection Options
 	 */
-	public function __construct(Array $options = array())
+	public function __construct($server = 'mongodb://localhost:27017', Array $options = array())
 	{
-		if ( ! isset($options['host']))
-		{
-			$options['host'] = 'localhost';
-		}
-		if ( ! isset($options['port']))
-		{
-			$options['port'] = 27017;
-		}
-		if ( ! isset($options['db']))
-		{
-			$options['db'] = '';
-		}
-		$this->native = new \MongoClient('mongodb://' . $options['host'] . ':' . $options['port'] . '/' . $options['db']);
-		if ($options['db'])
-		{
-			$this->selectDb($options['db']);
-		}
+		$this->native = new \MongoClient($server, $options);
 	}
 
 
