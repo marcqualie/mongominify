@@ -48,6 +48,14 @@ class FindTest extends MongoMinifyTest {
 					'slug' => 'test',
 					'name' => 'test'
 				)
+			),
+			'contact' => array(
+				'email' => array(
+					'work' => array(
+						'office' => 'test1_work_office@example.com',
+						'mobile' => 'test1_work_mobile@example.com'
+					)
+				)
 			)
 		);
 		$collection->insert($document);
