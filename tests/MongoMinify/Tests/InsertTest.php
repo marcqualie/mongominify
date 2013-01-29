@@ -1,6 +1,6 @@
 <?php
 
-class CreationTest extends MongoMinifyTest {
+class InsertTest extends MongoMinifyTest {
 	
 
 	/**

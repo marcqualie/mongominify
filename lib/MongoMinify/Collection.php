@@ -73,16 +73,16 @@ class Collection {
 	 * @param  array  $document [description]
 	 * @return [type]           [description]
 	 */
-	public function findOne(Array $query = array(), Array $options = array())
+	public function findOne(array $query = array(), array $fields = array())
 	{
-		$cursor = $this->find($query, $options);
+		$cursor = $this->find($query, $fields)->limit(1);
 		return $cursor->getNext();
 	}
-	public function find(Array $query = array(), Array $options = array())
+	public function find(array $query = array(), array $fields = array())
 	{
 		$document = new Document($query, $this);
 		$document->compress();
-		$cursor = $this->native->find($document->compressed, $options);
+		$cursor = new Cursor($this, $document->compressed, $fields);
 		return $cursor;
 	}
 
@@ -108,25 +108,39 @@ class Collection {
 			$this->setSchema($schema);
 		}
 	}
-	public function setSchema(Array $schema = array())
+	public function setSchema(array $schema = array())
 	{
 		$this->schema = array();
 		$this->schema_raw = $schema;
 		$this->schema_reverse_index = array();
 		$this->setSchemaArray($schema);
+//		print_r($this->schema_reverse_index);
 	}
 	private function setSchemaArray(Array $array, $namespace = null)
 	{
 		foreach ($array as $key => $value)
 		{
 			$subkey = ($namespace ? $namespace . '.' : '') . $key;
+			$this->schema[$subkey] = $value;
 			if (isset($value['subset']))
 			{
 				$this->setSchemaArray($value['subset'], $subkey);
 				unset($value['subset']);
 			}
-			$this->schema[$subkey] = $value;
+			if (isset($value['short']))
+			{
+				$parent_short = $this->getShort($namespace) ? $this->getShort($namespace) . '.' : '';
+				$this->schema_reverse_index[$parent_short . $value['short']] = $key;
+			}
 		}
+	}
+	public function getShort($full)
+	{
+		if (isset($this->schema[$full]))
+		{
+			return $this->schema[$full]['short'];
+		}
+		return $full;
 	}
 
 

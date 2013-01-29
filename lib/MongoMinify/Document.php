@@ -99,9 +99,36 @@ class Document {
 			$this->state = 'normal';
 		}
 	}
-	private function applyDecompression($data)
+	private function applyDecompression($document, $parent = null)
 	{
-		return $data;
+
+		// If is an array, loop through and apply rules
+		if (isset($document[0]))
+		{
+			foreach ($document as $key => $value)
+			{
+				$document[$key] = $this->applyDecompression($value, $parent);
+			}
+			return $document;
+		}
+
+		// Standard document traversal
+		foreach ($document as $key => $value)
+		{
+			$namespace = ($parent ? $parent . '.' : '') . $key;
+//			echo $namespace . PHP_EOL;
+			if (isset($this->collection->schema_reverse_index[$namespace]))
+			{
+				if (is_array($value))
+				{
+					$value =$this->applyDecompression($value, $key);
+				}
+				$full_key = $this->collection->schema_reverse_index[$namespace];
+				$document[$full_key] = $value;
+				unset($document[$key]);
+			}
+		}
+		return $document;
 	}
 
 }

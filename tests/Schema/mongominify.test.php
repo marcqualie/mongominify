@@ -8,6 +8,18 @@ return array(
 
 	'email' => array(
 		'short' => 'e'
+	),
+
+	'tags' => array(
+		'short' => 't',
+		'subset' => array(
+			'slug' => array(
+				'short' => 's'
+			),
+			'name' => array(
+				'short' => 'n'
+			)
+		)
 	)
 
 );
