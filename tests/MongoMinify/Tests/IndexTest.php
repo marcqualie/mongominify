@@ -11,7 +11,6 @@ class IndexTest extends MongoMinifyTest {
 
 		// Create a collection
 		$collection = $this->getTestCollection();
-
 		$collection->ensureIndex(array('user_id' => 1));
 
 		$indexes = $collection->getIndexInfo();
@@ -28,13 +27,11 @@ class IndexTest extends MongoMinifyTest {
 
 		// Create a collection
 		$collection = $this->getTestCollection();
-
 		$collection->ensureIndex(array('user_id' => 1, 'tags.slug' => 1));
 
 		$indexes = $collection->getIndexInfo();
 		$this->assertArrayHasKey(1, $indexes);
 		$this->assertEquals($indexes[1]['name'], 'u_1_t_s_1');
-
 
 	}
 

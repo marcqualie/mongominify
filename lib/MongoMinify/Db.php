@@ -8,6 +8,8 @@ class Db {
 	public $client;
 	public $native;
 
+	public $collection_cache = array();
+
 	public function __construct($name, $client)
 	{
 		$this->name = $name;
@@ -30,8 +32,12 @@ class Db {
 	 */
 	public function selectCollection($name)
 	{
-		$collection = new Collection($name, $this);
-		return $collection;
+		if ( ! isset($this->collection_cache[$name]))
+		{
+			$collection = new Collection($name, $this);
+			$collection_cache[$name] = $collection;
+		}
+		return $collection_cache[$name];
 	}
 
 

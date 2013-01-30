@@ -10,6 +10,8 @@ class Collection {
 	public $native;
 
 	public $schema = array();
+	public $schema_raw = array();
+	public $schema_index = array();
 	public $schema_reverse_index = array();
 
 
@@ -23,18 +25,6 @@ class Collection {
 
 		// Apply schema to collection
 		$this->setSchemaByName($this->namespace);
-	}
-
-
-	/**
-	 * Compression
-	 * This is useful for testing what a document will look like during development or debugging
-	 */
-	public function compress($data)
-	{
-		$document = new Document($data, $this);
-		$document->compress();
-		return $document->data;
 	}
 
 
@@ -112,11 +102,11 @@ class Collection {
 	{
 		$this->schema = array();
 		$this->schema_raw = $schema;
+		$this->schema_index = array();
 		$this->schema_reverse_index = array();
 		$this->setSchemaArray($schema);
-//		print_r($this->schema_reverse_index);
 	}
-	private function setSchemaArray(Array $array, $namespace = null)
+	private function setSchemaArray(array $array, $namespace = null)
 	{
 		foreach ($array as $key => $value)
 		{
@@ -130,6 +120,7 @@ class Collection {
 			if (isset($value['short']))
 			{
 				$parent_short = $this->getShort($namespace) ? $this->getShort($namespace) . '.' : '';
+				$this->schema_index[$subkey] = $value['short'];
 				$this->schema_reverse_index[$parent_short . $value['short']] = $key;
 			}
 		}

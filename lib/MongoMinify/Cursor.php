@@ -40,6 +40,15 @@ class Cursor implements \Iterator {
 
 
 	/**
+	 * Counting results
+	 */
+	public function count()
+	{
+		return $this->native->count();
+	}
+
+
+	/**
 	 * Data retreival
 	 */
 	public function sort(array $fields = array())

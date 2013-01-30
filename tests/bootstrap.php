@@ -10,7 +10,14 @@ class MongoMinifyTest extends \PHPUnit_Framework_TestCase {
 	{
 
 		// Connecto to MongoDB
-		$this->client = new MongoMinify\Client('mongodb://localhost:27017');
+		try {
+			$this->client = new MongoMinify\Client('mongodb://localhost:27017');
+		}
+		catch (MongoConnectionException $e)
+		{
+			throw new Exception('Could not connect to MongoDB. Tests are unable to run');
+			exit;
+		}
 		$this->client->schema_dir = __DIR__ . '/Schema';
 
 	}
