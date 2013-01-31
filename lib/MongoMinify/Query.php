@@ -2,7 +2,7 @@
 
 namespace MongoMinify;
 
-class Document {
+class Query {
 	
 	public $state = 'normal';
 	public $data = array();
@@ -13,22 +13,6 @@ class Document {
 	{
 		$this->collection = $collection;
 		$this->data = $data;
-	}
-
-	/**
-	 * Save
-	 */
-	public function save(array $options = array())
-	{
-		$this->compress();
-		$this->collection->native->save($this->compressed, $options);
-		$this->data['_id'] = $this->compressed['_id'];
-	}
-	public function insert(array $options = array())
-	{
-		$this->compress();
-		$this->collection->native->insert($this->compressed, $options);
-		$this->data['_id'] = $this->compressed['_id'];
 	}
 
 	/**
@@ -44,6 +28,7 @@ class Document {
 		if ($this->state !== 'compressed' && $this->collection)
 		{
 			$this->compressed = $this->applyCompression($this->data);
+			$this->asDotSyntax();
 			$this->state = 'compressed';
 		}
 	}
@@ -79,20 +64,43 @@ class Document {
 		$doc = array();
 		foreach ($document as $key => $value)
 		{
+
 			$namespace = ($parent ? $parent . '.' : '') . $key;
-			if (is_array($value))
+
+			// Fix $in queries
+//			echo $key . '<br/>';
+			if ($key === '$in' && isset($this->collection->schema[$parent]['values']))
+			{
+				$values = $this->collection->schema[$parent]['values'];
+				$values = array_flip($values);
+				foreach ($value as $valkey => $val)
+				{
+					if (isset($values[$val]))
+					{
+//						echo $val . ' => ' . $values[$val] . '<br/>';
+						$value[$valkey] = $values[$val];
+					}
+				}
+			}
+
+			// Loop over arrays recursive
+			elseif (is_array($value))
 			{
 				$value = $this->applyCompression($value, $namespace);
 			}
+
+			// Handle actual value conversion
 			elseif (isset($this->collection->schema[$namespace]['values']))
 			{
-				$values =  $this->collection->schema[$namespace]['values'];
+				$values = $this->collection->schema[$namespace]['values'];
 				$values = array_flip($values);
 				if (isset($values[$value]))
 				{
 					$value = $values[$value];
 				}
 			}
+
+			// Apply values
 			$short = isset($this->collection->schema_index[$namespace]) ? $this->collection->schema_index[$namespace] : $key;
 			$doc[$short] = $value;
 		}
@@ -162,7 +170,14 @@ class Document {
 			{
 				foreach ($value as $subkey => $subval)
 				{
-					$dotSyntax[$key . '.' . $subkey] = $subval;
+					if (strpos($subkey, '$') !== 0)
+					{
+						$dotSyntax[$key . '.' . $subkey] = $subval;
+					}
+					else
+					{
+						$dotSyntax[$key] = $value;
+					}
 				}
 			}
 			else
@@ -170,7 +185,7 @@ class Document {
 				$dotSyntax[$key] = $value;
 			}
 		}
-		return $dotSyntax;
+		$this->compressed = $dotSyntax;
 	}
 
 }

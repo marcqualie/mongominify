@@ -70,9 +70,9 @@ class Collection {
 	}
 	public function find(array $query = array(), array $fields = array())
 	{
-		$document = new Document($query, $this);
-		$document->compress();
-		$cursor = new Cursor($this, $document->compressed, $fields);
+		$query_object = new Query($query, $this);
+		$query_object->compress();
+		$cursor = new Cursor($this, $query_object->compressed, $fields);
 		return $cursor;
 	}
 
@@ -119,7 +119,8 @@ class Collection {
 			}
 			if (isset($value['short']))
 			{
-				$parent_short = $this->getShort($namespace) ? $this->getShort($namespace) . '.' : '';
+				$short = $this->getShort($namespace);
+				$parent_short = $short ? $short . '.' : '';
 				$this->schema_index[$subkey] = $value['short'];
 				$this->schema_reverse_index[$parent_short . $value['short']] = $subkey;
 			}
@@ -176,10 +177,10 @@ class Collection {
 	 */
 	public function ensureIndex(array $keys, array $options = array())
 	{
-		$document = new Document($keys, $this);
-		$document->compress();
-		$flat = $document->asDotSyntax();
-		$this->native->ensureIndex($flat, $options);
+		$query = new Query($keys, $this);
+		$query->compress();
+		$query->asDotSyntax();
+		$this->native->ensureIndex($query->compressed, $options);
 	}
 
 

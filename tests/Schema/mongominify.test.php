@@ -37,7 +37,7 @@ return array(
 			'preferred' => array(
 				'short' => 'a',
 				'type' => 'enum',
-				'values' => array('email', 'phone')
+				'values' => array('email', 'phone', 'post')
 			),
 			'email' => array(
 				'short' => 'e',
