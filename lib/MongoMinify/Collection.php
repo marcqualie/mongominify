@@ -121,7 +121,7 @@ class Collection {
 			{
 				$parent_short = $this->getShort($namespace) ? $this->getShort($namespace) . '.' : '';
 				$this->schema_index[$subkey] = $value['short'];
-				$this->schema_reverse_index[$parent_short . $value['short']] = $key;
+				$this->schema_reverse_index[$parent_short . $value['short']] = $subkey;
 			}
 		}
 	}

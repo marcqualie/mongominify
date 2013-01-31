@@ -22,9 +22,23 @@ return array(
 		)
 	),
 
+	'role' => array(
+		'type' => 'enum',
+		'short' => 'r',
+		'values' => array(
+			0 => 'admin',
+			1 => 'moderator'
+		)
+	),
+
 	'contact' => array(
 		'short' => 'c',
 		'subset' => array(
+			'preferred' => array(
+				'short' => 'a',
+				'type' => 'enum',
+				'values' => array('email', 'phone')
+			),
 			'email' => array(
 				'short' => 'e',
 				'subset' => array(

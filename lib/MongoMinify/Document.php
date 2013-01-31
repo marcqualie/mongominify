@@ -84,6 +84,15 @@ class Document {
 			{
 				$value = $this->applyCompression($value, $namespace);
 			}
+			elseif (isset($this->collection->schema[$namespace]['values']))
+			{
+				$values =  $this->collection->schema[$namespace]['values'];
+				$values = array_flip($values);
+				if (isset($values[$value]))
+				{
+					$value = $values[$value];
+				}
+			}
 			$short = isset($this->collection->schema_index[$namespace]) ? $this->collection->schema_index[$namespace] : $key;
 			$doc[$short] = $value;
 		}
@@ -125,7 +134,13 @@ class Document {
 				{
 					$value =$this->applyDecompression($value, $key);
 				}
-				$full_key = $this->collection->schema_reverse_index[$namespace];
+				$full_namespace = $this->collection->schema_reverse_index[$namespace];
+				$explode = explode('.', $full_namespace);
+				$full_key = end($explode);
+				if (isset($this->collection->schema[$full_namespace]['values'][$value]))
+				{
+					$value = $this->collection->schema[$full_namespace]['values'][$value];
+				}
 				$document[$full_key] = $value;
 				unset($document[$key]);
 			}
