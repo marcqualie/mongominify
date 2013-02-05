@@ -1,6 +1,6 @@
 ## MongoMinify
 
-A small library for applying a schema to MongoDB documents and transparently compressing the contents on the fly. The library is entirely namespaced, PSR compliant and works with PHP 5.3 and 5.4.
+A small library for applying a schema to MongoDB documents and transparently compressing the contents on the fly. The library is entirely namespaced, PSR-0 compliant and works with both PHP 5.3 and 5.4.
 
 
 ### Install
@@ -57,3 +57,8 @@ You can query data just as you normaly would, the conversion is internal and tra
 $document = $collection->findOne(['long_key_name' => 'test data'], ['_id' => 0, 'long_key_name_2' => 1]);
 print_r($document); // ['long_key_name_2' => 13]
 ```
+
+
+## Feedback / Contribution
+
+Any feedback, pull requests or documentation would be greatly apreciated. Use the issue system if you find any problems or have an idea for a cool feature we don't support yet.

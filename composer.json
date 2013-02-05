@@ -1,8 +1,15 @@
 {
 	"name": "marcqualie/mongominify",
+	"liecense": "MIT",
+	"keywords": [
+		"mongodb",
+		"database",
+		"compression",
+		"library"
+	],
 	"require": {
 		"php": ">=5.3.3",
-		"ext-mongo": "*"
+		"ext-mongo": ">=1.3.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "3.7.*"
