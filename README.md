@@ -1,6 +1,7 @@
 ## MongoMinify
 
-A small library for applying a schema to MongoDB documents and transparently compressing the contents on the fly. The library is entirely namespaced, PSR-0 compliant and works with both PHP 5.3 and 5.4.
+A drop-in library for applying a simple schema to MongoDB documents and transparently compressing data on the fly.
+Entirely namespaced, PSR-0 compliant and works with both PHP 5.3 and 5.4.
 
 
 ### Install
