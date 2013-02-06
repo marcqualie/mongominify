@@ -19,7 +19,7 @@ Via composer
 
 ### Usage
 
-I designed the usage pattern to math the native Mongo PHP driver as close as possible so it's a drop in replacement. Nearly all actions are transparent to the application and based around the schema you specify.
+I designed the usage pattern to match the native Mongo PHP driver as close as possible so it's a drop in replacement. Nearly all actions are transparent to the application and based around the schema you specify.
 
 ```php
 // Connect in the same way you would with the native driver
