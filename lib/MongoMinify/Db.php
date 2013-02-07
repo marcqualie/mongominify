@@ -44,7 +44,7 @@ class Db {
 	/**
 	 * Command
 	 */
-	public function command(Array $command, Array $options = array())
+	public function command(array $command, array $options = array())
 	{
 		return $this->native->command($command, $options);
 	}

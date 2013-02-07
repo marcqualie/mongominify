@@ -26,6 +26,7 @@ class Document {
 		{
 			$this->data['_id'] = $this->compressed['_id'];
 		}
+		return $save;
 	}
 	public function update(array $new_object = array(), array $options = array())
 	{
@@ -41,6 +42,7 @@ class Document {
 		{
 			$this->data['_id'] = $this->compressed['_id'];
 		}
+		return $insert;
 	}
 
 	/**
@@ -50,7 +52,7 @@ class Document {
 	{
 		if ( ! $this->collection->schema)
 		{
-			$this->compressed =& $this->data;
+			$this->compressed = $this->data;
 			return;
 		}
 		if ($this->state !== 'compressed' && $this->collection)
