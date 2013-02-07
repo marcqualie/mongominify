@@ -35,6 +35,10 @@ class Cursor implements \Iterator {
 	public function current()
 	{
 		$current = $this->native->current();
+		if ( ! $current)
+		{
+			return null;
+		}
 		$document = new Document($current, $this->collection);
 		$document->state = 'compressed';
 		$document->decompress();
