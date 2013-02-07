@@ -34,7 +34,7 @@ class Collection {
 	 * @param  array  $options [description]
 	 * @return [type]          [description]
 	 */
-	public function save(&$data, Array $options = array())
+	public function save(array &$data, Array $options = array())
 	{
 		$document = new Document($data, $this);
 		$save = $document->save($options);
@@ -59,6 +59,17 @@ class Collection {
 
 
 	/**
+	 * Update Document
+	 */
+	public function update(array $data = array(), array $new_object, array $options = array())
+	{
+		$document = new Document($data, $this);
+		$update = $document->update($new_object, $options);
+		return $update;
+	}
+
+
+	/**
 	 * Find document
 	 * @param  array  $document [description]
 	 * @return [type]           [description]
@@ -74,6 +85,24 @@ class Collection {
 		$query_object->compress();
 		$cursor = new Cursor($this, $query_object->compressed, $fields);
 		return $cursor;
+	}
+
+
+	/**
+	 * Count Helper
+	 */
+	public function count(array $query = array(), $limit = null, $skip = null)
+	{
+		$cursor = $this->find($query);
+		if ($skip !== null)
+		{
+			$cursor->skip($skip);
+		}
+		if ($limit !== null)
+		{
+			$cursor->limit($limit);
+		}
+		return $cursor->count();
 	}
 
 

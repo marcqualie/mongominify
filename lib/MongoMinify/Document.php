@@ -21,14 +21,26 @@ class Document {
 	public function save(array $options = array())
 	{
 		$this->compress();
-		$this->collection->native->save($this->compressed, $options);
+		$save = $this->collection->native->save($this->compressed, $options);
+		if (isset($save['ok']) && $save['ok'] == 1)
+		{
+			$this->data['_id'] = $this->compressed['_id'];
+		}
+	}
+	public function update(array $new_object = array(), array $options = array())
+	{
+		$this->compress();
+		$this->collection->native->update($this->compressed, $new_object, $options);
 		$this->data['_id'] = $this->compressed['_id'];
 	}
 	public function insert(array $options = array())
 	{
 		$this->compress();
-		$this->collection->native->insert($this->compressed, $options);
-		$this->data['_id'] = $this->compressed['_id'];
+		$insert = $this->collection->native->insert($this->compressed, $options);
+		if (isset($insert['ok']) && $insert['ok'] == 1)
+		{
+			$this->data['_id'] = $this->compressed['_id'];
+		}
 	}
 
 	/**

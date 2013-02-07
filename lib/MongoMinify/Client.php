@@ -6,6 +6,7 @@ class Client {
 
 	public $native;
 	public $db = null;
+	public $db_name = 'test';
 	public $debug = false;
 	public $schema_dir = './';
 	
@@ -14,9 +15,19 @@ class Client {
 	 * Initializer
 	 * @param Array $options Connection Options
 	 */
-	public function __construct($server = 'mongodb://localhost:27017', Array $options = array())
+	public function __construct($server = 'mongodb://localhost:27017', array $options = array())
 	{
+
+		// Parse MongoDB Path Info
+		$uri = parse_url($server);
+		$this->db_name = isset($uri['path']) ? substr($uri['path'], 1) : $this->db_name;
+
+		// Native connection
 		$this->native = new \MongoClient($server, $options);
+
+		// Select Database for default reference
+		$this->db = $this->selectDb($this->db_name);
+		
 	}
 
 
