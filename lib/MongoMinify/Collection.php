@@ -70,6 +70,17 @@ class Collection {
 
 
 	/**
+	 * Remove Documents
+	 */
+	public function remove($criteria, array $options = array())
+	{
+		$query = new Query($criteria, $this);
+		$query->compress();
+		return $this->native->remove($query->compressed, $options);
+	}
+
+
+	/**
 	 * Find document
 	 * @param  array  $document [description]
 	 * @return [type]           [description]
@@ -124,6 +135,10 @@ class Collection {
 		if (file_exists($schema_file))
 		{
 			$schema = include $schema_file;
+			if ( ! $schema)
+			{
+				throw new Exception('Possible syntax error in ' . $schema_file);
+			}
 			$this->setSchema($schema);
 		}
 	}

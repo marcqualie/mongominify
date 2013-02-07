@@ -31,8 +31,16 @@ class Document {
 	public function update(array $new_object = array(), array $options = array())
 	{
 		$this->compress();
+
+		// Apply Rules to special cases
+		if (array_key_exists('$set', $new_object))
+		{
+			$set_document = new Document($new_object['$set'], $this->collection);
+			$set_document->compress();
+			$new_object['$set'] = $set_document->compressed;
+		}
+
 		$this->collection->native->update($this->compressed, $new_object, $options);
-		$this->data['_id'] = $this->compressed['_id'];
 	}
 	public function insert(array $options = array())
 	{

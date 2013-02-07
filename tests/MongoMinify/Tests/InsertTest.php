@@ -32,6 +32,7 @@ class InsertTest extends MongoMinifyTest {
 
 	}
 
+
 	/**
 	 * Test saving a document to the database
 	 */
@@ -58,6 +59,37 @@ class InsertTest extends MongoMinifyTest {
 		$document_native = $collection->native->findOne(array('_id' => $document['_id']));
 		$this->assertArrayHasKey('u', $document_native);
 		$this->assertArrayHasKey('e', $document_native);
+
+	}
+
+
+	/**
+	 * Test updating a document
+	 */
+	public function testUpdate()
+	{
+
+		// Create a collection
+		$collection = $this->getTestCollection();
+
+		// Fake Document
+		$document = array(
+			'user_id' => 1,
+			'email' => 'test1@example.com',
+			'tags' => array('tag1', 'tag2')
+		);
+		$new_tags = array('test1', 'test2');
+		$collection->insert($document);
+		$collection->update(array('user_id' => 1), array('$set' => array(
+			'email' => 'test2@example.com',
+			'tags' => $new_tags
+		)));
+
+		// Check Data stored in database is compressed
+		$document_native = $collection->native->findOne(array('e' => 'test2@example.com'));
+		$this->assertArrayHasKey('u', $document_native);
+		$this->assertArrayHasKey('e', $document_native);
+		$this->assertEquals($document_native['t'], $new_tags);
 
 	}
 
