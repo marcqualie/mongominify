@@ -1,8 +1,16 @@
 ## MongoMinify
 
+[![Build Status](https://travis-ci.org/marcqualie/mongominify.png?branch=master)](https://travis-ci.org/marcqualie/mongominify)
+
 A drop-in library for applying a simple schema to MongoDB documents and transparently compressing data on the fly.
 Entirely namespaced, PSR-0 compliant and works with both PHP 5.3 and 5.4.
 
+### Why MongoMinify?
+
+As great as MongoDB is at so many things, it has a downside compared to other data stores that it stores it's keys wih every document.
+These keys quickly add up and sometimes double or evem triple the amount of storage required.
+Myself and many other developers got around this by adding single letter key names, but this is hard to manage with large projects and documents.
+MongoMinify gets around this problem by transparently converting documents as they are transfered between the client and the database leaving readable code with compressed storage.
 
 ### Install
 
@@ -60,6 +68,6 @@ print_r($document); // ['long_key_name_2' => 13]
 ```
 
 
-## Feedback / Contribution
+## Feedback / Contributing
 
-Any feedback, pull requests or documentation would be greatly apreciated. Use the issue system if you find any problems or have an idea for a cool feature we don't support yet.
+Any feedback, pull requests or documentation would be greatly apreciated.
