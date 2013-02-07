@@ -49,4 +49,12 @@ class Db {
 		return $this->native->command($command, $options);
 	}
 
+	/**
+	 * Last Error Helper
+	 */
+	public function lastError()
+	{
+		$this->native->command(array('getLastError' => 1));
+	}
+
 }
