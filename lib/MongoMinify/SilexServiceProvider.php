@@ -5,7 +5,7 @@ namespace MongoMinify;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class ServiceProvider implements ServiceProviderInterface
+class SilexServiceProvider implements ServiceProviderInterface
 {
 
 	/**
@@ -19,15 +19,18 @@ class ServiceProvider implements ServiceProviderInterface
 
 			// Connect to Database
 			$client = new Client($app['mongo.uri'], $app['mongo.options']);
-			if ( ! empty($app['mongo.schema_dir']))
+
+			// Apply Schema Directory
+			if ( ! empty($app['mongominify.schema_dir']))
 			{
-				$client->schema_dir = $app['mongo.schema_dir'];
+				$client->schema_dir = $app['mongominify.schema_dir'];
 			}
 
 			return $client;
 
 		});
 	}
+
 
 	/**
 	 * Service Boot

@@ -6,12 +6,15 @@ class MongoMinifyTest extends \PHPUnit_Framework_TestCase {
 
 	public $client;
 
+	public $mongo_uri = 'mongodb://127.0.0.1:27017';
+	public $mongo_options = array();
+
 	public function setUp()
 	{
 
 		// Connecto to MongoDB
 		try {
-			$this->client = new MongoMinify\Client('mongodb://localhost:27017');
+			$this->client = new MongoMinify\Client($this->mongo_uri, $this->mongo_options);
 		}
 		catch (MongoConnectionException $e)
 		{
