@@ -5,5 +5,6 @@ php:
 services:
   - mongodb
 before_script:
+  - git submodule update --init --recursive
   - pecl -q install mongo && echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
   - composer --dev install
