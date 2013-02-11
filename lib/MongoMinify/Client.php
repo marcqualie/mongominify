@@ -5,8 +5,6 @@ namespace MongoMinify;
 class Client {
 
 	public $native;
-	public $db = null;
-	public $db_name = 'test';
 	public $debug = false;
 	public $schema_dir = './';
 	
@@ -19,14 +17,24 @@ class Client {
 	{
 
 		// Parse MongoDB Path Info
-		$uri = parse_url($server);
-		$this->db_name = isset($uri['path']) ? substr($uri['path'], 1) : $this->db_name;
+		if ( ! empty($options['db']))
+		{
+			$db_name = $options['db'];
+		}
+		else
+		{
+			$uri = parse_url($server);
+			$db_name = isset($uri['path']) ? substr($uri['path'], 1) : 'test';
+		}
 
 		// Native connection
 		$this->native = new \MongoClient($server, $options);
 
 		// Select Database for default reference
-		$this->db = $this->selectDb($this->db_name);
+		if ($db_name)
+		{
+			$this->selectDb($db_name);
+		}
 		
 	}
 
@@ -45,8 +53,8 @@ class Client {
 	 */
 	public function selectDb($name)
 	{
-		$this->db = new Db($name, $this);
-		return $this->db;
+		$db = new Db($name, $this);
+		return $db;
 	}
 
 }

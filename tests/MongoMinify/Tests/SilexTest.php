@@ -12,20 +12,20 @@ class SilexTest extends MongoMinifyTest {
 		
 		// Initialize Silex
 		$app = new Silex\Application();
-		$app->register(new MongoMinify\SilexServiceProvider(), array(
-			'mongo.uri' => $this->mongo_uri,
+		$app->register(new MongoMinify\Silex\ServiceProvider(), array(
+			'mongo.server' => $this->mongo_server,
 			'mongo.options' => $this->mongo_options,
 			'mongominify.schema_dir' => __DIR__ . '/../../Schema'
 		));
 
 		// Insert new document
-		$drop = $app['mongo']->mongominify->test->drop();
+		$drop = $app['mongo']->test->drop();
 		$data = array(
 			'user_id' => 1,
 			'email' => 'test@example.com'
 		);
-		$app['mongo']->mongominify->test->insert($data);
-		$document = $app['mongo']->mongominify->test->native->findOne(array('u' => 1));
+		$app['mongo']->test->insert($data);
+		$document = $app['mongo']->test->native->findOne(array('u' => 1));
 		$this->assertEquals($document['e'], 'test@example.com');
 
 	}
