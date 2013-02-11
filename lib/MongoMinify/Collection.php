@@ -4,7 +4,7 @@ namespace MongoMinify;
 
 class Collection {
 	
-	public $name = '';
+	private $name = '';
 	public $namespace = '';
 	public $db;
 	public $native;
@@ -15,6 +15,9 @@ class Collection {
 	public $schema_reverse_index = array();
 
 
+	/**
+	 * Initialize
+	 */
 	public function __construct($name, $db)
 	{
 		$this->name = $name;
@@ -28,6 +31,15 @@ class Collection {
 	}
 
 
+	/**
+	 * Get name of collection
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	
 	/**
 	 * Save Document
 	 * @param  [type] $data    [description]

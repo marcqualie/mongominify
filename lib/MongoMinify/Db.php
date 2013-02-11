@@ -42,6 +42,16 @@ class Db {
 
 
 	/**
+	 * Create a new Collection
+	 */
+	public function createCollection($name, $capped = FALSE, $size = 0, $max = 0)
+	{
+		$this->native->createCollection($name, $capped, $size, $max);
+		return $this->selectCollection($name);
+	}
+
+
+	/**
 	 * Command
 	 */
 	public function command(array $command, array $options = array())
