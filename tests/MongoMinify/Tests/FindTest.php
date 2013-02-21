@@ -147,32 +147,32 @@ class FindTest extends MongoMinifyTest {
 		$collection = $this->getTestCollection();
 
 		// Insert fake data
-		$documents = [
-			[
+		$documents = array(
+			array(
 				'_id' => 1,
 				'role' => 'admin'
-			],
-			[
+			),
+			array(
 				'_id' => 2,
 				'role' => 'moderator'
-			],
-			[
+			),
+			array(
 				'_id' => 3,
 				'role' => 'moderator'
-			],
-			[
+			),
+			array(
 				'_id' => 4,
 				'role' => 'none'
-			],
-			[
+			),
+			array(
 				'_id' => 5,
 				'role' => 'moderator'
-			],
-			[
+			),
+			array(
 				'_id' => 6,
 				'role' => 'user'
-			]
-		];
+			)
+		);
 		$collection->batchInsert($documents);
 
 		// Test distinct values
@@ -193,32 +193,32 @@ class FindTest extends MongoMinifyTest {
 		$collection = $this->getTestCollection();
 
 		// Insert fake data
-		$documents = [
-			[
+		$documents = array(
+			array(
 				'_id' => 1,
 				'role' => 'admin'
-			],
-			[
+			),
+			array(
 				'_id' => 2,
 				'role' => 'moderator'
-			],
-			[
+			),
+			array(
 				'_id' => 3,
 				'role' => 'moderator'
-			],
-			[
+			),
+			array(
 				'_id' => 4,
 				'role' => 'none'
-			],
-			[
+			),
+			array(
 				'_id' => 5,
 				'role' => 'moderator'
-			],
-			[
+			),
+			array(
 				'_id' => 6,
 				'role' => 'user'
-			]
-		];
+			)
+		);
 		$collection->batchInsert($documents);
 
 		// Test distinct values
