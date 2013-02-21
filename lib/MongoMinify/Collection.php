@@ -46,7 +46,7 @@ class Collection {
 	 * @param  array  $options [description]
 	 * @return [type]          [description]
 	 */
-	public function save(array &$data, Array $options = array())
+	public function save(array &$data, array $options = array())
 	{
 		$document = new Document($data, $this);
 		$save = $document->save($options);
@@ -61,7 +61,7 @@ class Collection {
 	 * @param  array  $options  [description]
 	 * @return [type]           [description]
 	 */
-	public function insert(&$data, Array $options = array())
+	public function insert(&$data, array $options = array())
 	{
 		$document = new Document($data, $this);
 		$insert = $document->insert($options);
@@ -211,7 +211,7 @@ class Collection {
 			$document->compress();
 			$documents_compressed[] = $document->compressed;
 		}
-		$this->native->batchInsert($documents_compressed);
+		$this->native->batchInsert($documents_compressed, $options);
 		foreach ($documents_compressed as $key => $document)
 		{
 			$documents[$key]['_id'] = $document['_id'];
@@ -225,6 +225,28 @@ class Collection {
 	public function drop()
 	{
 		$this->native->drop();
+	}
+
+
+	/**
+	 * Distinct
+	 */
+	public function distinct($key, array $query = array())
+	{
+		$key_short = isset($this->schema[$key]['short']) ? $this->schema[$key]['short'] : $key;
+		$query_object = new Query($query, $this);
+		$query_object->compress();
+		$values_short = $this->native->distinct($key_short, $query_object->compressed);
+		if (isset($this->schema[$key]['type']) && $this->schema[$key]['type'] === 'enum')
+		{
+			$values = array();
+			foreach ($values_short as $val)
+			{
+				$values[] = isset($this->schema[$key]['values'][$val]) ? $this->schema[$key]['values'][$val] : $val;
+			}
+			return $values;
+		}
+		return $values_short;
 	}
 
 

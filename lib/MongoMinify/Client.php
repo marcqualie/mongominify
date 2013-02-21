@@ -27,6 +27,12 @@ class Client {
 			$db_name = isset($uri['path']) ? substr($uri['path'], 1) : 'test';
 		}
 
+		// Apply defaults
+		if ( ! isset($options['connect']))
+		{
+			$options['connect'] = true;
+		}
+
 		// Native connection
 		$this->native = new \MongoClient($server, $options);
 

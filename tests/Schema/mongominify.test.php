@@ -27,7 +27,9 @@ return array(
 		'short' => 'r',
 		'values' => array(
 			0 => 'admin',
-			1 => 'moderator'
+			1 => 'moderator',
+			2 => 'user',
+			3 => 'guest'
 		)
 	),
 

@@ -136,4 +136,97 @@ class FindTest extends MongoMinifyTest {
 
 	}
 
+
+	/**
+	 * Distinct Test
+	 */
+	public function testDistinctSimple()
+	{
+
+		// Create a collection
+		$collection = $this->getTestCollection();
+
+		// Insert fake data
+		$documents = [
+			[
+				'_id' => 1,
+				'role' => 'admin'
+			],
+			[
+				'_id' => 2,
+				'role' => 'moderator'
+			],
+			[
+				'_id' => 3,
+				'role' => 'moderator'
+			],
+			[
+				'_id' => 4,
+				'role' => 'none'
+			],
+			[
+				'_id' => 5,
+				'role' => 'moderator'
+			],
+			[
+				'_id' => 6,
+				'role' => 'user'
+			]
+		];
+		$collection->batchInsert($documents);
+
+		// Test distinct values
+		$roles = $collection->distinct('role');
+		$this->assertEquals($roles, array('admin', 'moderator', 'none', 'user'));
+
+	}
+
+
+
+		/**
+	 * Distinct Test
+	 */
+	public function testDistinctQuery()
+	{
+
+		// Create a collection
+		$collection = $this->getTestCollection();
+
+		// Insert fake data
+		$documents = [
+			[
+				'_id' => 1,
+				'role' => 'admin'
+			],
+			[
+				'_id' => 2,
+				'role' => 'moderator'
+			],
+			[
+				'_id' => 3,
+				'role' => 'moderator'
+			],
+			[
+				'_id' => 4,
+				'role' => 'none'
+			],
+			[
+				'_id' => 5,
+				'role' => 'moderator'
+			],
+			[
+				'_id' => 6,
+				'role' => 'user'
+			]
+		];
+		$collection->batchInsert($documents);
+
+		// Test distinct values
+		$roles = $collection->distinct('role', array(
+			'role' => 'moderator'
+		));
+		$this->assertEquals($roles, array('moderator'));
+
+	}
+
 }
