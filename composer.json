@@ -1,7 +1,7 @@
 {
 	"name": "marcqualie/mongominify",
 	"description": "A drop-in library which acts as a transparent filter to MongoDB documents and compresses/decompresses data on the fly",
-	"license": "Beerware",
+	"license": "MIT",
 	"keywords": [
 		"mongodb",
 		"database",
