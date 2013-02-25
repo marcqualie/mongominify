@@ -1,0 +1,73 @@
+{
+    "user_id": {
+        "short": "u"
+    },
+    "email": {
+        "short": "e"
+    },
+    "tags": {
+        "short": "t",
+        "subset": {
+            "slug": {
+                "short": "s"
+            },
+            "name": {
+                "short": "n"
+            }
+        }
+    },
+    "role": {
+        "type": "enum",
+        "short": "r",
+        "values": [
+            "admin",
+            "moderator",
+            "user",
+            "guest"
+        ]
+    },
+    "contact": {
+        "short": "c",
+        "subset": {
+            "preferred": {
+                "short": "a",
+                "type": "enum",
+                "values": [
+                    "email",
+                    "phone",
+                    "post"
+                ]
+            },
+            "email": {
+                "short": "e",
+                "subset": {
+                    "home": {
+                        "short": "h"
+                    },
+                    "work": {
+                        "short": "w",
+                        "subset": {
+                            "office": {
+                                "short": "o"
+                            },
+                            "mobile": {
+                                "short": "m"
+                            }
+                        }
+                    }
+                }
+            },
+            "phone": {
+                "short": "p",
+                "subset": {
+                    "home": {
+                        "short": "h"
+                    },
+                    "work": {
+                        "short": "w"
+                    }
+                }
+            }
+        }
+    }
+}

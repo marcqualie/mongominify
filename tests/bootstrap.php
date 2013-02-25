@@ -21,6 +21,9 @@ class MongoMinifyTest extends \PHPUnit_Framework_TestCase {
 			throw new Exception('Could not connect to MongoDB. Tests are unable to run');
 			exit;
 		}
+
+		// Override schema options
+		$this->client->schema_format = 'json';
 		$this->client->schema_dir = __DIR__ . '/Schema';
 
 	}

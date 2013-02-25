@@ -15,7 +15,8 @@ class SilexTest extends MongoMinifyTest {
 		$app->register(new MongoMinify\Silex\ServiceProvider(), array(
 			'mongo.server' => $this->mongo_server,
 			'mongo.options' => $this->mongo_options,
-			'mongominify.schema_dir' => __DIR__ . '/../../Schema'
+			'mongominify.schema_dir' => __DIR__ . '/../../Schema',
+			'mongominify.schema_format' => 'json'
 		));
 
 		// Insert new document

@@ -7,7 +7,8 @@ class Client {
 	public $native;
 	public $debug = false;
 	public $schema_dir = './';
-	
+	public $schema_format = 'json';
+
 
 	/**
 	 * Initializer

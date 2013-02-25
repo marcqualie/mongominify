@@ -143,16 +143,39 @@ class Collection {
 		{
 			$schema_name = $this->db->name . '.' . $schema_name;
 		}
-		$schema_file = $this->client->schema_dir . '/' . $schema_name . '.php';
-		if (file_exists($schema_file))
+
+		// Decode Schema File
+		if ($this->client->schema_format === 'php')
 		{
-			$schema = include $schema_file;
-			if ( ! $schema)
+			$schema_file = $this->client->schema_dir . '/' . $schema_name . '.php';
+			if (file_exists($schema_file))
 			{
-				throw new Exception('Possible syntax error in ' . $schema_file);
+				$schema = include $schema_file;
 			}
-			$this->setSchema($schema);
 		}
+
+		elseif ($this->client->schema_format === 'json')
+		{
+			$schema_file = $this->client->schema_dir . '/' . $schema_name . '.json';
+			if (file_exists($schema_file))
+			{
+				$json_string = file_get_contents($schema_file);
+				$schema = json_decode($json_string, true);
+			}
+		}
+
+		else
+		{
+			throw new \Exception('Unknown schema format: ' . $this->client->schema_format);
+		}
+
+		// Assign Schema
+		if (empty($schema))
+		{
+			throw new \Exception('Possible syntax error in ' . $schema_file);
+		}
+		$this->setSchema($schema);
+
 	}
 	public function setSchema(array $schema = array())
 	{

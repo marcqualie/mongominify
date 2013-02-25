@@ -26,10 +26,14 @@ class ServiceProvider implements ServiceProviderInterface
 			// Connect to Database
 			$client = new Client($app['mongo.server'], $app['mongo.options']);
 
-			// Apply Schema Directory
+			// Apply Schema Options
 			if ( ! empty($app['mongominify.schema_dir']))
 			{
 				$client->schema_dir = $app['mongominify.schema_dir'];
+			}
+			if ( ! empty($app['mongominify.schema_format']))
+			{
+				$client->schema_format = $app['mongominify.schema_format'];
 			}
 
 			// Figure out DB Name
