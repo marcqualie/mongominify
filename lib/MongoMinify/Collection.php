@@ -23,7 +23,7 @@ class Collection {
 		$this->name = $name;
 		$this->db = $db;
 		$this->client = $db->client;
-		$this->namespace = $db->name . '.' . $this->name;
+		$this->namespace = (String) $db . '.' . $this->name;
 		$this->native = $db->native->selectCollection($this->name);
 
 		// Apply schema to collection

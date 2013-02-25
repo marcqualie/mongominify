@@ -26,8 +26,13 @@ class SilexTest extends MongoMinifyTest {
 			'email' => 'test@example.com'
 		);
 		$app['mongo']->test->insert($data);
+		$this->assertEquals((String) $app['mongo'], 'mongominify');
 		$document = $app['mongo']->test->native->findOne(array('u' => 1));
 		$this->assertEquals($document['e'], 'test@example.com');
+
+		// Switch DB
+		$app['mongo']->selectDb('test2');
+		$this->assertEquals((String) $app['mongo'], 'test2');
 
 	}
 

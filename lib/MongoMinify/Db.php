@@ -4,7 +4,7 @@ namespace MongoMinify;
 
 class Db {
 
-	public $name;
+	private $__name;
 	public $client;
 	public $native;
 
@@ -12,9 +12,18 @@ class Db {
 
 	public function __construct($name, $client)
 	{
-		$this->name = $name;
+		$this->__name = $name;
 		$this->client = $client;
 		$this->native = $client->native->selectDb($name);
+	}
+
+
+	/**
+	 * Get database name
+	 */
+	public function __toString()
+	{
+		return $this->__name;
 	}
 
 
@@ -48,6 +57,17 @@ class Db {
 	{
 		$this->native->createCollection($name, $capped, $size, $max);
 		return $this->selectCollection($name);
+	}
+
+
+	/**
+	 * Drop Database
+	 */
+	public function drop()
+	{
+		$this->native->command(array(
+			"dropDatabase" => 1
+		));
 	}
 
 

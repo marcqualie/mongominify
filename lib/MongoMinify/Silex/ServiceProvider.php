@@ -48,7 +48,7 @@ class ServiceProvider implements ServiceProviderInterface
 			}
 
 			// Return Database Instance
-			return $client->selectDb($db_name);
+			return new Db($db_name, $client, $app);
 
 		});
 	}
