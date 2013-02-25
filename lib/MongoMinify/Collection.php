@@ -151,6 +151,10 @@ class Collection {
 			if (file_exists($schema_file))
 			{
 				$schema = include $schema_file;
+				if (empty($schema))
+				{
+					throw new \Exception('Possible JSON parse in ' . $schema_file);
+				}
 			}
 		}
 
@@ -161,6 +165,10 @@ class Collection {
 			{
 				$json_string = file_get_contents($schema_file);
 				$schema = json_decode($json_string, true);
+				if (empty($schema))
+				{
+					throw new \Exception('Possible PHP syntax error in ' . $schema_file);
+				}
 			}
 		}
 
@@ -170,11 +178,10 @@ class Collection {
 		}
 
 		// Assign Schema
-		if (empty($schema))
+		if ( ! empty($schema))
 		{
-			throw new \Exception('Possible syntax error in ' . $schema_file);
+			$this->setSchema($schema);
 		}
-		$this->setSchema($schema);
 
 	}
 	public function setSchema(array $schema = array())
