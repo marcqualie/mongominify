@@ -4,7 +4,7 @@ namespace MongoMinify;
 
 class Collection {
 	
-	private $name = '';
+	private $__name = '';
 	public $namespace = '';
 	public $db;
 	public $native;
@@ -20,11 +20,11 @@ class Collection {
 	 */
 	public function __construct($name, $db)
 	{
-		$this->name = $name;
+		$this->__name = $name;
 		$this->db = $db;
 		$this->client = $db->client;
-		$this->namespace = (String) $db . '.' . $this->name;
-		$this->native = $db->native->selectCollection($this->name);
+		$this->namespace = (String) $db . '.' . $name;
+		$this->native = $db->native->selectCollection($name);
 
 		// Apply schema to collection
 		$this->setSchemaByName($this->namespace);
@@ -36,7 +36,7 @@ class Collection {
 	 */
 	public function getName()
 	{
-		return $this->name;
+		return $this->__name;
 	}
 
 	
@@ -141,7 +141,7 @@ class Collection {
 		}
 		if (strpos($schema_name, '.') === false)
 		{
-			$schema_name = $this->db->name . '.' . $schema_name;
+			$schema_name = (String) $this->db . '.' . $schema_name;
 		}
 
 		// Decode Schema File
@@ -298,6 +298,20 @@ class Collection {
 	public function getIndexInfo()
 	{
 		return $this->native->getIndexInfo();
+	}
+
+
+	/**
+	 * Aggregation Helper
+	 */
+	public function aggregate($pipeline)
+	{
+		$pipeline_object = new Pipeline($pipeline, $this);
+		$pipeline_object->compress();
+		return $this->db->command(array(
+			'aggregate' => $this->__name,
+			'pipeline' => $pipeline_object->compressed
+		));
 	}
 
 }
