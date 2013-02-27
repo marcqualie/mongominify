@@ -2,89 +2,90 @@
 
 namespace MongoMinify;
 
-class Db {
+class Db
+{
 
-	private $__name;
-	public $client;
-	public $native;
+    private $name;
+    public $client;
+    public $native;
 
-	public $collection_cache = array();
+    public $collection_cache = array();
 
-	public function __construct($name, $client)
-	{
-		$this->__name = $name;
-		$this->client = $client;
-		$this->native = $client->native->selectDb($name);
-	}
-
-
-	/**
-	 * Get database name
-	 */
-	public function __toString()
-	{
-		return $this->__name;
-	}
+    public function __construct($name, $client)
+    {
+        $this->name = $name;
+        $this->client = $client;
+        $this->native = $client->native->selectDb($name);
+    }
 
 
-	/**
-	 * Select Collection
-	 */
-	public function __get($name)
-	{
-		return $this->selectCollection($name);
-	}
-	
-
-	/**
-	 * Select Collection
-	 */
-	public function selectCollection($name)
-	{
-		if ( ! isset($this->collection_cache[$name]))
-		{
-			$collection = new Collection($name, $this);
-			$collection_cache[$name] = $collection;
-		}
-		return $collection_cache[$name];
-	}
+    /**
+     * Get database name
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
 
 
-	/**
-	 * Create a new Collection
-	 */
-	public function createCollection($name, $capped = FALSE, $size = 0, $max = 0)
-	{
-		$this->native->createCollection($name, $capped, $size, $max);
-		return $this->selectCollection($name);
-	}
+    /**
+     * Select Collection
+     */
+    public function __get($name)
+    {
+        return $this->selectCollection($name);
+    }
+    
+
+    /**
+     * Select Collection
+     */
+    public function selectCollection($name)
+    {
+        if (!isset($this->collection_cache[$name])) {
+            $collection = new Collection($name, $this);
+            $collection_cache[$name] = $collection;
+        }
+        return $collection_cache[$name];
+    }
 
 
-	/**
-	 * Drop Database
-	 */
-	public function drop()
-	{
-		$this->native->command(array(
-			"dropDatabase" => 1
-		));
-	}
+    /**
+     * Create a new Collection
+     */
+    public function createCollection($name, $capped = false, $size = 0, $max = 0)
+    {
+        $this->native->createCollection($name, $capped, $size, $max);
+        return $this->selectCollection($name);
+    }
 
 
-	/**
-	 * Command
-	 */
-	public function command(array $command, array $options = array())
-	{
-		return $this->native->command($command, $options);
-	}
+    /**
+     * Drop Database
+     */
+    public function drop()
+    {
+        $this->native->command(
+            array(
+                "dropDatabase" => 1
+            )
+        );
+    }
 
-	/**
-	 * Last Error Helper
-	 */
-	public function lastError()
-	{
-		$this->native->command(array('getLastError' => 1));
-	}
 
+    /**
+     * Command
+     */
+    public function command(array $command, array $options = array())
+    {
+        return $this->native->command($command, $options);
+    }
+
+    /**
+     * Last Error Helper
+     */
+    public function lastError()
+    {
+        $this->native->command(array('getLastError' => 1));
+    }
 }
