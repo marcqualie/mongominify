@@ -146,7 +146,7 @@ class Collection
             if (file_exists($schema_file)) {
                 $schema = include $schema_file;
                 if (empty($schema)) {
-                    throw new \Exception('Possible JSON parse in ' . $schema_file);
+                    throw new \Exception('Possible JSON parse error in ' . $schema_file);
                 }
             }
         
