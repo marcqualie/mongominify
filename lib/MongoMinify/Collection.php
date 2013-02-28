@@ -140,26 +140,31 @@ class Collection
             $schema_name = $this->db->name . '.' . $schema_name;
         }
 
-        // PHP Schema Format
+
+        // PHP Format
         if ($this->client->schema_format === 'php') {
             $schema_file = $this->client->schema_dir . '/' . $schema_name . '.php';
             if (file_exists($schema_file)) {
                 $schema = include $schema_file;
                 if (empty($schema)) {
-                    throw new \Exception('Possible JSON parse in ' . $schema_file);
+                    throw new \Exception('Possible PHP syntax error in ' . $schema_file);
                 }
             }
-        
+            
+
+        // JSON Format
         } elseif ($this->client->schema_format === 'json') {
             $schema_file = $this->client->schema_dir . '/' . $schema_name . '.json';
             if (file_exists($schema_file)) {
                 $json_string = file_get_contents($schema_file);
                 $schema = json_decode($json_string, true);
                 if (empty($schema)) {
-                    throw new \Exception('Possible PHP syntax error in ' . $schema_file);
+                    throw new \Exception('Possible JSON parse error in ' . $schema_file);
                 }
             }
 
+
+        // Invalid Format
         } else {
             throw new \Exception('Unknown schema format: ' . $this->client->schema_format);
         }
