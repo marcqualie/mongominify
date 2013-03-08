@@ -127,7 +127,7 @@ class Document
     {
 
         // If is an array, loop through and apply rules
-        if (isset($document[0])) {
+        if (is_array($document) && array_key_exists(0, $document)) {
             foreach ($document as $key => $value) {
                 $document[$key] = $this->applyDecompression($value, $parent);
             }
