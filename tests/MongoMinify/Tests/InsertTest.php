@@ -66,7 +66,7 @@ class InsertTest extends MongoMinifyTest {
 	/**
 	 * Test updating a document
 	 */
-	public function testUpdate()
+	public function testUpdateSet()
 	{
 
 		// Create a collection
@@ -75,21 +75,62 @@ class InsertTest extends MongoMinifyTest {
 		// Fake Document
 		$document = array(
 			'user_id' => 1,
-			'email' => 'test1@example.com',
+			'email' => 'test@example.com',
 			'tags' => array('tag1', 'tag2')
 		);
 		$new_tags = array('test1', 'test2');
 		$collection->insert($document);
 		$collection->update(array('user_id' => 1), array('$set' => array(
-			'email' => 'test2@example.com',
+			'email' => 'test@example.com',
 			'tags' => $new_tags
 		)));
 
 		// Check Data stored in database is compressed
-		$document_native = $collection->native->findOne(array('e' => 'test2@example.com'));
+		$document_native = $collection->native->findOne(array('e' => 'test@example.com'));
 		$this->assertArrayHasKey('u', $document_native);
 		$this->assertArrayHasKey('e', $document_native);
 		$this->assertEquals($document_native['t'], $new_tags);
+
+	}
+
+
+	/**
+	 * Test updating a document
+	 */
+	public function testUpdateInc()
+	{
+
+		// Create a collection
+		$collection = $this->getTestCollection();
+
+		// Fake Document
+		$document = array(
+			'user_id' => 1,
+			'email' => 'test@example.com',
+			'tags' => array(
+				array(
+					'slug' => 'performance-horizon',
+					'name' => 'Performance Horizon',
+					'count' => 5
+				)
+			),
+			'notifications' => array(
+				'messages' => 1,
+				'requests' => 8
+			)
+		);
+		$collection->insert($document);
+//		$collection->update(array('user_id' => 1), array('$inc' => array(
+//			'tags.count' => 5
+//		)));
+		$collection->update(array('user_id' => 1), array('$inc' => array(
+			'notifications.messages' => 10
+		)));
+
+		// Check Data stored in database is compressed
+		$document_native = $collection->findOne(array('email' => 'test@example.com'));
+//		$this->assertEquals($document_native['tags'][0]['count'], 10);
+		$this->assertEquals($document_native['notifications']['messages'], 11);
 
 	}
 

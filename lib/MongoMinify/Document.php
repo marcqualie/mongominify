@@ -33,12 +33,15 @@ class Document
         $this->compress();
 
         // Apply Rules to special cases
-        if (array_key_exists('$set', $new_object)) {
-            $set_document = new Document($new_object['$set'], $this->collection);
-            $set_document->compress();
-            $new_object['$set'] = $set_document->compressed;
+        foreach ($new_object as $key => $value) {
+            if (strpos($key, '$') === 0) {
+                $set_document = new Query($value, $this->collection);
+                $set_document->compress();
+                $set_document->asDotSyntax();
+                $new_object[$key] = $set_document->compressed;
+            }
         }
-
+        
         $this->collection->native->update($this->compressed, $new_object, $options);
     }
     public function insert(array $options = array())

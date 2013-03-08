@@ -5,6 +5,17 @@
     "email": {
         "short": "e"
     },
+    "notifications": {
+        "short": "n",
+        "subset": {
+            "requests": {
+                "short": "r"
+            },
+            "messages": {
+                "short": "m"
+            }
+        }
+    },
     "tags": {
         "short": "t",
         "subset": {
@@ -13,6 +24,9 @@
             },
             "name": {
                 "short": "n"
+            },
+            "count": {
+                "short": "c"
             }
         }
     },
