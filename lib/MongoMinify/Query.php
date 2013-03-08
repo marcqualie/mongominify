@@ -139,22 +139,25 @@ class Query
      * As dot syntax for index ensuring
      * TODO: This is a quick hack to get indexes working with embedded document syntax
      */
+    private $dotSyntax = array();
     public function asDotSyntax()
     {
-        $dotSyntax = array();
-        foreach ($this->compressed as $key => $value) {
-            if (is_array($value)) {
-                foreach ($value as $subkey => $subval) {
-                    if (strpos($subkey, '$') !== 0) {
-                        $dotSyntax[$key . '.' . $subkey] = $subval;
-                    } else {
-                        $dotSyntax[$key] = $value;
-                    }
+        $this->applyDotSyntax($this->compressed);
+        $this->compressed = $this->dotSyntax;
+        return $this->dotSyntax;
+    }
+    private function applyDotSyntax($data, $ns = '')
+    {
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                if (strpos($key, '$') === 0) {
+                    $this->dotSyntax[$ns][$key] = $value;
+                } else {
+                    $this->applyDotSyntax($value, ($ns ? $ns . '.' : '') . $key);
                 }
-            } else {
-                $dotSyntax[$key] = $value;
             }
+            return;
         }
-        $this->compressed = $dotSyntax;
+        $this->dotSyntax[$ns] = $data;
     }
 }

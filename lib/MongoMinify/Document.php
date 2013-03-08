@@ -41,7 +41,7 @@ class Document
                 $new_object[$key] = $set_document->compressed;
             }
         }
-        
+
         $this->collection->native->update($this->compressed, $new_object, $options);
     }
     public function insert(array $options = array())
