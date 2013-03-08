@@ -292,7 +292,7 @@ class Collection
         $pipeline_object->compress();
         return $this->db->command(
             array(
-                'aggregate' => $this->__name,
+                'aggregate' => $this->name,
                 'pipeline' => $pipeline_object->compressed
             )
         );
