@@ -5,7 +5,7 @@ namespace MongoMinify;
 class Cursor implements \Iterator
 {
 
-    public $colleciton;
+    public $collection;
     public $native;
 
     public $native_query = array();
