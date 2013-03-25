@@ -31,8 +31,11 @@ class SilexTest extends MongoMinifyTest {
 		$this->assertEquals($document['e'], 'test@example.com');
 
 		// Switch DB
-		$app['mongo']->selectDb('test2');
+		$app['mongo']->switchDb('test2');
 		$this->assertEquals((String) $app['mongo'], 'test2');
+
+		// Select DB
+		$this->assertEquals((String) $app['mongo']->selectDb('test3'), 'test3');
 
 	}
 
