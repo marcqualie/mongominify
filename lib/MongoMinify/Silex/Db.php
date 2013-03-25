@@ -27,14 +27,13 @@ class Db extends \MongoMinify\Db
     public function switchDb($db_name)
     {
         $self = $this;
-        $app = $this->app;
-        $this->app['mongo'] = $this->app->share(
-            function () use ($db_name, $self, $app) {
-                return new Db($db_name, $self->client, $app);
+        return $this->app['mongo'] = $this->app->share(
+            function () use ($db_name, $self) {
+                return new Db($db_name, $self->client, $self->app);
             }
         );
-        return $this->app['mongo'];
     }
+
 
     /**
      * Select Temporary Database
