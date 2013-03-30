@@ -37,7 +37,7 @@ class Document
             if (strpos($key, '$') === 0) {
                 $set_document = new Query($value, $this->collection);
                 $set_document->compress();
-                $set_document->asDotSyntax();
+//                $set_document->asDotSyntax();
                 $new_object[$key] = $set_document->compressed;
             }
         }
