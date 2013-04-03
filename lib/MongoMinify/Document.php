@@ -127,28 +127,32 @@ class Document
     {
 
         // If is an array, loop through and apply rules
-        if (is_array($document) && array_key_exists(0, $document)) {
-            foreach ($document as $key => $value) {
-                $document[$key] = $this->applyDecompression($value, $parent);
-            }
-            return $document;
-        }
+        if (is_array($document)) {
 
-        // Standard document traversal
-        foreach ($document as $key => $value) {
-            $namespace = ($parent ? $parent . '.' : '') . $key;
-            if (isset($this->collection->schema_reverse_index[$namespace])) {
-                if (is_array($value)) {
-                    $value =$this->applyDecompression($value, $key);
+            // Integar based arrays don't have key decompression
+            if (array_key_exists(0, $document)) {
+                foreach ($document as $key => $value) {
+                    $document[$key] = $this->applyDecompression($value, $parent);
                 }
-                $full_namespace = $this->collection->schema_reverse_index[$namespace];
-                $explode = explode('.', $full_namespace);
-                $full_key = end($explode);
-                if (isset($this->collection->schema[$full_namespace]['values'][$value])) {
-                    $value = $this->collection->schema[$full_namespace]['values'][$value];
+                return $document;
+            }
+
+            // Standard document traversal
+            foreach ($document as $key => $value) {
+                $namespace = ($parent ? $parent . '.' : '') . $key;
+                if (isset($this->collection->schema_reverse_index[$namespace])) {
+                    if (is_array($value)) {
+                        $value =$this->applyDecompression($value, $key);
+                    }
+                    $full_namespace = $this->collection->schema_reverse_index[$namespace];
+                    $explode = explode('.', $full_namespace);
+                    $full_key = end($explode);
+                    if (isset($this->collection->schema[$full_namespace]['values'][$value])) {
+                        $value = $this->collection->schema[$full_namespace]['values'][$value];
+                    }
+                    $document[$full_key] = $value;
+                    unset($document[$key]);
                 }
-                $document[$full_key] = $value;
-                unset($document[$key]);
             }
         }
         return $document;
