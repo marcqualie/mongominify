@@ -5,6 +5,8 @@ namespace MongoMinify;
 class Cursor implements \Iterator
 {
 
+    static $timeout = 20000;
+
     public $collection;
     public $native;
 
@@ -15,8 +17,10 @@ class Cursor implements \Iterator
         $this->collection = $collection;
         $this->native_query = $query;
         $this->native = $collection->native->find($query, $fields);
+        $native = $this->native;
     }
-    
+
+
     /**
      * Move around cursor
      */
@@ -74,6 +78,7 @@ class Cursor implements \Iterator
         return $this;
     }
 
+
     /**
      * Native abtracts
      */
@@ -85,4 +90,21 @@ class Cursor implements \Iterator
     {
         return $this->native->valid();
     }
+
+
+    /**
+     * Set Timeout
+     */
+    public function timeout($ms)
+    {
+        $native = $this->native;
+        $native->timeout($ms);
+        return $this;
+    }
+
 }
+
+// Bind native timeouts
+// TODO: Temporary fix, need a better place to put this code
+Cursor::$timeout = \MongoCursor::$timeout;
+\MongoCursor::$timeout =& Cursor::$timeout;
