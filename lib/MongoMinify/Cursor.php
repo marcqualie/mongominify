@@ -64,7 +64,9 @@ class Cursor implements \Iterator
      */
     public function sort(array $fields = array())
     {
-        $this->native->sort($fields);
+        $fields_query = new Query($fields, $this->collection);
+        $fields_query->compress();
+        $this->native->sort($fields_query->compressed);
         return $this;
     }
     public function skip($num)

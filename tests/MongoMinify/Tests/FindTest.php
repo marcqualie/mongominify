@@ -183,7 +183,7 @@ class FindTest extends MongoMinifyTest {
 
 
 
-		/**
+	/**
 	 * Distinct Test
 	 */
 	public function testDistinctQuery()

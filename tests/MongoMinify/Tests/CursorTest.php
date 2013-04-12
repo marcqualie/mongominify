@@ -63,4 +63,104 @@ class CursorTest extends MongoMinifyTest {
 	}
 
 
+	/**
+	 * Sorting (Ascending)
+	 */
+	public function testSortAsc()
+	{
+
+		// Create a collection
+		$collection = $this->getTestCollection();
+
+		// Insert fake data
+		$documents = array(
+			array(
+				'_id' => 3,
+				'role' => 'moderator'
+			),
+			array(
+				'_id' => 2,
+				'role' => 'moderator'
+			),
+			array(
+				'_id' => 6,
+				'role' => 'user'
+			),
+			array(
+				'_id' => 4,
+				'role' => 'none'
+			),
+			array(
+				'_id' => 1,
+				'role' => 'admin'
+			),
+			array(
+				'_id' => 5,
+				'role' => 'moderator'
+			)
+		);
+		$collection->batchInsert($documents);
+
+		// Test distinct values
+		$cursor = $collection->find();
+		$cursor->sort(array('_id' => 1));
+		$data = iterator_to_array($cursor, false);
+		$this->assertEquals($data[0]['_id'], 1);
+		$this->assertEquals($data[1]['_id'], 2);
+		$this->assertEquals($data[2]['_id'], 3);
+
+
+	}
+
+
+	/**
+	 * Sorting (Ascending)
+	 */
+	public function testSortDesc()
+	{
+
+		// Create a collection
+		$collection = $this->getTestCollection();
+
+		// Insert fake data
+		$documents = array(
+			array(
+				'_id' => 3,
+				'role' => 'moderator'
+			),
+			array(
+				'_id' => 2,
+				'role' => 'moderator'
+			),
+			array(
+				'_id' => 6,
+				'role' => 'user'
+			),
+			array(
+				'_id' => 4,
+				'role' => 'none'
+			),
+			array(
+				'_id' => 1,
+				'role' => 'admin'
+			),
+			array(
+				'_id' => 5,
+				'role' => 'moderator'
+			)
+		);
+		$collection->batchInsert($documents);
+
+		// Test distinct values
+		$cursor = $collection->find();
+		$cursor->sort(array('_id' => -1));
+		$data = iterator_to_array($cursor, false);
+		$this->assertEquals($data[0]['_id'], 6);
+		$this->assertEquals($data[1]['_id'], 5);
+		$this->assertEquals($data[2]['_id'], 4);
+
+
+	}
+
+
 }
