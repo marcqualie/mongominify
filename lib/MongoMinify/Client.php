@@ -10,6 +10,7 @@ class Client
     public $schema_dir = './';
     public $schema_format = 'json';
 
+    private $current_db;
 
     /**
      * Initializer
@@ -56,7 +57,16 @@ class Client
      */
     public function selectDb($name)
     {
-        $db = new Db($name, $this);
-        return $db;
+        $this->current_db = new Db($name, $this);
+        return $this->current_db;
+    }
+
+
+    /**
+     * Helper to get most recently selected database
+     */
+    public function currentDb()
+    {
+        return $this->current_db;
     }
 }
