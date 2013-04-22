@@ -137,7 +137,7 @@ class Collection
             $schema_name = $this->namespace;
         }
         if (strpos($schema_name, '.') === false) {
-            $schema_name = $this->db->name . '.' . $schema_name;
+            $schema_name = (String) $this->db . '.' . $schema_name;
         }
 
 

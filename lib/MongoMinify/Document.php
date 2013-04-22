@@ -151,7 +151,9 @@ class Document
                         $value = $this->collection->schema[$full_namespace]['values'][$value];
                     }
                     $document[$full_key] = $value;
-                    unset($document[$key]);
+                    if ($key !== '_id') {
+                        unset($document[$key]);
+                    }
                 }
             }
         }
