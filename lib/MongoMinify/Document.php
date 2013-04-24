@@ -30,19 +30,29 @@ class Document
     }
     public function update(array $new_object = array(), array $options = array())
     {
-        $this->compress();
 
-        // Apply Rules to special cases
+        $this->compress();
+        $uses_modifiers = false;
+
+        // Apply rules to each modifier
         foreach ($new_object as $key => $value) {
             if (strpos($key, '$') === 0) {
+                $uses_modifiers = true;
                 $set_document = new Query($value, $this->collection);
                 $set_document->compress();
-//                $set_document->asDotSyntax();
                 $new_object[$key] = $set_document->compressed;
             }
         }
 
-        $this->collection->native->update($this->compressed, $new_object, $options);
+        // Apple full document replacement compression if no modifiers are used
+        if ($uses_modifiers === true) {
+            $this->collection->native->update($this->compressed, $new_object, $options);
+        } else {
+            $new_object_document = new Document($new_object, $this->collection);
+            $new_object_document->compress();
+            $this->collection->native->update($this->compressed, $new_object_document->compressed, $options);
+        }
+
     }
     public function insert(array $options = array())
     {
