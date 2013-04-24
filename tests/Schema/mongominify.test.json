@@ -5,6 +5,9 @@
     "email": {
         "short": "e"
     },
+    "gender": {
+        "short": "g"
+    },
     "notifications": {
         "short": "n",
         "subset": {
