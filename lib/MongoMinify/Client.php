@@ -44,6 +44,35 @@ class Client
 
 
     /**
+     * Connect to database
+     * @return bool True if the connection was successful
+     */
+    public function connect()
+    {
+        return $this->native->connect();
+    }
+
+
+    /**
+     * Close database connection
+     * @return bool True if the connection was successful
+     */
+    public function close($connection = false)
+    {
+        return $this->native->close($connection);
+    }
+
+
+    /**
+     * Get active connections
+     */
+    public function getConnections()
+    {
+        return $this->native->getConnections();
+    }
+
+
+    /**
      * Select Database
      */
     public function __get($name)
@@ -63,10 +92,67 @@ class Client
 
 
     /**
+     * Select Collection
+     */
+    public function selectCollection($db_name, $collection_name)
+    {
+        $db = new Db($db_name, $this);
+        $collection = $db->selectCollection($collection_name);
+        return $collection;
+    }
+
+
+    /**
      * Helper to get most recently selected database
      */
     public function currentDb()
     {
         return $this->current_db;
     }
+
+
+    /**
+     * List Databases
+     */
+    public function listDBs()
+    {
+        return $this->native->listDBs();
+    }
+
+
+    /**
+     * Gets a list of all host statuses
+     */
+    public function getHosts()
+    {
+        return $this->native->getHosts();
+    }
+
+
+    /**
+     * Set read preference
+     */
+    public function setReadPreference($read_preference, array $tags = array())
+    {
+        return $this->native->getReadPreference($read_preference, $tags);
+    }
+
+
+    /**
+     * Get read preference
+     */
+    public function getReadPreference()
+    {
+        return $this->native->getReadPreference();
+    }
+
+
+    /**
+     * String representation of this connection
+     */
+    public function __toString()
+    {
+        return (String) $this->native;
+    }
+
 }
