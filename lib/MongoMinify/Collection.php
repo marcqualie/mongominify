@@ -73,13 +73,23 @@ class Collection
     /**
      * Update Document
      */
-    public function update(array $data = array(), array $new_object = array(), array $options = array())
+    public function update(array $query = array(), array $update = array(), array $options = array())
     {
-        $document = new Document($data, $this);
-        $update = $document->update($new_object, $options);
+        $document = new Document($query, $this);
+        $update = $document->update($update, $options);
         return $update;
     }
 
+
+    /**
+     * Find and Modify Document
+     */
+    public function findAndModify(array $query, array $update = array(), array $fields = null, array $options = array())
+    {
+        $document = new Document($query, $this);
+        $findAndModify = $document->findAndModify($update, $fields, $options);
+        return $findAndModify;
+    }
 
     /**
      * Remove Documents

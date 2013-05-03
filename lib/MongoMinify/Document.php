@@ -44,14 +44,62 @@ class Document
             }
         }
 
-        // Apple full document replacement compression if no modifiers are used
+        // Apply full document replacement compression if no modifiers are used
         if ($uses_modifiers === true) {
-            $this->collection->native->update($this->compressed, $new_object, $options);
+            return $this->collection->native->update($this->compressed, $new_object, $options);
         } else {
             $new_object_document = new Document($new_object, $this->collection);
             $new_object_document->compress();
-            $this->collection->native->update($this->compressed, $new_object_document->compressed, $options);
+            return $this->collection->native->update($this->compressed, $new_object_document->compressed, $options);
         }
+
+    }
+    public function findAndModify(array $new_object, array $fields = null, array $options = array())
+    {
+
+        $this->compress();
+        $uses_modifiers = false;
+
+        // Apply rules to each modifier
+        foreach ($new_object as $key => $value) {
+            if (strpos($key, '$') === 0) {
+                $uses_modifiers = true;
+                $set_document = new Query($value, $this->collection);
+                $set_document->compress();
+                $new_object[$key] = $set_document->compressed;
+            }
+        }
+
+        // Update Fields
+        if ($fields !== null)
+        {
+            $fields_object = new Document($fields, $this->collection);
+            $fields_object->compress();
+            $fields = $fields_object->compressed;
+        }
+
+        // Modify Sorting Options
+        if ($options && isset($options['sort']))
+        {
+            $sort_object = new Document($options['sort'], $this->collection);
+            $sort_object->compress();
+            $options['sort'] = $sort_object->compressed;
+        }
+
+        // Apple full document replacement compression if no modifiers are used
+        if ($uses_modifiers === true) {
+            $document = $this->collection->native->findAndModify($this->compressed, $new_object, $fields, $options);
+        } else {
+            $new_object_document = new Document($new_object, $this->collection);
+            $new_object_document->compress();
+            $document = $this->collection->native->findAndModify($this->compressed, $new_object_document->compressed, $fields, $options);
+        }
+
+        // Decompress returned document
+        $document_object = new Document($document, $this->collection);
+        $document_object->state = 'compressed';
+        $document_object->decompress();
+        return $document_object->data;
 
     }
     public function insert(array $options = array())

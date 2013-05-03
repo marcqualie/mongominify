@@ -123,4 +123,78 @@ class UpdateTest extends MongoMinifyTest {
 
     }
 
+
+    /**
+     * Test FindAndModify
+     */
+    public function testFindAndModify()
+    {
+
+         // Create a collection
+        $collection = $this->getTestCollection();
+
+        // Fake Document
+        $document = array(
+            'user_id' => 1,
+            'email' => 'test@example.com',
+            'tags' => array(
+                array(
+                    'slug' => 'performance-horizon',
+                    'name' => 'Performance Horizon',
+                    'count' => 5
+                )
+            ),
+            'notifications' => array(
+                'messages' => 1,
+                'requests' => 8
+            )
+        );
+        $collection->insert($document);
+
+        // Test update and return original document with filered fields
+        $updated = $collection->FindAndModify(array(
+                'user_id' => 1
+            ), array(
+                'user_id' => 1,
+                'email' => 'test2@example.com',
+                'tags' => array(
+                    array(
+                        'slug' => 'performance-horizon-group',
+                        'name' => 'Performance Horizon Group',
+                        'count' => 5
+                    )
+                ),
+                'notifications' => array(
+                    'messages' => 10,
+                    'requests' => 3
+                )
+            ), array(
+                '_id' => 0,
+                'user_id' => 1,
+                'email' => 1
+            ));
+        $this->assertEquals($updated, array('user_id' => 1, 'email' => 'test@example.com'));
+
+        // Test update and return new document
+        $updated = $collection->FindAndModify(array(
+                'user_id' => 1
+            ), array(
+                '$set' => array(
+                    'email' => 'test3@example.com',
+                    'notifications' => array(
+                        'messages' => 6,
+                        'requests' => 9
+                    )
+                )
+            ), array(
+                '_id' => 0,
+                'email' => 1,
+                'notifications' => 1
+            ), array(
+                'new' => true
+            ));
+        $this->assertEquals($updated, array('email' => 'test3@example.com', 'notifications' => array('messages' => 6, 'requests' => 9)));
+
+    }
+
 }
