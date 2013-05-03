@@ -41,6 +41,15 @@ class Collection
 
 
     /**
+     * Get full name of collection
+     */
+    public function __toString()
+    {
+        return (String) $this->db . '.' . $this->getName();
+    }
+
+
+    /**
      * Get a collection (dot based syntax name)
      */
     public function __get($name)

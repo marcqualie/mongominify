@@ -9,4 +9,10 @@ class CollectionTest extends MongoMinifyTest {
         $this->assertEquals($collection1->getName(), $collection2->getName());
     }
 
+    public function testToString()
+    {
+         $collection = $this->client->currentDb()->selectCollection('dot.syntax.name');
+         $this->assertEquals((String) $collection, 'mongominify.dot.syntax.name');
+    }
+
 }
