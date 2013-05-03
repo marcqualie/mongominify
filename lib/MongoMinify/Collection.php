@@ -39,7 +39,16 @@ class Collection
         return $this->name;
     }
 
-    
+
+    /**
+     * Get a collection (dot based syntax name)
+     */
+    public function __get($name)
+    {
+        return $this->db->selectCollection($this->getName() . '.' . $name);
+    }
+
+
     /**
      * Save Document
      * @param  [type] $data    [description]
