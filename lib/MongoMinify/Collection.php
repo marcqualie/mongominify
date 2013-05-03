@@ -299,7 +299,28 @@ class Collection
         $query = new Query($keys, $this);
         $query->compress();
         $query->asDotSyntax();
-        $this->native->ensureIndex($query->compressed, $options);
+        return $this->native->ensureIndex($query->compressed, $options);
+    }
+
+
+    /**
+     * Delete Index
+     */
+    public function deleteIndex(array $keys)
+    {
+        $query = new Query($keys, $this);
+        $query->compress();
+        $query->asDotSyntax();
+        return $this->native->deleteIndex($query->compressed);
+    }
+
+
+    /**
+     * Delete All Indexes
+     */
+    public function deleteIndexes()
+    {
+        return $this->native->deleteIndexes();
     }
 
 
@@ -310,6 +331,7 @@ class Collection
     {
         return $this->native->getIndexInfo();
     }
+
 
     /**
      * Aggregation Helper
