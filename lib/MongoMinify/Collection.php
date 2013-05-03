@@ -334,6 +334,24 @@ class Collection
 
 
     /**
+     * Set Read Preference
+     */
+    public function setReadPreference($read_preference, array $tags)
+    {
+        return $this->native->setReadPreference($read_preference, $tags);
+    }
+
+
+    /**
+     * Set Read Preference
+     */
+    public function getReadPreference()
+    {
+        return $this->native->setReadPreference();
+    }
+
+
+    /**
      * Aggregation Helper
      */
     public function aggregate($pipeline)
