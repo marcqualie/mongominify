@@ -27,7 +27,7 @@ class CollectionTest extends MongoMinifyTest {
     /**
      * Ensure a simple index can be created
      */
-    public function testEnsureSingle()
+    public function testEnsureIndexSingle()
     {
 
         // Create a collection
@@ -45,13 +45,19 @@ class CollectionTest extends MongoMinifyTest {
         $indexes = $collection->getIndexInfo();
         $this->assertCount(1, $indexes);
 
+        // Delete all indexes
+        $collection->ensureIndex(array('user_id' => 1));
+        $this->assertCount(2, $collection->getIndexInfo());
+        $collection->deleteIndexes();
+        $this->assertCount(1, $collection->getIndexInfo());
+
     }
 
 
     /**
      * Assert that indexes with dot creation can be created
      */
-    public function testEnsureEmbedded()
+    public function testEnsureIndexEmbedded()
     {
 
         // Create a collection
@@ -90,6 +96,17 @@ class CollectionTest extends MongoMinifyTest {
         $this->assertEquals($collection->count(array('_id' => array('$gte' => 50)), 5), 5);
         $this->assertEquals($collection->count(array('_id' => array('$gte' => 50)), null, 3), 7);
         $this->assertEquals($collection->count(array('_id' => array('$gte' => 50)), 10, 6), 4);
+    }
+
+
+    /**
+     * Test read preferences
+     */
+    public function testReadPreferences()
+    {
+        $collection = $this->getTestCollection();
+        $collection->setReadPreference(\MongoClient::RP_SECONDARY_PREFERRED);
+        $this->assertEquals($collection->getReadPreference(), array('type' => 'secondaryPreferred'));
     }
 
 }

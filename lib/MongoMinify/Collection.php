@@ -329,7 +329,7 @@ class Collection
     /**
      * Set Read Preference
      */
-    public function setReadPreference($read_preference, array $tags)
+    public function setReadPreference($read_preference, array $tags = array())
     {
         return $this->native->setReadPreference($read_preference, $tags);
     }
@@ -340,7 +340,7 @@ class Collection
      */
     public function getReadPreference()
     {
-        return $this->native->setReadPreference();
+        return $this->native->getReadPreference();
     }
 
 
