@@ -64,4 +64,32 @@ class CollectionTest extends MongoMinifyTest {
 
     }
 
+
+    /**
+     * Test Counting
+     */
+    public function testCount()
+    {
+        $mongo = new MongoClient();
+        $collection = $mongo->selectCollection('mongominify', 'test');
+        $collection = $this->getTestCollection();
+        for ($i = 0; $i < 69; $i++)
+        {
+            $document = array(
+                '_id' => $i,
+                'random' => rand(0, 9999)
+            );
+            $collection->insert($document);
+        }
+        $this->assertEquals($collection->count(), 69);
+        $collection->remove(array(
+            '_id' => array('$gte' => 60)
+        ));
+        $this->assertEquals($collection->count(), 60);
+        $this->assertEquals($collection->count(array('_id' => array('$gte' => 50))), 10);
+        $this->assertEquals($collection->count(array('_id' => array('$gte' => 50)), 5), 5);
+        $this->assertEquals($collection->count(array('_id' => array('$gte' => 50)), null, 3), 7);
+        $this->assertEquals($collection->count(array('_id' => array('$gte' => 50)), 10, 6), 4);
+    }
+
 }

@@ -22,6 +22,15 @@ class Cursor implements \Iterator
 
 
     /**
+     * Get Cursor Info
+     */
+    public function info()
+    {
+        return $this->native->info();
+    }
+
+
+    /**
      * Move around cursor
      */
     public function rewind()

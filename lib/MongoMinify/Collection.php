@@ -144,14 +144,7 @@ class Collection
      */
     public function count(array $query = array(), $limit = null, $skip = null)
     {
-        $cursor = $this->find($query);
-        if ($skip !== null) {
-            $cursor->skip($skip);
-        }
-        if ($limit !== null) {
-            $cursor->limit($limit);
-        }
-        return $cursor->count();
+        return $this->native->count($query, $limit, $skip);
     }
 
 
