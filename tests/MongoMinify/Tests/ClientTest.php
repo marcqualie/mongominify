@@ -1,7 +1,7 @@
 <?php
 
 class ClientTest extends MongoMinifyTest {
-    
+
     /**
      * This will test all miscelaneous methods for code coverage
      */
@@ -10,7 +10,6 @@ class ClientTest extends MongoMinifyTest {
 
         // Connect
         $mongo = new MongoMinify\Client();
-
 
         // List connections
         $mongo->connect();

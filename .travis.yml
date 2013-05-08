@@ -1,13 +1,21 @@
 language: php
+
 php:
   - 5.3
   - 5.4
   - 5.5
+
 matrix:
   allow_failures:
     - php: 5.5
+
 services:
   - mongodb
+
 before_script:
+  - pecl install -f mongo
   - echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - composer install --dev --prefer-source
+
+script:
+  - vendor/bin/phpunit --coverage-text
