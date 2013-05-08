@@ -39,4 +39,32 @@ class SilexTest extends MongoMinifyTest {
 
 	}
 
+
+	/**
+	 * Test Default Settings
+	 */
+	public function testServiceProviderDefaults()
+	{
+		// Initialize Silex
+		$app = new Silex\Application();
+		$app->register(new MongoMinify\Silex\ServiceProvider());
+		$app['mongo']->test->drop();
+	}
+
+
+	/**
+	 * Test Default Settings
+	 */
+	public function testServiceProviderCustomDb()
+	{
+		// Initialize Silex
+		$app = new Silex\Application();
+		$app->register(new MongoMinify\Silex\ServiceProvider(), array(
+			'mongo.options' => array(
+				'db' => 'mongominify'
+			)
+		));
+		$app['mongo']->test->drop();
+	}
+
 }

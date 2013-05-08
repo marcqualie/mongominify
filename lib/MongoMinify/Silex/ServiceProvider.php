@@ -23,6 +23,10 @@ class ServiceProvider implements ServiceProviderInterface
                 if (empty($app['mongo.server'])) {
                     $app['mongo.server'] = 'mongodb://127.0.0.1:27017';
                 }
+                if ( ! isset($app['mongo.options']) || ! is_array($app['mongo.options']))
+                {
+                    $app['mongo.options'] = array();
+                }
 
                 // Connect to Database
                 $client = new Client($app['mongo.server'], $app['mongo.options']);
@@ -53,6 +57,7 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * Service Boot
+     * @codeCoverageIgnore
      */
     public function boot(Application $app)
     {
