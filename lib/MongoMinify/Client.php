@@ -96,7 +96,7 @@ class Client
      */
     public function selectCollection($db_name, $collection_name)
     {
-        $db = new Db($db_name, $this);
+        $db = new Db((String) $db_name, $this);
         $collection = $db->selectCollection($collection_name);
         return $collection;
     }
@@ -134,7 +134,7 @@ class Client
      */
     public function setReadPreference($read_preference, array $tags = array())
     {
-        return $this->native->getReadPreference($read_preference, $tags);
+        return $this->native->setReadPreference($read_preference, $tags);
     }
 
 
