@@ -150,23 +150,28 @@ class FindTest extends MongoMinifyTest {
 		$documents = array(
 			array(
 				'_id' => 1,
-				'role' => 'admin'
+				'role' => 'admin',
+				'gender' => 'male'
 			),
 			array(
 				'_id' => 2,
-				'role' => 'moderator'
+				'role' => 'moderator',
+				'gender' => 'female'
 			),
 			array(
 				'_id' => 3,
-				'role' => 'moderator'
+				'role' => 'moderator',
+				'gender' => 'male'
 			),
 			array(
 				'_id' => 4,
-				'role' => 'none'
+				'role' => 'none',
+				'gender' => 'female'
 			),
 			array(
 				'_id' => 5,
-				'role' => 'moderator'
+				'role' => 'moderator',
+				'gender' => 'male'
 			),
 			array(
 				'_id' => 6,
@@ -176,6 +181,10 @@ class FindTest extends MongoMinifyTest {
 		$collection->batchInsert($documents);
 
 		// Test distinct values
+		$roles = $collection->distinct('gender');
+		$this->assertEquals($roles, array('male', 'female'));
+
+		// Test distinct values (enum)
 		$roles = $collection->distinct('role');
 		$this->assertEquals($roles, array('admin', 'moderator', 'none', 'user'));
 

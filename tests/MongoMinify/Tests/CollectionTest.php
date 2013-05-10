@@ -109,4 +109,63 @@ class CollectionTest extends MongoMinifyTest {
         $this->assertEquals($collection->getReadPreference(), array('type' => 'secondaryPreferred'));
     }
 
+
+    /**
+     * Test setting schema
+     */
+    public function testSetSchemaByName()
+    {
+
+        $collection = $this->getTestCollection();
+        $collection->setSchemaByName();
+        $collection->setSchemaByName('test');
+
+    }
+
+
+    /**
+     * Test exception throwing
+     */
+    public function testSchemaExceptions()
+    {
+        $client = $this->client;
+        $collection = $this->getTestCollection();
+
+        // Make sure php returns config data
+        $client->schema_format = 'php';
+        $client->schema_dir = '/tmp';
+        file_put_contents('/tmp/mongominify.test.php', '<?php /* No Schema */');
+        $dead = false;
+        try {
+            $client->currentDb()->test->setSchemaByName();
+        } catch (Exception $e) {
+            $dead = true;
+        }
+        $this->assertTrue($dead);
+
+        // Make sure php returns config data
+        $client->schema_format = 'json';
+        $client->schema_dir = '/tmp';
+        file_put_contents('/tmp/mongominify.test.json', ':: /* Invalid JSON */');
+        $dead = false;
+        try {
+            $client->currentDb()->test->setSchemaByName();
+        } catch (Exception $e) {
+            $dead = true;
+        }
+        $this->assertTrue($dead);
+
+        // Catch invalid formats
+        $client->schema_format = 'rb';
+        $client->schema_dir = '/tmp';
+        $dead = false;
+        try {
+            $client->currentDb()->test->setSchemaByName();
+        } catch (Exception $e) {
+            $dead = true;
+        }
+        $this->assertTrue($dead);
+
+    }
+
 }

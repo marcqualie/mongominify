@@ -74,7 +74,17 @@ class Db
 
 
     /**
+     * List Collections
+     */
+    public function listCollections()
+    {
+        return $this->native->listCollections();
+    }
+
+
+    /**
      * Command
+     * @codeCoverageIgnore
      */
     public function command(array $command, array $options = array())
     {
@@ -83,6 +93,7 @@ class Db
 
     /**
      * Last Error Helper
+     * @codeCoverageIgnore
      */
     public function lastError()
     {

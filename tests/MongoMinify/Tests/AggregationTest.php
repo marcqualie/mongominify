@@ -2,6 +2,7 @@
 
 class AggregationTest extends MongoMinifyTest {
 
+
     /**
      * Unit Test The Pipeline
      */
@@ -58,8 +59,61 @@ class AggregationTest extends MongoMinifyTest {
         $pipeline_object->compress();
         $this->assertEquals($pipeline_object->compressed, $pipeline_expected);
 
-
     }
 
+
+    /**
+     * Test Collection Helper
+     */
+    public function testCollectionHelper()
+    {
+
+        // Insert Data
+        $documents = array(
+            array(
+                '_id' => 1,
+                'gender' => 'male'
+            ),
+            array(
+                '_id' => 2,
+                'gender' => 'female'
+            ),
+            array(
+                '_id' => 3,
+                'gender' => 'female'
+            )
+        );
+        $collection = $this->getTestCollection();
+        $collection->batchInsert($documents);
+        $pipeline = array(
+            array(
+                '$project' => array(
+                    'gender' => 1
+                )
+            ),
+            array(
+                '$group' => array(
+                    '_id' => '$gender',
+                    'cnt' => array(
+                        '$sum' => 1
+                    )
+                )
+            )
+        );
+
+        // Check that the aggregation helper filters through correctly
+        $response = $collection->aggregate($pipeline);
+        $this->assertEquals($response['result'], array(
+            array(
+                '_id' => 'female',
+                'cnt' => 2
+            ),
+            array(
+                '_id' => 'male',
+                'cnt' => 1
+            )
+        ));
+
+    }
 
 }

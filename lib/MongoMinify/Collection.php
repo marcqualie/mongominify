@@ -162,18 +162,15 @@ class Collection
         }
 
 
-        // PHP Format
+        // Check formats
         if ($this->client->schema_format === 'php') {
             $schema_file = $this->client->schema_dir . '/' . $schema_name . '.php';
             if (file_exists($schema_file)) {
                 $schema = include $schema_file;
-                if (empty($schema)) {
+                if ( ! is_array($schema)) {
                     throw new \Exception('Possible PHP syntax error in ' . $schema_file);
                 }
             }
-            
-
-        // JSON Format
         } elseif ($this->client->schema_format === 'json') {
             $schema_file = $this->client->schema_dir . '/' . $schema_name . '.json';
             if (file_exists($schema_file)) {
@@ -183,15 +180,12 @@ class Collection
                     throw new \Exception('Possible JSON parse error in ' . $schema_file);
                 }
             }
-
-
-        // Invalid Format
         } else {
             throw new \Exception('Unknown schema format: ' . $this->client->schema_format);
         }
 
         // Assign Schema
-        if (!empty($schema)) {
+        if ( ! empty($schema)) {
             $this->setSchema($schema);
         }
 
