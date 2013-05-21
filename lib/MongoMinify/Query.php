@@ -4,7 +4,7 @@ namespace MongoMinify;
 
 class Query
 {
-    
+
     public $state = 'normal';
     public $data = array();
     public $compressed = array();
@@ -34,13 +34,15 @@ class Query
     private function applyCompression($document, $parent = null)
     {
 
-        // If is an array, loop through and apply rules
+        // If is an array, loop through and apply rules (I don't think this is needed, will see if any use cases arise)
+        /*
         if (isset($document[0]) && is_array($document[0])) {
             foreach ($document as $key => $value) {
                 $document[$key] = $this->applyCompression($value, $parent);
             }
             return $document;
         }
+        */
 
         // Normalize doc delimited keys
         foreach ($document as $key => $value) {
@@ -90,48 +92,6 @@ class Query
             $doc[$short] = $value;
         }
         return $doc;
-    }
-
-
-    /**
-     * Data Decompression
-     */
-    public function decompress()
-    {
-        if ($this->state !== 'normal' && $this->collection) {
-            $this->data = $this->applyDecompression($this->data);
-            $this->state = 'normal';
-        }
-    }
-    private function applyDecompression($document, $parent = null)
-    {
-
-        // If is an array, loop through and apply rules
-        if (isset($document[0])) {
-            foreach ($document as $key => $value) {
-                $document[$key] = $this->applyDecompression($value, $parent);
-            }
-            return $document;
-        }
-
-        // Standard document traversal
-        foreach ($document as $key => $value) {
-            $namespace = ($parent ? $parent . '.' : '') . $key;
-            if (isset($this->collection->schema_reverse_index[$namespace])) {
-                if (is_array($value)) {
-                    $value =$this->applyDecompression($value, $key);
-                }
-                $full_namespace = $this->collection->schema_reverse_index[$namespace];
-                $explode = explode('.', $full_namespace);
-                $full_key = end($explode);
-                if (isset($this->collection->schema[$full_namespace]['values'][$value])) {
-                    $value = $this->collection->schema[$full_namespace]['values'][$value];
-                }
-                $document[$full_key] = $value;
-                unset($document[$key]);
-            }
-        }
-        return $document;
     }
 
 

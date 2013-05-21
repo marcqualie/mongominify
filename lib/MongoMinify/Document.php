@@ -4,7 +4,7 @@ namespace MongoMinify;
 
 class Document
 {
-    
+
     public $state = 'normal';
     public $data = array();
     public $compressed = array();
@@ -130,12 +130,14 @@ class Document
     {
 
         // If is an array, loop through and apply rules
+        /*
         if (isset($document[0]) && is_array($document[0])) {
             foreach ($document as $key => $value) {
                 $document[$key] = $this->applyCompression($value, $parent);
             }
             return $document;
         }
+        */
 
         // Normalize doc delimited keys
         foreach ($document as $key => $value) {
