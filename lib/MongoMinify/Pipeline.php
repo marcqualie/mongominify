@@ -4,7 +4,7 @@ namespace MongoMinify;
 
 class Pipeline
 {
-    
+
     private $collection;
     private $original = array();
     public $compressed = array();
@@ -79,13 +79,9 @@ class Pipeline
                         if (is_array($group_value)) {
                             foreach ($group_value as $key => $value) {
                                 if (strpos($value, '$') === 0) {
-                                    $value = array_search(substr($value, 1), $this->collection->schema_reverse_index);
-                                    if ($value !== false) {
-                                        if (isset($this->mappings[$value])) {
-                                            $data[$group_key][$key] = '$' . $this->mappings[$value];
-                                        } else {
-                                            $data[$group_key][$key] = '$' . $value;
-                                        }
+                                    $short_value = array_search(substr($value, 1), $this->collection->schema_reverse_index);
+                                    if ($short_value !== false) {
+                                        $data[$group_key][$key] = '$' . $short_value;
                                     }
                                 }
                             }
@@ -114,7 +110,7 @@ class Pipeline
                 } else {
                     $pipeline[$index][$pipeline_key] = $data;
                 }
-                
+
             }
         }
 

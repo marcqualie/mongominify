@@ -63,6 +63,81 @@ class AggregationTest extends MongoMinifyTest {
 
 
     /**
+     * Unit Test The Pipeline With Projections
+     */
+    public function testPipelineProjectionBuilder()
+    {
+
+        $collection = $this->getTestCollection();
+
+        $pipeline_input = array(
+            array(
+                '$project' => array(
+                    'contact.email' => 1,
+                    'gender' => 1,
+                    'notifications.messages' => 1,
+                    'tags' => 1
+                )
+            ),
+            array(
+                '$match' => array(
+                    'contact.email' => array(
+                        '$ne' => null
+                    )
+                )
+            ),
+            array(
+                '$unwind' => '$tags'
+            ),
+            array(
+                '$group' => array(
+                    '_id' => '$gender',
+                    'cnt' => array(
+                        '$sum' => '$notifications.messages'
+                    )
+                )
+            )
+        );
+        $pipeline_expected = array(
+            array(
+                '$project' => array(
+                    'c.e' => 1,
+                    'g' => 1,
+                    'n.m' => 1,
+                    't' => 1
+                )
+            ),
+            array(
+                '$match' => array(
+                    'c' => array(
+                        'e' => array(
+                            '$ne' => null
+                        )
+                    )
+                )
+            ),
+            array(
+                '$unwind' => '$t'
+            ),
+            array(
+                '$group' => array(
+                    '_id' => '$g',
+                    'cnt' => array(
+                        '$sum' => '$n.m'
+                    )
+                )
+            )
+        );
+
+        // Compress Pipeline Object
+        $pipeline_object = new MongoMinify\Pipeline($pipeline_input, $collection);
+        $pipeline_object->compress();
+        $this->assertEquals($pipeline_object->compressed, $pipeline_expected);
+
+    }
+
+
+    /**
      * Test Collection Helper
      */
     public function testCollectionHelper()

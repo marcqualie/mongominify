@@ -1,10 +1,10 @@
 <?php
 
 class CursorTest extends MongoMinifyTest {
-	
+
 
 	/**
-	 * Find data based on flat document structure
+	 * Make sure cursors are limited
 	 */
 	public function testLimit()
 	{
@@ -14,7 +14,7 @@ class CursorTest extends MongoMinifyTest {
 
 		// Fake Document
 		$documents = array();
-		for ($i = 0; $i < 100; $i++)
+		for ($i = 0; $i < 10; $i++)
 		{
 			$documents[] = array(
 				'user_id' => $i,
@@ -24,11 +24,69 @@ class CursorTest extends MongoMinifyTest {
 		$collection->batchInsert($documents);
 
 		// Make sure document has the correct format after saving
-		$found = $collection->find(array('user_id' => array('$gt' => 5)))->limit(1);
-		foreach ($found as $document)
+		$cursor = $collection->find(array('user_id' => array('$gt' => 5)))->limit(1);
+		foreach ($cursor as $document)
 		{
+			$this->assertEquals($cursor->key(), (String) $document['_id']);
 			$this->assertEquals($document['user_id'], 6);
 		}
+
+	}
+
+
+	/**
+	 * Check if cursors can be skipped
+	 */
+	public function testSkip()
+	{
+
+		// Create a collection
+		$collection = $this->getTestCollection();
+
+		// Fake Document
+		$documents = array();
+		for ($i = 0; $i < 20; $i++)
+		{
+			$documents[] = array(
+				'user_id' => $i,
+				'email' => 'test' . $i . '@example.com',
+			);
+		}
+		$collection->batchInsert($documents);
+
+		// Make sure document has the correct format after saving
+		$found = $collection->find(array('user_id' => array('$gt' => 5)))->skip(10)->limit(1);
+		foreach ($found as $document)
+		{
+			$this->assertEquals($document['user_id'], 16);
+		}
+
+	}
+
+
+	/**
+	 * Make sure counts are applied even after skipping
+	 */
+	public function testCount()
+	{
+
+		// Create a collection
+		$collection = $this->getTestCollection();
+
+		// Fake Document
+		$documents = array();
+		for ($i = 0; $i < 10; $i++)
+		{
+			$documents[] = array(
+				'user_id' => $i,
+				'email' => 'test' . $i . '@example.com',
+			);
+		}
+		$collection->batchInsert($documents);
+
+		// Make sure document has the correct format after saving
+		$count = $collection->find(array('user_id' => array('$gt' => 5)))->skip(1)->count();
+		$this->assertEquals($count, 4);
 
 	}
 
@@ -164,5 +222,17 @@ class CursorTest extends MongoMinifyTest {
 
 	}
 
+
+	/**
+	 * Test Info
+	 */
+	public function testInfo()
+	{
+		$collection = $this->getTestCollection();
+		$cursor = $collection->find();
+		$info = $cursor->info();
+		$this->assertArrayHasKey('ns', $info);
+		$this->assertEquals($info['ns'], 'mongominify.test');
+	}
 
 }
