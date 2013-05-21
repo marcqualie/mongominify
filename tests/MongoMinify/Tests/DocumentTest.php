@@ -23,6 +23,37 @@ class DocumentTest extends MongoMinifyTest {
 
     }
 
+
+    public function testNumericIndexSubsets()
+    {
+
+        $collection = $this->getTestCollection();
+        $data = array(
+            'user_id' => 1,
+            'tags' => array(
+                array(
+                    'slug' => 'awesome',
+                    'name' => 'Awesome',
+                    'count' => 1
+                )
+            )
+        );
+        $document = new MongoMinify\Document($data, $collection);
+        $document->compress();
+        $this->assertEquals($document->compressed, array(
+            'u' => 1,
+            't' => array(
+                array(
+                    's' => 'awesome',
+                    'n' => 'Awesome',
+                    'c' => 1
+                )
+            )
+        ));
+
+    }
+
+
     public function testFindAndModify()
     {
 
