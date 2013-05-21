@@ -14,7 +14,7 @@ You should check out the [Getting Started](https://github.com/marcqualie/mongomi
 ### Why MongoMinify?
 
 As great as MongoDB is at so many things, it has a downside compared to other data stores that it stores it's keys wih every document.
-These keys quickly add up and sometimes double or evem triple the amount of storage required.
+These keys quickly add up and sometimes double or even triple the amount of storage required.
 Myself and many other developers got around this by adding single letter key names, but this is hard to manage with large projects and documents.
 MongoMinify gets around this problem by transparently converting documents as they are transfered between the client and the database leaving readable code with compressed storage.
 
