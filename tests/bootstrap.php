@@ -4,6 +4,7 @@ include_once __DIR__ . '/../vendor/autoload.php';
 
 class MongoMinifyTest extends \PHPUnit_Framework_TestCase {
 
+	private static $client_instance;
 	public $client;
 
 	public $mongo_server = 'mongodb://127.0.0.1:27017/mongominify';
@@ -14,7 +15,11 @@ class MongoMinifyTest extends \PHPUnit_Framework_TestCase {
 
 		// Connecto to MongoDB
 		try {
-			$this->client = new MongoMinify\Client($this->mongo_server, $this->mongo_options);
+			if ( ! isset(self::$client_instance))
+			{
+				self::$client_instance = new MongoMinify\Client($this->mongo_server, $this->mongo_options);
+			}
+			$this->client = self::$client_instance;
 		}
 		catch (MongoConnectionException $e)
 		{

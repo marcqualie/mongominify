@@ -40,6 +40,7 @@ class CursorTest extends MongoMinifyTest {
 	{
 
 		// Create collection
+		$default_timeout = \MongoCursor::$timeout;
 		$collection = $this->getTestCollection();
 
 		// Create a cursor object
@@ -58,6 +59,7 @@ class CursorTest extends MongoMinifyTest {
 		\MongoCursor::$timeout = 200;
 		$this->assertEquals(\MongoCursor::$timeout, \MongoMinify\Cursor::$timeout);
 		$this->assertEquals(\MongoMinify\Cursor::$timeout, 200);
+		\MongoCursor::$timeout = $default_timeout;
 
 
 	}
