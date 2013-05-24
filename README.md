@@ -11,6 +11,17 @@ Entirely namespaced, PSR-0 compliant and works with both PHP 5.3 and 5.4.
 You should check out the [Getting Started](https://github.com/marcqualie/mongominify/wiki/Getting-Started) page on the Wiki to get up and running
 
 
+### Quick Instalation
+
+Put the following inside your composer.json
+
+    {
+        "require": {
+            "marcqualie/mongominify": "0.0.*"
+        }
+    }
+
+
 ### Why MongoMinify?
 
 As great as MongoDB is at so many things, it has a downside compared to other data stores that it stores it's keys wih every document.
