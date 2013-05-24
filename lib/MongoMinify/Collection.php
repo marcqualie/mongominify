@@ -104,6 +104,12 @@ class Collection
      */
     public function findAndModify(array $query, array $update = array(), array $fields = null, array $options = array())
     {
+        if ($fields)
+        {
+            $fields_object = new Query($fields, $this);
+            $fields_object->compress();
+            $fields = $fields_object->compressed;
+        }
         $document = new Document($query, $this);
         $findAndModify = $document->findAndModify($update, $fields, $options);
         return $findAndModify;
@@ -112,11 +118,15 @@ class Collection
     /**
      * Remove Documents
      */
-    public function remove($criteria, array $options = array())
+    public function remove($criteria = array(), array $options = array())
     {
-        $query = new Query($criteria, $this);
-        $query->compress();
-        return $this->native->remove($query->compressed, $options);
+        if ($criteria)
+        {
+            $query = new Query($criteria, $this);
+            $query->compress();
+            $criteria = $query->compressed;
+        }
+        return $this->native->remove($criteria, $options);
     }
 
 
@@ -132,9 +142,19 @@ class Collection
     }
     public function find(array $query = array(), array $fields = array())
     {
-        $query_object = new Query($query, $this);
-        $query_object->compress();
-        $cursor = new Cursor($this, $query_object->compressed, $fields);
+        if ($query)
+        {
+            $query_object = new Query($query, $this);
+            $query_object->compress();
+            $query = $query_object->compressed;
+        }
+        if ($fields)
+        {
+            $fields_object = new Query($fields, $this);
+            $fields_object->compress();
+            $fields = $fields_object->compressed;
+        }
+        $cursor = new Cursor($this, $query, $fields);
         return $cursor;
     }
 

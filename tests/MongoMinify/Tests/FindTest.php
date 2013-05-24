@@ -1,7 +1,7 @@
 <?php
 
 class FindTest extends MongoMinifyTest {
-	
+
 
 	/**
 	 * Creates a fake document
@@ -31,6 +31,7 @@ class FindTest extends MongoMinifyTest {
 		$collection->insert($document);
 		return $document;
 	}
+
 
 	/**
 	 * Find data based on flat document structure
@@ -87,11 +88,11 @@ class FindTest extends MongoMinifyTest {
 		// Retreive compressed doc
 		$document_native = $collection->native->findOne(array('_id' => $document['_id']));
 		$this->assertEquals($document_native['r'], 1);
-		
+
 		// Standard find to make sure is looked up correctly
 		$document_find = $collection->findOne(array('_id' => $document['_id']));
 		$this->assertEquals($document, $document_find);
-		
+
 
 	}
 
@@ -109,12 +110,13 @@ class FindTest extends MongoMinifyTest {
 		// Retreive compressed doc
 		$document_native = $collection->native->findOne(array('_id' => $document['_id']));
 		$this->assertEquals($document_native['c']['a'], 0);
-		
+
 		// Standard find to make sure is looked up correctly
 		$document_find = $collection->findOne(array('contact.preferred' => 'email'));
 		$this->assertEquals($document, $document_find);
 
 	}
+
 
 	/**
 	 * Make sure $in queries perform correctly
@@ -235,6 +237,23 @@ class FindTest extends MongoMinifyTest {
 			'role' => 'moderator'
 		));
 		$this->assertEquals($roles, array('moderator'));
+
+	}
+
+
+	/**
+	 * Find data based on flat document structure
+	 */
+	public function testFindFields()
+	{
+
+		// Create a collection
+		$collection = $this->getTestCollection();
+		$document = $this->insertTestDocument($collection);
+
+		// Make sure document has the correct format after saving
+		$found = $collection->findOne(array(), array('_id' => 0, 'user_id' => 1, 'role' => 1));
+		$this->assertEquals($found, array('user_id' => 1, 'role' => 'moderator'));
 
 	}
 
