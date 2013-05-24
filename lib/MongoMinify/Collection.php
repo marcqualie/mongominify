@@ -104,12 +104,6 @@ class Collection
      */
     public function findAndModify(array $query, array $update = array(), array $fields = null, array $options = array())
     {
-        if ($fields)
-        {
-            $fields_object = new Query($fields, $this);
-            $fields_object->compress();
-            $fields = $fields_object->compressed;
-        }
         $document = new Document($query, $this);
         $findAndModify = $document->findAndModify($update, $fields, $options);
         return $findAndModify;
@@ -170,7 +164,6 @@ class Collection
 
     /**
      * Apply internal schema
-     * @param [type] $schema [description]
      */
     public function setSchemaByName($schema_name = null)
     {
@@ -239,8 +232,6 @@ class Collection
 
     /**
      * Get short definitions based on full key
-     * @param  [type] $full [description]
-     * @return [type]       [description]
      */
     public function getShort($full)
     {
