@@ -13,7 +13,6 @@ services:
   - mongodb
 
 before_script:
-  - pecl install -f mongo
   - echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - composer install --dev --prefer-source
 
