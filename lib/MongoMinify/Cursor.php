@@ -36,6 +36,7 @@ class Cursor implements \Iterator
     public function rewind()
     {
         $this->native->rewind();
+        return $this;
     }
     public function getNext()
     {
@@ -45,6 +46,7 @@ class Cursor implements \Iterator
     public function next()
     {
         $this->native->next();
+        return $this;
     }
     public function current()
     {
