@@ -115,6 +115,15 @@ class Cursor implements \Iterator
         return $this;
     }
 
+
+    /**
+     * Array helper for inline cursorts
+     */
+    public function as_array()
+    {
+        return iterator_to_array($this);
+    }
+
 }
 
 // Bind native timeouts
