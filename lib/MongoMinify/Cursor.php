@@ -121,7 +121,7 @@ class Cursor implements \Iterator
      */
     public function as_array()
     {
-        return iterator_to_array($this);
+        return iterator_to_array($this, false);
     }
 
 }

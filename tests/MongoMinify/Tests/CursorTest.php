@@ -235,4 +235,30 @@ class CursorTest extends MongoMinifyTest {
 		$this->assertEquals($info['ns'], 'mongominify.test');
 	}
 
+
+	/**
+	 * Inline Helpers
+	 */
+	public function testAsArrayHelper()
+	{
+		$collection = $this->getTestCollection();
+		$documents = array(
+			array(
+				'_id' => 1,
+				'role' => 'admin'
+			),
+			array(
+				'_id' => 3,
+				'role' => 'moderator'
+			)
+		);
+		$collection->batchInsert($documents);
+		$array = $collection->find()->sort(array('_id' => -1))->as_array();
+		$this->assertTrue(is_array($array));
+		$this->assertEquals($array, array(
+			array('_id' => 3, 'role' => 'moderator'),
+			array('_id' => 1, 'role' => 'admin')
+		));
+	}
+
 }
