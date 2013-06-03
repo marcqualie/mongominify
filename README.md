@@ -1,6 +1,8 @@
 ## MongoMinify
 
 [![Build Status](https://travis-ci.org/marcqualie/mongominify.png?branch=master)](https://travis-ci.org/marcqualie/mongominify)
+[![Total Downloads](https://poser.pugx.org/marcqualie/mongominify/d/total.png)](https://packagist.org/packages/marcqualie/mongominify)
+[![Latest Stable Version](https://poser.pugx.org/marcqualie/mongominify/version.png)](https://packagist.org/packages/marcqualie/mongominify)
 
 A drop-in library which acts as a transparent filter to MongoDB documents and compresses/decompresses data on the fly.
 Entirely namespaced, PSR-0 compliant and works with both PHP 5.3 and 5.4.
