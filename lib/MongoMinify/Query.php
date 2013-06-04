@@ -74,9 +74,15 @@ class Query
 
             // $elemMatch
             } elseif ($key === '$elemMatch') {
-
                 $sub_doc = $this->applyCompression($value, $parent);
-                return array('$elemMatch' => $sub_doc);
+                $value = $sub_doc;
+
+            // $and
+            } elseif ($key === '$and' || $key === '$or') {
+                foreach ($value as $sub_index => $sub_value)
+                {
+                    $value[$sub_index] = $this->applyCompression($sub_value, $parent);
+                }
 
             // Loop over arrays recursively
             } elseif (is_array($value)) {
@@ -108,22 +114,36 @@ class Query
     private $dotSyntax = array();
     public function asDotSyntax()
     {
-        $this->applyDotSyntax($this->compressed);
-        $this->compressed = $this->dotSyntax;
-        return $this->dotSyntax;
+        $dotSyntax = $this->applyDotSyntax($this->compressed);
+        $this->compressed = $dotSyntax;
+        return $dotSyntax;
     }
     private function applyDotSyntax($data, $ns = '')
     {
+        $out = array();
         if (is_array($data)) {
             foreach ($data as $key => $value) {
                 if (strpos($key, '$') === 0) {
-                    $this->dotSyntax[$ns][$key] = $value;
+                    $out[$key] = $this->applyDotSyntax($value);
+                } elseif (is_array($value)) {
+                    $sub_data = $this->applyDotSyntax($value, ($ns ? $ns . '.' : '') . $key);
+                    foreach ($sub_data as $sub_key => $sub_value) {
+                        if (is_numeric($key)) {
+                            $out[$key][$sub_key] = $sub_value;
+                        } elseif (strpos($sub_key, '$') === 0) {
+                            $out[$key][$sub_key] = $sub_value;
+                        } else {
+                            $out[$key . '.' . $sub_key] = $sub_value;
+                        }
+                    }
                 } else {
-                    $this->applyDotSyntax($value, ($ns ? $ns . '.' : '') . $key);
+                    $out[$key] = $value;
                 }
             }
-            return;
+            return $out;
+        } else {
+            return $data;
         }
-        $this->dotSyntax[$ns] = $data;
+        return $out;
     }
 }
