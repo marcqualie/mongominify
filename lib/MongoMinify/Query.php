@@ -72,6 +72,12 @@ class Query
                     }
                 }
 
+            // $elemMatch
+            } elseif ($key === '$elemMatch') {
+
+                $sub_doc = $this->applyCompression($value, $parent);
+                return array('$elemMatch' => $sub_doc);
+
             // Loop over arrays recursively
             } elseif (is_array($value)) {
                 $value = $this->applyCompression($value, $namespace);
