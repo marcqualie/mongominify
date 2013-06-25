@@ -153,8 +153,8 @@ class QueryTest extends MongoMinifyTest {
             array(
                 '_id' => 1
             )
-        );
-        $this->assertEquals($find->as_array(), array(array('_id' => 1), array('_id' => 3)));
+        )->as_array();
+        $this->assertEquals($find, array(array('_id' => 1), array('_id' => 3)));
 
         // Test operator matching
         $find = $collection->find(
@@ -170,9 +170,101 @@ class QueryTest extends MongoMinifyTest {
             array(
                 '_id' => 1
             )
-        );
-        $this->assertEquals($find->as_array(), array(array('_id' => 1), array('_id' => 3), array('_id' => 4)));
+        )->as_array();
+        $this->assertEquals($find, array(array('_id' => 1), array('_id' => 3), array('_id' => 4)));
 
+    }
+
+
+    public function testAndOr()
+    {
+        $collection = $this->getTestCollection();
+        $data = array(
+            array(
+                '_id' => 1,
+                'email' => 'user1@example.com',
+                'gender' => 'female'
+            ),
+            array(
+                '_id' => 2,
+                'email' => 'user2@example.com',
+                'gender' => 'female'
+            ),
+            array(
+                '_id' => 3,
+                'email' => 'user3@example.com',
+                'gender' => 'male'
+            )
+        );
+        $collection->batchInsert($data);
+
+        // Test $and
+        $find = $collection->find(
+            array(
+                '$and' => array(
+                    array(
+                        'gender' => 'female',
+                    ),
+                    array(
+                        'email' => 'user2@example.com'
+                    )
+                )
+            ),
+            array(
+                '_id' => 1
+            )
+        )->as_array();
+        $this->assertEquals($find, array(array('_id' => 2)));
+        $find = $collection->find(
+            array(
+                '$and' => array(
+                    array(
+                        'gender' => 'male',
+                    ),
+                    array(
+                        'email' => 'user2@example.com'
+                    )
+                )
+            ),
+            array(
+                '_id' => 1
+            )
+        )->as_array();
+        $this->assertEquals($find, array());
+
+        // Test $or
+        $find = $collection->find(
+            array(
+                '$or' => array(
+                    array(
+                        'email' => 'user1@example.com'
+                    ),
+                    array(
+                        'email' => 'user2@example.com'
+                    )
+                )
+            ),
+            array(
+                '_id' => 1
+            )
+        )->as_array();
+        $this->assertEquals($find, array(array('_id' => 1), array('_id' => 2)));
+        $find = $collection->find(
+            array(
+                '$or' => array(
+                    array(
+                        'email' => 'user4@example.com',
+                    ),
+                    array(
+                        'email' => 'user5@example.com'
+                    )
+                )
+            ),
+            array(
+                '_id' => 1
+            )
+        )->as_array();
+        $this->assertEquals($find, array());
 
     }
 
