@@ -72,4 +72,108 @@ class QueryTest extends MongoMinifyTest {
 
     }
 
+
+    public function testElemMatch()
+    {
+
+        $collection = $this->getTestCollection();
+        $data = array(
+            array(
+                '_id' => 1,
+                'gender' => 'female',
+                'tags' => array(
+                    array(
+                        'slug' => 'test',
+                        'name' => 'Test',
+                        'count' => 2
+                    ),
+                    array(
+                        'slug' => 'test-2',
+                        'name' => 'Test 2',
+                        'count' => 6
+                    )
+                )
+            ),
+            array(
+                '_id' => 2,
+                'gender' => 'male',
+                'tags' => array(
+                    array(
+                        'slug' => 'test-3',
+                        'name' => 'Test',
+                        'count' => 4
+                    )
+                )
+            ),
+            array(
+                '_id' => 3,
+                'gender' => 'female',
+                'tags' => array(
+                    array(
+                        'slug' => 'test-4',
+                        'name' => 'Test 4',
+                        'count' => 7
+                    ),
+                    array(
+                        'slug' => 'test',
+                        'name' => 'Test',
+                        'count' => 1
+                    )
+                )
+            ),
+            array(
+                '_id' => 4,
+                'gender' => 'male',
+                'tags' => array(
+                    array(
+                        'slug' => 'test-4',
+                        'name' => 'Test 4',
+                        'count' => 6
+                    ),
+                    array(
+                        'slug' => 'test',
+                        'name' => 'Test',
+                        'count' => 5
+                    )
+                )
+            )
+        );
+        $collection->batchInsert($data);
+
+        // Test normal matching
+        $find = $collection->find(
+            array(
+                'gender' => 'female',
+                'tags' => array(
+                    '$elemMatch' => array(
+                        'slug' => 'test'
+                    )
+                )
+            ),
+            array(
+                '_id' => 1
+            )
+        );
+        $this->assertEquals($find->as_array(), array(array('_id' => 1), array('_id' => 3)));
+
+        // Test operator matching
+        $find = $collection->find(
+            array(
+                'tags' => array(
+                    '$elemMatch' => array(
+                        'count' => array(
+                            '$gte' => 5
+                        )
+                    )
+                )
+            ),
+            array(
+                '_id' => 1
+            )
+        );
+        $this->assertEquals($find->as_array(), array(array('_id' => 1), array('_id' => 3), array('_id' => 4)));
+
+
+    }
+
 }
