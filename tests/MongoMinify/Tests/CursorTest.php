@@ -253,7 +253,7 @@ class CursorTest extends MongoMinifyTest {
 			)
 		);
 		$collection->batchInsert($documents);
-		$array = $collection->find()->sort(array('_id' => -1))->as_array();
+		$array = $collection->find()->sort(array('_id' => -1))->asArray();
 		$this->assertTrue(is_array($array));
 		$this->assertEquals($array, array(
 			array('_id' => 3, 'role' => 'moderator'),

@@ -153,7 +153,7 @@ class QueryTest extends MongoMinifyTest {
             array(
                 '_id' => 1
             )
-        )->as_array();
+        )->asArray();
         $this->assertEquals($find, array(array('_id' => 1), array('_id' => 3)));
 
         // Test operator matching
@@ -170,7 +170,7 @@ class QueryTest extends MongoMinifyTest {
             array(
                 '_id' => 1
             )
-        )->as_array();
+        )->asArray();
         $this->assertEquals($find, array(array('_id' => 1), array('_id' => 3), array('_id' => 4)));
 
     }
@@ -213,7 +213,7 @@ class QueryTest extends MongoMinifyTest {
             array(
                 '_id' => 1
             )
-        )->as_array();
+        )->asArray();
         $this->assertEquals($find, array(array('_id' => 2)));
         $find = $collection->find(
             array(
@@ -229,7 +229,7 @@ class QueryTest extends MongoMinifyTest {
             array(
                 '_id' => 1
             )
-        )->as_array();
+        )->asArray();
         $this->assertEquals($find, array());
 
         // Test $or
@@ -247,7 +247,7 @@ class QueryTest extends MongoMinifyTest {
             array(
                 '_id' => 1
             )
-        )->as_array();
+        )->asArray();
         $this->assertEquals($find, array(array('_id' => 1), array('_id' => 2)));
         $find = $collection->find(
             array(
@@ -263,7 +263,7 @@ class QueryTest extends MongoMinifyTest {
             array(
                 '_id' => 1
             )
-        )->as_array();
+        )->asArray();
         $this->assertEquals($find, array());
 
     }

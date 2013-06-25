@@ -117,16 +117,11 @@ class Cursor implements \Iterator
 
 
     /**
-     * Array helper for inline cursorts
+     * Array helper for inline cursors
      */
-    public function as_array()
+    public function asArray()
     {
         return iterator_to_array($this, false);
     }
 
 }
-
-// Bind native timeouts
-// TODO: Temporary fix, need a better place to put this code
-Cursor::$timeout = \MongoCursor::$timeout;
-\MongoCursor::$timeout =& Cursor::$timeout;

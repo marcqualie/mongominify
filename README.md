@@ -4,8 +4,8 @@
 [![Total Downloads](https://poser.pugx.org/marcqualie/mongominify/d/total.png)](https://packagist.org/packages/marcqualie/mongominify)
 [![Latest Stable Version](https://poser.pugx.org/marcqualie/mongominify/version.png)](https://packagist.org/packages/marcqualie/mongominify)
 
-A drop-in library which acts as a transparent filter to MongoDB documents and compresses/decompresses data on the fly.
-Entirely namespaced, PSR-0 compliant and works with both PHP 5.3 and 5.4.
+MongoMinify is a drop-in library which acts as a transparent filter to MongoDB documents and compresses/decompresses data on the fly.
+PSR-1 compliant and works with PHP 5.3+.
 
 
 ### Getting started
@@ -15,11 +15,11 @@ You should check out the [Getting Started](https://github.com/marcqualie/mongomi
 
 ### Quick Instalation
 
-Put the following inside your composer.json
+The best way to install this library is via composer.
 
     {
         "require": {
-            "marcqualie/mongominify": "0.0.*"
+            "marcqualie/mongominify": "~1.0"
         }
     }
 
@@ -32,6 +32,12 @@ Myself and many other developers got around this by adding single letter key nam
 MongoMinify gets around this problem by transparently converting documents as they are transfered between the client and the database leaving readable code with compressed storage.
 
 
+## Requirements
+
+- PHP 5.3+
+- MongoDB PHP Driver 1.3+
+
+
 ## Feedback / Contributing
 
-Any feedback, pull requests or documentation would be greatly apreciated.
+Feedback and pull requests on Github are always welcome.

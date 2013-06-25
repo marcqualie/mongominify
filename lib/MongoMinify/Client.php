@@ -19,6 +19,10 @@ class Client
     public function __construct($server = 'mongodb://localhost:27017', array $options = array())
     {
 
+        // Link timeouts
+        Cursor::$timeout = \MongoCursor::$timeout;
+        \MongoCursor::$timeout =& Cursor::$timeout;
+
         // Parse MongoDB Path Info
         if (! empty($options['db'])) {
             $db_name = $options['db'];
@@ -39,7 +43,7 @@ class Client
         if ($db_name) {
             $this->selectDb($db_name);
         }
-        
+
     }
 
 
