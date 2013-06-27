@@ -191,4 +191,57 @@ class AggregationTest extends MongoMinifyTest {
 
     }
 
+
+    /**
+     * Test for array sets
+     */
+    public function testGroupArraySet()
+    {
+
+        // Insert Data
+        $documents = array(
+            array(
+                '_id' => 1,
+                'gender' => 'male'
+            ),
+            array(
+                '_id' => 2,
+                'gender' => 'female'
+            ),
+            array(
+                '_id' => 3,
+                'gender' => 'female'
+            ),
+            array(
+                '_id' => 4,
+                'gender' => 'male'
+            )
+        );
+        $collection = $this->getTestCollection();
+        $collection->batchInsert($documents);
+
+        $pipeline = array(
+            array(
+                '$group' => array(
+                    '_id' => '$gender',
+                    'user_ids' => array(
+                        '$addToSet' => '$_id'
+                    )
+                )
+            )
+        );
+        $response = $collection->aggregate($pipeline);
+        $this->assertEquals($response['result'], array(
+            array(
+                '_id' => 'female',
+                'user_ids' => array(3, 2)
+            ),
+            array(
+                '_id' => 'male',
+                'user_ids' => array(4, 1)
+            )
+        ));
+
+    }
+
 }
