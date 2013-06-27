@@ -78,10 +78,22 @@ class Pipeline
                         // Arrays
                         if (is_array($group_value)) {
                             foreach ($group_value as $key => $value) {
-                                if (strpos($value, '$') === 0) {
-                                    $short_value = array_search(substr($value, 1), $this->collection->schema_reverse_index);
-                                    if ($short_value !== false) {
-                                        $data[$group_key][$key] = '$' . $short_value;
+                                if (is_array($value)) {
+                                    foreach ($value as $key2 => $value2) {
+                                        if (strpos($value2, '$') === 0) {
+                                            $short_value = array_search(substr($value2, 1), $this->collection->schema_reverse_index);
+                                            if ($short_value !== false) {
+                                                $value[$key2] = '$' . $short_value;
+                                            }
+                                        }
+                                    }
+                                    $data[$group_key][$key] = $value;
+                                } else {
+                                    if (strpos($value, '$') === 0) {
+                                        $short_value = array_search(substr($value, 1), $this->collection->schema_reverse_index);
+                                        if ($short_value !== false) {
+                                            $data[$group_key][$key] = '$' . $short_value;
+                                        }
                                     }
                                 }
                             }
