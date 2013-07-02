@@ -8,9 +8,7 @@ class Pipeline
     private $collection;
     private $original = array();
     public $compressed = array();
-
     public $mappings = array();
-
 
     public function __construct($original, $collection)
     {
@@ -19,6 +17,23 @@ class Pipeline
         $this->compressed = $original;
     }
 
+    public function expand($value)
+    {
+        if (is_array($value)) {
+            foreach ($value as $key2 => $value2) {
+                $value[$key2] = $this->expand($value2);
+            }  
+        } else {
+            if (strpos($value, '$') === 0) {
+                $short_value = array_search(substr($value, 1), $this->collection->schema_reverse_index);
+                if ($short_value !== false) {
+                    return '$' . $short_value;
+                }
+            }
+        }
+
+        return $value;
+    }
 
     public function compress()
     {
@@ -74,39 +89,7 @@ class Pipeline
                 // Grouping
                 } elseif ($pipeline_key === '$group') {
                     foreach ($data as $group_key => $group_value) {
-
-                        // Arrays
-                        if (is_array($group_value)) {
-                            foreach ($group_value as $key => $value) {
-                                if (is_array($value)) {
-                                    foreach ($value as $key2 => $value2) {
-                                        if (strpos($value2, '$') === 0) {
-                                            $short_value = array_search(substr($value2, 1), $this->collection->schema_reverse_index);
-                                            if ($short_value !== false) {
-                                                $value[$key2] = '$' . $short_value;
-                                            }
-                                        }
-                                    }
-                                    $data[$group_key][$key] = $value;
-                                } else {
-                                    if (strpos($value, '$') === 0) {
-                                        $short_value = array_search(substr($value, 1), $this->collection->schema_reverse_index);
-                                        if ($short_value !== false) {
-                                            $data[$group_key][$key] = '$' . $short_value;
-                                        }
-                                    }
-                                }
-                            }
-
-                        // Strings
-                        } elseif (strpos($group_value, '$') === 0) {
-                            $key = substr($group_value, 1);
-                            if (isset($this->mappings[$key]))
-                            {
-                                $data[$group_key] = '$' . $this->mappings[$key];
-                            }
-                        }
-
+                        $data[$group_key] = $this->expand($group_value);
                     }
                 }
 
@@ -122,7 +105,6 @@ class Pipeline
                 } else {
                     $pipeline[$index][$pipeline_key] = $data;
                 }
-
             }
         }
 
