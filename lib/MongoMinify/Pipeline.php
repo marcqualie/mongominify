@@ -50,26 +50,15 @@ class Pipeline
                             $data[$short_key] = 1;
                         }
                     }
-
-
+                    
                 // Match
                 } elseif ($pipeline_key === '$match') {
                     $document = new Document($data, $this->collection);
                     $document->compress();
                     $data = $document->compressed;
 
-
-                // Unwind
-                } elseif ($pipeline_key === '$unwind') {
-                    $key = substr($data, 1);
-                    if (isset($this->mappings[$key]))
-                    {
-                        $data = '$' . $this->mappings[$key];
-                    }
-
-
                 // Grouping
-                } elseif ($pipeline_key === '$group') {
+                } else {
 
                     $schema_keys = array();
                     foreach ($this->collection->schema_reverse_index as $schema_key => $schema_value)
