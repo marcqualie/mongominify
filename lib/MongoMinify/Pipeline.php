@@ -17,24 +17,6 @@ class Pipeline
         $this->compressed = $original;
     }
 
-    public function expand($value)
-    {
-        if (is_array($value)) {
-            foreach ($value as $key2 => $value2) {
-                $value[$key2] = $this->expand($value2);
-            }  
-        } else {
-            if (strpos($value, '$') === 0) {
-                $short_value = array_search(substr($value, 1), $this->collection->schema_reverse_index);
-                if ($short_value !== false) {
-                    return '$' . $short_value;
-                }
-            }
-        }
-
-        return $value;
-    }
-
     public function compress()
     {
 
@@ -88,9 +70,17 @@ class Pipeline
 
                 // Grouping
                 } elseif ($pipeline_key === '$group') {
-                    foreach ($data as $group_key => $group_value) {
-                        $data[$group_key] = $this->expand($group_value);
+
+                    $schema_keys = array();
+                    foreach ($this->collection->schema_reverse_index as $schema_key => $schema_value)
+                    {
+                        $schema_keys['$' . $schema_key] = '$' . $schema_value;
                     }
+
+                    $json_data = json_encode($data);
+                    $json_data = str_replace(array_values($schema_keys), array_keys($schema_keys), $json_data);
+
+                    $data = json_decode($json_data, true);
                 }
 
 
