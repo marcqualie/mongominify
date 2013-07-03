@@ -23,34 +23,91 @@ class CollectionTest extends MongoMinifyTest {
          $this->assertEquals((String) $collection, 'mongominify.dot.syntax.name');
     }
 
-
     /**
-     * Ensure a simple index can be created
+     * Ensure an index can be created with an string
      */
-    public function testEnsureIndexSingle()
+    public function testEnsureIndexString()
     {
-
         // Create a collection
         $collection = $this->getTestCollection();
-        $collection->ensureIndex(array('user_id' => 1));
 
-        // Assert that index is created
+        // Assert that index can be created with string
+        $collection->ensureIndex('user_id');
         $indexes = $collection->getIndexInfo();
         $this->assertCount(2, $indexes);
         $this->assertArrayHasKey(1, $indexes);
         $this->assertEquals($indexes[1]['name'], 'u_1');
+        $collection->deleteIndex('user_id');
+    }
 
-        // Assert that is can be deleted again
+    /**
+     * Ensure an index can be created with an array
+     */
+    public function testEnsureIndexArray()
+    {
+        // Create a collection
+        $collection = $this->getTestCollection();
+
+        // Assert that index can be created with array
+        $collection->ensureIndex(array('user_id' => 1));
+        $indexes = $collection->getIndexInfo();
+        $this->assertCount(2, $indexes);
+        $this->assertArrayHasKey(1, $indexes);
+        $this->assertEquals($indexes[1]['name'], 'u_1');
+        $collection->deleteIndex('user_id');
+    }
+
+    /**
+     * Ensure an index can be deleted with a string
+     */
+    public function testDeleteIndexString()
+    {
+        // Create a collection
+        $collection = $this->getTestCollection();
+
+        // Assert that index can be deleted with string
+        $collection->ensureIndex('user_id');
+        $indexes = $collection->getIndexInfo();
+        $this->assertCount(2, $indexes);
+        $this->assertArrayHasKey(1, $indexes);
+        $this->assertEquals($indexes[1]['name'], 'u_1');
+        $collection->deleteIndex('user_id');
+        $indexes = $collection->getIndexInfo();
+        $this->assertCount(1, $indexes);
+    }
+
+    /**
+     * Ensure an index can be deleted with an array
+     */
+    public function testDeleteIndexArray()
+    {
+        // Create a collection
+        $collection = $this->getTestCollection();
+
+        // Assert that index can be deleted with array
+        $collection->ensureIndex('user_id');
+        $indexes = $collection->getIndexInfo();
+        $this->assertCount(2, $indexes);
+        $this->assertArrayHasKey(1, $indexes);
+        $this->assertEquals($indexes[1]['name'], 'u_1');
         $collection->deleteIndex(array('user_id' => 1));
         $indexes = $collection->getIndexInfo();
         $this->assertCount(1, $indexes);
+    }
 
-        // Delete all indexes
+    /**
+     * Ensure all indexes can be deleted
+     */
+    public function testDeleteAllIndexes()
+    {
+        // Create a collection
+        $collection = $this->getTestCollection();
+
+        // Assert that all indexes can be deleted
         $collection->ensureIndex(array('user_id' => 1));
         $this->assertCount(2, $collection->getIndexInfo());
         $collection->deleteIndexes();
         $this->assertCount(1, $collection->getIndexInfo());
-
     }
 
 
