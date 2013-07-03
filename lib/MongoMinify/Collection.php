@@ -292,8 +292,13 @@ class Collection
     /**
      * Ensure Index
      */
-    public function ensureIndex(array $keys, array $options = array())
+    public function ensureIndex($keys, array $options = array())
     {
+        if (is_string($keys))
+        {
+            $keys = array($keys => 1);
+        }
+
         $query = new Query($keys, $this);
         $query->compress();
         $query->asDotSyntax();
@@ -304,8 +309,13 @@ class Collection
     /**
      * Delete Index
      */
-    public function deleteIndex(array $keys)
+    public function deleteIndex($keys)
     {
+        if (is_string($keys))
+        {
+            $keys = array($keys => 1);
+        }
+
         $query = new Query($keys, $this);
         $query->compress();
         $query->asDotSyntax();
