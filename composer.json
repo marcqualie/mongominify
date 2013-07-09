@@ -1,25 +1,33 @@
 {
-	"name": "marcqualie/mongominify",
-	"description": "A drop-in library which acts as a transparent filter to MongoDB documents and compresses/decompresses data on the fly",
-	"license": "MIT",
-	"keywords": [
-		"mongodb",
-		"database",
-		"compression",
-		"library"
-	],
-	"require": {
-		"php": ">=5.3.3",
-		"ext-mongo": ">=1.3.0"
-	},
-	"require-dev": {
-		"phpunit/phpunit": "3.7.*",
-		"phpunit/php-code-coverage": "1.2.*",
-		"silex/silex": "1.0.*"
-	},
-	"autoload": {
-		"psr-0": {
-			"MongoMinify": "lib/"
-		}
-	}
+    "name": "marcqualie/mongominify",
+    "description": "A drop-in library which acts as a transparent filter to MongoDB documents and compresses/decompresses data on the fly",
+    "license": "MIT",
+    "keywords": [
+        "mongodb",
+        "database",
+        "compression",
+        "library"
+    ],
+    "authors": [
+        {
+            "name": "Marc Qualie",
+            "email": "marc@marcqualie.com",
+            "homepage": "http://marcqualie.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "ext-mongo": ">=1.3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~3.7",
+        "phpunit/php-code-coverage": "~1.2",
+        "silex/silex": "~1.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "MongoMinify": "lib"
+        }
+    }
 }

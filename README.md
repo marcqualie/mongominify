@@ -38,6 +38,11 @@ MongoMinify gets around this problem by transparently converting documents as th
 - MongoDB PHP Driver 1.3+
 
 
+## Aggregation
+
+The aggregation framework is very complex with a lot of use cases. I've tried to tackle it as best I can and it works for every use case I've come across. If you find a bug with minification while using the aggregtation framework, please create report it using [Github Issues](http://github.com/marcqualie/mongominify/issues).
+
+
 ## Feedback / Contributing
 
-Feedback and pull requests on Github are always welcome.
+Feedback and pull requests on Github are always welcome and encouraged.
