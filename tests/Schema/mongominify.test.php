@@ -72,6 +72,10 @@ return array(
 				)
 			)
 		)
+	),
+
+	'meta' => array(
+		'short' => 'm'
 	)
 
 );

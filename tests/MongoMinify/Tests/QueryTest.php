@@ -268,4 +268,28 @@ class QueryTest extends MongoMinifyTest {
 
     }
 
+
+    public function testNumericKeys()
+    {
+
+        $collection = $this->getTestCollection();
+        $data = array(
+            'user_id' => 1,
+            'meta' => array(
+                'following' => array(
+                    '1234' => array(
+                        'mutal' => true
+                    )
+                )
+            )
+        );
+        $query = new MongoMinify\Query($data, $collection);
+        $query->compress();
+        $this->assertEquals($query->compressed, array(
+            'u' => 1,
+            'm.following.1234.mutal' => true
+        ));
+
+    }
+
 }
