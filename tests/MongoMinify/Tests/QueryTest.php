@@ -292,4 +292,26 @@ class QueryTest extends MongoMinifyTest {
 
     }
 
+
+    public function testSequentialrrays()
+    {
+
+        $collection = $this->getTestCollection();
+        $data = array(
+            '$or' => array(
+                array( 'meta.links.url' => 'http://marcqualie.com' ),
+                array( 'meta.links.url' => 'http://github.com/marcqualie' )
+            )
+        );
+        $query = new MongoMinify\Query($data, $collection);
+        $query->compress();
+        $this->assertEquals($query->compressed, array(
+            '$or' => array(
+                array( 'm.links.url' => 'http://marcqualie.com' ),
+                array( 'm.links.url' => 'http://github.com/marcqualie' )
+            )
+        ));
+
+    }
+
 }
