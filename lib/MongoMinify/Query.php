@@ -9,6 +9,7 @@ class Query
     public $data = array();
     public $compressed = array();
     protected $collection = array();
+    protected $nonNumericIdentifier = '[:]';
 
     public function __construct(array $data = array(), $collection = null)
     {
@@ -101,6 +102,9 @@ class Query
             $short = isset($this->collection->schema_index[$namespace])
                 ? $this->collection->schema_index[$namespace]
                 : $key;
+            if (is_int($short) && ! $this->isSequentialArray($document)) {
+                $short = $this->nonNumericIdentifier . $short;
+            }
             $doc[$short] = $value;
         }
         return $doc;
@@ -128,7 +132,10 @@ class Query
                 } elseif (is_array($value)) {
                     $sub_data = $this->applyDotSyntax($value, ($ns ? $ns . '.' : '') . $key);
                     foreach ($sub_data as $sub_key => $sub_value) {
-                        if (is_numeric($key)) {
+                        if (strpos($key, $this->nonNumericIdentifier) === 0) {
+                            $key = substr($key, strlen($this->nonNumericIdentifier));
+                            $out[$key . '.' . $sub_key] = $sub_value;
+                        } elseif (is_numeric($key)) {
                             $out[$key][$sub_key] = $sub_value;
                         } elseif (strpos($sub_key, '$') === 0) {
                             $out[$key][$sub_key] = $sub_value;
@@ -146,4 +153,20 @@ class Query
         }
         return $out;
     }
+
+
+    /**
+     * Check if this array is sequential
+     */
+    public function isSequentialArray($array)
+    {
+        $counter = 0;
+        foreach ($array as $key => $value) {
+            if ($counter !== $key) return false;
+            $counter++;
+        }
+        return true;
+    }
+
+
 }
