@@ -298,18 +298,32 @@ class QueryTest extends MongoMinifyTest {
 
         $collection = $this->getTestCollection();
         $data = array(
-            '$or' => array(
-                array( 'meta.links.url' => 'http://marcqualie.com' ),
-                array( 'meta.links.url' => 'http://github.com/marcqualie' )
+            'meta.links.0' => array(
+                'url' => 'http://marcqualie.com'
             )
         );
         $query = new MongoMinify\Query($data, $collection);
         $query->compress();
         $this->assertEquals($query->compressed, array(
-            '$or' => array(
-                array( 'm.links.url' => 'http://marcqualie.com' ),
-                array( 'm.links.url' => 'http://github.com/marcqualie' )
+             'm.links.0' => array(
+                'url' => 'http://marcqualie.com'
             )
+        ));
+    }
+
+    public function testNumericKeyDotSyntaxifying()
+    {
+
+        $collection = $this->getTestCollection();
+        $data = array(
+            'meta.links.1' => array(
+                'url' => 'http://marcqualie.com'
+            )
+        );
+        $query = new MongoMinify\Query($data, $collection);
+        $query->compress();
+        $this->assertEquals($query->compressed, array(
+             'm.links.1.url' => 'http://marcqualie.com'
         ));
 
     }
