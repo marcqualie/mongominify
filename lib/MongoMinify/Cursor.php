@@ -22,6 +22,15 @@ class Cursor implements \Iterator
 
 
     /**
+     * Await data
+     */
+    public function awaitData($wait = true)
+    {
+        $this->natuve->awaitData($wait);
+    }
+
+
+    /**
      * Get Cursor Info
      */
     public function info()
