@@ -31,6 +31,15 @@ class Cursor implements \Iterator
 
 
     /**
+     * Batch size
+     */
+    public function batchSize($batchSize)
+    {
+        $this->native->batchSize($batchSize);
+    }
+
+
+    /**
      * Get Cursor Info
      */
     public function info()
