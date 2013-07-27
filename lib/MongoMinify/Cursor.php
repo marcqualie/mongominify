@@ -64,9 +64,9 @@ class Cursor implements \Iterator
     /**
      * Counting results
      */
-    public function count()
+    public function count($foundOnly = false)
     {
-        return $this->native->count();
+        return $this->native->count($foundOnly);
     }
 
 
