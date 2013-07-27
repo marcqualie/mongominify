@@ -77,6 +77,10 @@ class Cursor implements \Iterator
         $document->decompress();
         return $document->data;
     }
+    public function reset()
+    {
+        return $this->native->reset();
+    }
 
 
     /**
