@@ -26,7 +26,7 @@ class Cursor implements \Iterator
      */
     public function awaitData($wait = true)
     {
-        $this->natuve->awaitData($wait);
+        return $this->natuve->awaitData($wait);
     }
 
 
@@ -35,7 +35,7 @@ class Cursor implements \Iterator
      */
     public function batchSize($batchSize)
     {
-        $this->native->batchSize($batchSize);
+        return $this->native->batchSize($batchSize);
     }
 
 
@@ -131,6 +131,24 @@ class Cursor implements \Iterator
         $native = $this->native;
         $native->timeout($ms);
         return $this;
+    }
+
+
+    /**
+     * Check if cursor is dead
+     */
+    public function dead()
+    {
+        return $this->native->dead();
+    }
+
+
+    /**
+     * Tail a cursor
+     */
+    public function tailable($tail = true)
+    {
+        return $this->native->tailable($tail);
     }
 
 
