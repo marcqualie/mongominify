@@ -9,8 +9,9 @@ services:
   - mongodb
 
 before_script:
-  - echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - composer install --dev --prefer-source
+  - echo "extension=mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - composer self-update
+  - composer install --dev
 
 script:
-  - vendor/bin/phpunit --coverage-text
+  - phpunit --coverage-text
