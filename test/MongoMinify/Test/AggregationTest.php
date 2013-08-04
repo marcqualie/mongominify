@@ -1,6 +1,9 @@
 <?php
 
-class AggregationTest extends MongoMinifyTest {
+namespace MongoMinify\Test;
+use MongoMinify\Pipeline;
+
+class AggregationTest extends TestCase {
 
 
     /**
@@ -55,7 +58,7 @@ class AggregationTest extends MongoMinifyTest {
         );
 
         // Compress Pipeline Object
-        $pipeline_object = new MongoMinify\Pipeline($pipeline_input, $collection);
+        $pipeline_object = new Pipeline($pipeline_input, $collection);
         $pipeline_object->compress();
         $this->assertEquals($pipeline_object->compressed, $pipeline_expected);
 
@@ -130,7 +133,7 @@ class AggregationTest extends MongoMinifyTest {
         );
 
         // Compress Pipeline Object
-        $pipeline_object = new MongoMinify\Pipeline($pipeline_input, $collection);
+        $pipeline_object = new Pipeline($pipeline_input, $collection);
         $pipeline_object->compress();
         $this->assertEquals($pipeline_object->compressed, $pipeline_expected);
 

@@ -1,6 +1,10 @@
 <?php
 
-class CollectionTest extends MongoMinifyTest {
+namespace MongoMinify\Test;
+use MongoMinify\Client;
+use Exception;
+
+class CollectionTest extends TestCase {
 
 
     /**
@@ -133,7 +137,7 @@ class CollectionTest extends MongoMinifyTest {
      */
     public function testCount()
     {
-        $mongo = new MongoClient();
+        $mongo = new \MongoClient();
         $collection = $mongo->selectCollection('mongominify', 'test');
         $collection = $this->getTestCollection();
         for ($i = 0; $i < 69; $i++)

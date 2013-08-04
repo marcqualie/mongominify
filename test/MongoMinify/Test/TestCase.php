@@ -1,8 +1,9 @@
 <?php
 
-include_once dirname(__DIR__) . '/vendor/autoload.php';
+namespace MongoMinify\Test;
+use MongoMinify\Client;
 
-class MongoMinifyTest extends \PHPUnit_Framework_TestCase {
+class TestCase extends \PHPUnit_Framework_TestCase {
 
 	private static $client_instance;
 	public $client;
@@ -17,7 +18,7 @@ class MongoMinifyTest extends \PHPUnit_Framework_TestCase {
 		try {
 			if ( ! isset(self::$client_instance))
 			{
-				self::$client_instance = new MongoMinify\Client($this->mongo_server, $this->mongo_options);
+				self::$client_instance = new Client($this->mongo_server, $this->mongo_options);
 			}
 			$this->client = self::$client_instance;
 		}
@@ -29,7 +30,7 @@ class MongoMinifyTest extends \PHPUnit_Framework_TestCase {
 
 		// Override schema options
 		$this->client->schema_format = 'json';
-		$this->client->schema_dir = __DIR__ . '/Schema';
+		$this->client->schema_dir = dirname(__DIR__) . '/Schema';
 
 	}
 

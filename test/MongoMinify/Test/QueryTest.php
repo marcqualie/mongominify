@@ -1,6 +1,9 @@
 <?php
 
-class QueryTest extends MongoMinifyTest {
+namespace MongoMinify\Test;
+use MongoMinify\Query;
+
+class QueryTest extends TestCase {
 
     public function testCompress()
     {
@@ -12,7 +15,7 @@ class QueryTest extends MongoMinifyTest {
                 'email' => 'user1@example.com'
             )
         );
-        $query = new MongoMinify\Query($data, $collection);
+        $query = new Query($data, $collection);
         $query->compress();
         $this->assertEquals($query->compressed, array(
             'u' => 1,
@@ -32,7 +35,7 @@ class QueryTest extends MongoMinifyTest {
                 'email' => 'user1@example.com'
             )
         );
-        $query = new MongoMinify\Query($data, $collection);
+        $query = new Query($data, $collection);
         $query->compress();
         $this->assertEquals($query->compressed, $data);
 
@@ -45,7 +48,7 @@ class QueryTest extends MongoMinifyTest {
         $data = array(
             'contact.email' => 'user1@example.com'
         );
-        $query = new MongoMinify\Query($data, $collection);
+        $query = new Query($data, $collection);
         $query->compress();
         $this->assertEquals($query->compressed, array(
             'c.e' => 'user1@example.com'
@@ -62,7 +65,7 @@ class QueryTest extends MongoMinifyTest {
                 '$gt' => 0
             )
         );
-        $query = new MongoMinify\Query($data, $collection);
+        $query = new Query($data, $collection);
         $query->compress();
         $this->assertEquals($query->compressed, array(
             'n.r' => array(
@@ -283,7 +286,7 @@ class QueryTest extends MongoMinifyTest {
                 )
             )
         );
-        $query = new MongoMinify\Query($data, $collection);
+        $query = new Query($data, $collection);
         $query->compress();
         $this->assertEquals($query->compressed, array(
             'u' => 1,
@@ -302,7 +305,7 @@ class QueryTest extends MongoMinifyTest {
                 'url' => 'http://marcqualie.com'
             )
         );
-        $query = new MongoMinify\Query($data, $collection);
+        $query = new Query($data, $collection);
         $query->compress();
         $this->assertEquals($query->compressed, array(
              'm.links.0' => array(
@@ -320,7 +323,7 @@ class QueryTest extends MongoMinifyTest {
                 'url' => 'http://marcqualie.com'
             )
         );
-        $query = new MongoMinify\Query($data, $collection);
+        $query = new Query($data, $collection);
         $query->compress();
         $this->assertEquals($query->compressed, array(
              'm.links.1.url' => 'http://marcqualie.com'

@@ -1,7 +1,11 @@
 <?php
 
-class SilexTest extends MongoMinifyTest {
-	
+namespace MongoMinify\Test;
+use Silex\Application;
+use MongoMinify\Silex\ServiceProvider;
+
+class SilexTest extends TestCase {
+
 
 	/**
 	 * Text Silex Service Provider Integration
@@ -9,13 +13,13 @@ class SilexTest extends MongoMinifyTest {
 	 */
 	public function testServiceProvider()
 	{
-		
+
 		// Initialize Silex
-		$app = new Silex\Application();
-		$app->register(new MongoMinify\Silex\ServiceProvider(), array(
+		$app = new Application();
+		$app->register(new ServiceProvider(), array(
 			'mongo.server' => $this->mongo_server,
 			'mongo.options' => $this->mongo_options,
-			'mongominify.schema_dir' => __DIR__ . '/../../Schema',
+			'mongominify.schema_dir' => dirname(__DIR__) . '/Schema',
 			'mongominify.schema_format' => 'json'
 		));
 
@@ -46,8 +50,8 @@ class SilexTest extends MongoMinifyTest {
 	public function testServiceProviderDefaults()
 	{
 		// Initialize Silex
-		$app = new Silex\Application();
-		$app->register(new MongoMinify\Silex\ServiceProvider());
+		$app = new Application();
+		$app->register(new ServiceProvider());
 		$app['mongo']->test->drop();
 	}
 
@@ -58,8 +62,8 @@ class SilexTest extends MongoMinifyTest {
 	public function testServiceProviderCustomDb()
 	{
 		// Initialize Silex
-		$app = new Silex\Application();
-		$app->register(new MongoMinify\Silex\ServiceProvider(), array(
+		$app = new Application();
+		$app->register(new ServiceProvider(), array(
 			'mongo.options' => array(
 				'db' => 'mongominify'
 			)

@@ -1,6 +1,8 @@
 <?php
 
-class CursorTest extends MongoMinifyTest {
+namespace MongoMinify\Test;
+
+class CursorTest extends TestCase {
 
 
 	/**

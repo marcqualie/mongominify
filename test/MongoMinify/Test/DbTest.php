@@ -1,6 +1,8 @@
 <?php
 
-class DbTest extends MongoMinifyTest {
+namespace MongoMinify\Test;
+
+class DbTest extends TestCase {
 
     public function testCreateCollection()
     {
@@ -25,7 +27,7 @@ class DbTest extends MongoMinifyTest {
     {
         $document = array('_id' => 1);
         $this->client->mongominify_fake_db_test->test->save($document);
-        
+
         // Get db list
         $dbs = $this->client->listDbs();
         $db_list = array();

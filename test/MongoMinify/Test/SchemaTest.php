@@ -1,7 +1,9 @@
 <?php
 
-class SchemaTest extends MongoMinifyTest {
-	
+namespace MongoMinify\Test;
+
+class SchemaTest extends TestCase {
+
 
 	/**
 	 * Test JSON schema

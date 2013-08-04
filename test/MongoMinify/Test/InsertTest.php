@@ -1,6 +1,9 @@
 <?php
 
-class InsertTest extends MongoMinifyTest {
+namespace MongoMinify\Test;
+use MongoMinify\Document;
+
+class InsertTest extends TestCase {
 
 
 	/**
@@ -25,7 +28,7 @@ class InsertTest extends MongoMinifyTest {
 		$this->assertArrayHasKey('email', $document);
 
 		// Check Data stored in database is compressed
-		$document_object = new MongoMinify\Document($document, $collection);
+		$document_object = new Document($document, $collection);
 		$document_native = $collection->native->findOne(array('_id' => $document['_id']));
 		$this->assertArrayHasKey('u', $document_native);
 		$this->assertArrayHasKey('e', $document_native);
@@ -55,7 +58,7 @@ class InsertTest extends MongoMinifyTest {
 		$this->assertArrayHasKey('email', $document);
 
 		// Check Data stored in database is compressed
-		$document_object = new MongoMinify\Document($document, $collection);
+		$document_object = new Document($document, $collection);
 		$document_native = $collection->native->findOne(array('_id' => $document['_id']));
 		$this->assertArrayHasKey('u', $document_native);
 		$this->assertArrayHasKey('e', $document_native);
@@ -90,7 +93,7 @@ class InsertTest extends MongoMinifyTest {
 		$this->assertArrayHasKey('email', $document);
 
 		// Check Data stored in database is compressed
-		$document_object = new MongoMinify\Document($document, $collection);
+		$document_object = new Document($document, $collection);
 		$document_native = $collection->native->findOne(array('_id' => $document['_id']));
 		$this->assertArrayHasKey('u', $document_native);
 		$this->assertArrayHasKey('e', $document_native);

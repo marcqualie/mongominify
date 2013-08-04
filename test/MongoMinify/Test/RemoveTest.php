@@ -1,7 +1,9 @@
 <?php
 
-class RemoveTest extends MongoMinifyTest {
-	
+namespace MongoMinify\Test;
+
+class RemoveTest extends TestCase {
+
 
 	/**
 	 * Test saving a document to the database

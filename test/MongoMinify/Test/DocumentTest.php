@@ -1,6 +1,9 @@
 <?php
 
-class DocumentTest extends MongoMinifyTest {
+namespace MongoMinify\Test;
+use MongoMinify\Document;
+
+class DocumentTest extends TestCase {
 
     public function testDotSyntax()
     {
@@ -13,7 +16,7 @@ class DocumentTest extends MongoMinifyTest {
                 'email' => 'user1@example.com'
             )
         );
-        $document = new MongoMinify\Document($data, $collection);
+        $document = new Document($data, $collection);
         $document->compress();
         $dotSyntax = $document->asDotSyntax();
         $this->assertEquals($dotSyntax, array(
@@ -38,7 +41,7 @@ class DocumentTest extends MongoMinifyTest {
                 )
             )
         );
-        $document = new MongoMinify\Document($data, $collection);
+        $document = new Document($data, $collection);
         $document->compress();
         $this->assertEquals($document->compressed, array(
             'u' => 1,

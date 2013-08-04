@@ -1,6 +1,9 @@
 <?php
 
-class ClientTest extends MongoMinifyTest {
+namespace MongoMinify\Test;
+use MongoMinify\Client;
+
+class ClientTest extends TestCase {
 
     /**
      * This will test all miscelaneous methods for code coverage
@@ -9,7 +12,7 @@ class ClientTest extends MongoMinifyTest {
     {
 
         // Connect
-        $mongo = new MongoMinify\Client();
+        $mongo = new Client();
 
         // List connections
         $mongo->connect();

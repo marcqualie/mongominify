@@ -1,6 +1,8 @@
 <?php
 
-class FindTest extends MongoMinifyTest {
+namespace MongoMinify\Test;
+
+class FindTest extends TestCase {
 
 
 	/**

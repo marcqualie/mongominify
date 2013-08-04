@@ -1,6 +1,8 @@
 <?php
 
-class UpdateTest extends MongoMinifyTest {
+namespace MongoMinify\Test;
+
+class UpdateTest extends TestCase {
 
     /**
      * Test updating a document
