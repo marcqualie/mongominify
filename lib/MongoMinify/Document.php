@@ -207,7 +207,10 @@ class Document
             // Standard document traversal
             foreach ($document as $key => $value) {
                 $namespace = ($parent ? $parent . '.' : '') . $key;
-                if (isset($this->collection->schema_reverse_index[$namespace])) {
+                if (is_numeric($key)) {
+                    $value = $this->applyDecompression($value, $parent);
+                    $document[$key] = $value;
+                } elseif (isset($this->collection->schema_reverse_index[$namespace])) {
                     if (is_array($value)) {
                         $value = $this->applyDecompression($value, $key);
                     }

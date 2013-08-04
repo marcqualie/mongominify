@@ -104,8 +104,6 @@ class InsertTest extends MongoMinifyTest {
 	public function testNumericKeyInsert()
 	{
 
-		$this->markTestIncomplete('There is an issue with storing numerical keys correctly comrpessed');
-
 		// Create a collection
 		$collection = $this->getTestCollection();
 
