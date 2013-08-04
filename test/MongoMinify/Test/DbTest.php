@@ -2,8 +2,8 @@
 
 namespace MongoMinify\Test;
 
-class DbTest extends TestCase {
-
+class DbTest extends TestCase
+{
     public function testCreateCollection()
     {
         $collection = $this->getTestCollection();
@@ -31,8 +31,7 @@ class DbTest extends TestCase {
         // Get db list
         $dbs = $this->client->listDbs();
         $db_list = array();
-        foreach ($dbs['databases'] as $db)
-        {
+        foreach ($dbs['databases'] as $db) {
             $db_list[$db['name']] = true;
         }
         $this->assertArrayHasKey('mongominify_fake_db_test', $db_list);
@@ -41,8 +40,7 @@ class DbTest extends TestCase {
         $this->client->mongominify_fake_db_test->drop();
         $dbs = $this->client->listDbs();
         $db_list = array();
-        foreach ($dbs['databases'] as $db)
-        {
+        foreach ($dbs['databases'] as $db) {
             $db_list[$db['name']] = true;
         }
         $this->assertFalse(isset($db_list['mongominify_fake_db_test']));

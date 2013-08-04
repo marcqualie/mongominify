@@ -3,9 +3,8 @@
 namespace MongoMinify\Test;
 use MongoMinify\Pipeline;
 
-class AggregationTest extends TestCase {
-
-
+class AggregationTest extends TestCase
+{
     /**
      * Unit Test The Pipeline
      */
@@ -63,7 +62,6 @@ class AggregationTest extends TestCase {
         $this->assertEquals($pipeline_object->compressed, $pipeline_expected);
 
     }
-
 
     /**
      * Unit Test The Pipeline With Projections
@@ -139,7 +137,6 @@ class AggregationTest extends TestCase {
 
     }
 
-
     /**
      * Test Collection Helper
      */
@@ -193,7 +190,6 @@ class AggregationTest extends TestCase {
         ));
 
     }
-
 
     /**
      * Test for array sets

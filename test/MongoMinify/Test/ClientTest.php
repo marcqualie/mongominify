@@ -3,8 +3,8 @@
 namespace MongoMinify\Test;
 use MongoMinify\Client;
 
-class ClientTest extends TestCase {
-
+class ClientTest extends TestCase
+{
     /**
      * This will test all miscelaneous methods for code coverage
      */

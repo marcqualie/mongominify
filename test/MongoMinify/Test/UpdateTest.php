@@ -2,8 +2,8 @@
 
 namespace MongoMinify\Test;
 
-class UpdateTest extends TestCase {
-
+class UpdateTest extends TestCase
+{
     /**
      * Test updating a document
      */
@@ -33,7 +33,6 @@ class UpdateTest extends TestCase {
         $this->assertEquals($document_native['t'], $new_tags);
 
     }
-
 
     /**
      * Test updating a document
@@ -70,7 +69,6 @@ class UpdateTest extends TestCase {
         $this->assertEquals($document_native['notifications']['messages'], 11);
 
     }
-
 
     /**
      * Replace a full document
@@ -124,7 +122,6 @@ class UpdateTest extends TestCase {
         $this->assertEquals($document_after, null);
 
     }
-
 
     /**
      * Test FindAndModify

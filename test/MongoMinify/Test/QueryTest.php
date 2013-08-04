@@ -3,8 +3,8 @@
 namespace MongoMinify\Test;
 use MongoMinify\Query;
 
-class QueryTest extends TestCase {
-
+class QueryTest extends TestCase
+{
     public function testCompress()
     {
 
@@ -24,7 +24,6 @@ class QueryTest extends TestCase {
 
     }
 
-
     public function testCompressNoSchema()
     {
 
@@ -41,7 +40,6 @@ class QueryTest extends TestCase {
 
     }
 
-
     public function testNumericArrayCompression()
     {
         $collection = $this->getTestCollection();
@@ -54,7 +52,6 @@ class QueryTest extends TestCase {
             'c.e' => 'user1@example.com'
         ));
     }
-
 
     public function testModifierDotSyntax()
     {
@@ -74,7 +71,6 @@ class QueryTest extends TestCase {
         ));
 
     }
-
 
     public function testElemMatch()
     {
@@ -178,7 +174,6 @@ class QueryTest extends TestCase {
 
     }
 
-
     public function testAndOr()
     {
         $collection = $this->getTestCollection();
@@ -271,7 +266,6 @@ class QueryTest extends TestCase {
 
     }
 
-
     public function testNumericKeys()
     {
 
@@ -294,7 +288,6 @@ class QueryTest extends TestCase {
         ));
 
     }
-
 
     public function testSequentialrrays()
     {

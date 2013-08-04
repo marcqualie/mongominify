@@ -2,34 +2,33 @@
 
 namespace MongoMinify\Test;
 
-class RemoveTest extends TestCase {
+class RemoveTest extends TestCase
+{
+    /**
+     * Test saving a document to the database
+     */
+    public function testRemove()
+    {
 
+        // Create a collection
+        $collection = $this->getTestCollection();
 
-	/**
-	 * Test saving a document to the database
-	 */
-	public function testRemove()
-	{
+        // Fake Document
+        $document = array(
+            'user_id' => 1,
+            'email' => 'test1@example.com'
+        );
+        $collection->save($document);
 
-		// Create a collection
-		$collection = $this->getTestCollection();
+        // Check Data stored in database is compressed
+        $document_native = $collection->native->findOne(array('_id' => $document['_id']));
+        $this->assertEquals($document_native['u'], 1);
 
-		// Fake Document
-		$document = array(
-			'user_id' => 1,
-			'email' => 'test1@example.com'
-		);
-		$collection->save($document);
+        // Remove and recheck
+        $collection->remove(array('user_id' => 1));
+        $document_native = $collection->findOne(array('user_id' => 1));
+        $this->assertNull($document_native);
 
-		// Check Data stored in database is compressed
-		$document_native = $collection->native->findOne(array('_id' => $document['_id']));
-		$this->assertEquals($document_native['u'], 1);
-
-		// Remove and recheck
-		$collection->remove(array('user_id' => 1));
-		$document_native = $collection->findOne(array('user_id' => 1));
-		$this->assertNull($document_native);
-
-	}
+    }
 
 }

@@ -3,8 +3,8 @@
 namespace MongoMinify\Test;
 use MongoMinify\Document;
 
-class DocumentTest extends TestCase {
-
+class DocumentTest extends TestCase
+{
     public function testDotSyntax()
     {
 
@@ -25,7 +25,6 @@ class DocumentTest extends TestCase {
         ));
 
     }
-
 
     public function testNumericIndexSubsets()
     {
@@ -55,7 +54,6 @@ class DocumentTest extends TestCase {
         ));
 
     }
-
 
     public function testFindAndModify()
     {

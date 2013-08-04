@@ -4,9 +4,8 @@ namespace MongoMinify\Test;
 use MongoMinify\Client;
 use Exception;
 
-class CollectionTest extends TestCase {
-
-
+class CollectionTest extends TestCase
+{
     /**
      * Make sure collections can be accessed via dot syntax
      */
@@ -16,7 +15,6 @@ class CollectionTest extends TestCase {
         $collection2 = $this->client->currentDb()->dot->syntax->name;
         $this->assertEquals($collection1->getName(), $collection2->getName());
     }
-
 
     /**
      * Make sure collection is represented as a string
@@ -114,7 +112,6 @@ class CollectionTest extends TestCase {
         $this->assertCount(1, $collection->getIndexInfo());
     }
 
-
     /**
      * Assert that indexes with dot creation can be created
      */
@@ -131,7 +128,6 @@ class CollectionTest extends TestCase {
 
     }
 
-
     /**
      * Test Counting
      */
@@ -140,8 +136,7 @@ class CollectionTest extends TestCase {
         $mongo = new \MongoClient();
         $collection = $mongo->selectCollection('mongominify', 'test');
         $collection = $this->getTestCollection();
-        for ($i = 0; $i < 69; $i++)
-        {
+        for ($i = 0; $i < 69; $i++) {
             $document = array(
                 '_id' => $i,
                 'random' => rand(0, 9999)
@@ -159,7 +154,6 @@ class CollectionTest extends TestCase {
         $this->assertEquals($collection->count(array('_id' => array('$gte' => 50)), 10, 6), 4);
     }
 
-
     /**
      * Test read preferences
      */
@@ -169,7 +163,6 @@ class CollectionTest extends TestCase {
         $collection->setReadPreference(\MongoClient::RP_SECONDARY_PREFERRED);
         $this->assertEquals($collection->getReadPreference(), array('type' => 'secondaryPreferred'));
     }
-
 
     /**
      * Test setting schema
@@ -182,7 +175,6 @@ class CollectionTest extends TestCase {
         $collection->setSchemaByName('test');
 
     }
-
 
     /**
      * Test exception throwing
