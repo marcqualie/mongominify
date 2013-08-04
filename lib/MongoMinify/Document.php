@@ -130,10 +130,15 @@ class Document
     {
 
         // If is an array, loop through and apply rules
+        /*
         if (isset($document[0]) && is_array($document[0])) {
             foreach ($document as $key => $value) {
                 $document[$key] = $this->applyCompression($value, $parent);
             }
+            return $document;
+        }
+        */
+        if (! is_array($document)) {
             return $document;
         }
 
@@ -153,7 +158,11 @@ class Document
         $doc = array();
         foreach ($document as $key => $value) {
             $namespace = ($parent ? $parent . '.' : '') . $key;
-            if (is_array($value)) {
+            if (is_numeric($key)) {
+                $namespace = $parent;
+                $value = $this->applyCompression($value, $namespace);
+                $namespace = ($parent ? $parent . '.' : '') . $key;
+            } elseif (is_array($value)) {
                 $value = $this->applyCompression($value, $namespace);
             } elseif (isset($this->collection->schema[$namespace]['values'])) {
                 $values =  $this->collection->schema[$namespace]['values'];
@@ -200,7 +209,7 @@ class Document
                 $namespace = ($parent ? $parent . '.' : '') . $key;
                 if (isset($this->collection->schema_reverse_index[$namespace])) {
                     if (is_array($value)) {
-                        $value =$this->applyDecompression($value, $key);
+                        $value = $this->applyDecompression($value, $key);
                     }
                     $full_namespace = $this->collection->schema_reverse_index[$namespace];
                     $explode = explode('.', $full_namespace);
