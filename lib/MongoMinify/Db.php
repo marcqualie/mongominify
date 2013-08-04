@@ -18,7 +18,6 @@ class Db
         $this->native = $client->native->selectDb($name);
     }
 
-
     /**
      * Get database name
      */
@@ -27,7 +26,6 @@ class Db
         return $this->name;
     }
 
-
     /**
      * Select Collection
      */
@@ -35,7 +33,6 @@ class Db
     {
         return $this->selectCollection($name);
     }
-    
 
     /**
      * Select Collection
@@ -46,9 +43,9 @@ class Db
             $collection = new Collection($name, $this);
             $collection_cache[$name] = $collection;
         }
+
         return $collection_cache[$name];
     }
-
 
     /**
      * Create a new Collection
@@ -56,9 +53,9 @@ class Db
     public function createCollection($name, $capped = false, $size = 0, $max = 0)
     {
         $this->native->createCollection($name, $capped, $size, $max);
+
         return $this->selectCollection($name);
     }
-
 
     /**
      * Drop Database
@@ -72,7 +69,6 @@ class Db
         );
     }
 
-
     /**
      * List Collections
      */
@@ -80,7 +76,6 @@ class Db
     {
         return $this->native->listCollections();
     }
-
 
     /**
      * Command

@@ -30,7 +30,6 @@ class Collection
         $this->setSchemaByName($this->namespace);
     }
 
-
     /**
      * Get name of collection
      */
@@ -38,7 +37,6 @@ class Collection
     {
         return $this->name;
     }
-
 
     /**
      * Get full name of collection
@@ -48,7 +46,6 @@ class Collection
         return (String) $this->db . '.' . $this->getName();
     }
 
-
     /**
      * Get a collection (dot based syntax name)
      */
@@ -57,36 +54,35 @@ class Collection
         return $this->db->selectCollection($this->getName() . '.' . $name);
     }
 
-
     /**
      * Save Document
      * @param  [type] $data    [description]
      * @param  array  $options [description]
-     * @return [type]          [description]
+     * @return [type] [description]
      */
     public function save(array &$data, array $options = array())
     {
         $document = new Document($data, $this);
         $save = $document->save($options);
         $data = $document->data;
+
         return $save;
     }
-
 
     /**
      * Insert new document
      * @param  [type] $document [description]
      * @param  array  $options  [description]
-     * @return [type]           [description]
+     * @return [type] [description]
      */
     public function insert(&$data, array $options = array())
     {
         $document = new Document($data, $this);
         $insert = $document->insert($options);
         $data = $document->data;
+
         return $insert;
     }
-
 
     /**
      * Update Document
@@ -95,9 +91,9 @@ class Collection
     {
         $document = new Document($query, $this);
         $update = $document->update($update, $options);
+
         return $update;
     }
-
 
     /**
      * Find and Modify Document
@@ -106,6 +102,7 @@ class Collection
     {
         $document = new Document($query, $this);
         $findAndModify = $document->findAndModify($update, $fields, $options);
+
         return $findAndModify;
     }
 
@@ -114,44 +111,42 @@ class Collection
      */
     public function remove($criteria = array(), array $options = array())
     {
-        if ($criteria)
-        {
+        if ($criteria) {
             $query = new Query($criteria, $this);
             $query->compress();
             $criteria = $query->compressed;
         }
+
         return $this->native->remove($criteria, $options);
     }
-
 
     /**
      * Find document
      * @param  array  $document [description]
-     * @return [type]           [description]
+     * @return [type] [description]
      */
     public function findOne(array $query = array(), array $fields = array())
     {
         $cursor = $this->find($query, $fields)->limit(1);
+
         return $cursor->getNext();
     }
     public function find(array $query = array(), array $fields = array())
     {
-        if ($query)
-        {
+        if ($query) {
             $query_object = new Query($query, $this);
             $query_object->compress();
             $query = $query_object->compressed;
         }
-        if ($fields)
-        {
+        if ($fields) {
             $fields_object = new Query($fields, $this);
             $fields_object->compress();
             $fields = $fields_object->compressed;
         }
         $cursor = new Cursor($this, $query, $fields);
+
         return $cursor;
     }
-
 
     /**
      * Count Helper
@@ -160,7 +155,6 @@ class Collection
     {
         return $this->native->count($query, $limit, $skip);
     }
-
 
     /**
      * Apply internal schema
@@ -174,13 +168,12 @@ class Collection
             $schema_name = (String) $this->db . '.' . $schema_name;
         }
 
-
         // Check formats
         if ($this->client->schema_format === 'php') {
             $schema_file = $this->client->schema_dir . '/' . $schema_name . '.php';
             if (file_exists($schema_file)) {
                 $schema = include $schema_file;
-                if ( ! is_array($schema)) {
+                if (! is_array($schema)) {
                     throw new \Exception('Possible PHP syntax error in ' . $schema_file);
                 }
             }
@@ -198,7 +191,7 @@ class Collection
         }
 
         // Assign Schema
-        if ( ! empty($schema)) {
+        if (! empty($schema)) {
             $this->setSchema($schema);
         }
 
@@ -229,7 +222,6 @@ class Collection
         }
     }
 
-
     /**
      * Get short definitions based on full key
      */
@@ -238,9 +230,9 @@ class Collection
         if (isset($this->schema[$full])) {
             return $this->schema[$full]['short'];
         }
+
         return $full;
     }
-
 
     /**
      * Batch Insert
@@ -259,7 +251,6 @@ class Collection
         }
     }
 
-
     /**
      * Drop
      */
@@ -267,7 +258,6 @@ class Collection
     {
         $this->native->drop();
     }
-
 
     /**
      * Distinct
@@ -283,45 +273,44 @@ class Collection
             foreach ($values_short as $val) {
                 $values[] = isset($this->schema[$key]['values'][$val]) ? $this->schema[$key]['values'][$val] : $val;
             }
+
             return $values;
         }
+
         return $values_short;
     }
-
 
     /**
      * Ensure Index
      */
     public function ensureIndex($keys, array $options = array())
     {
-        if (is_string($keys))
-        {
+        if (is_string($keys)) {
             $keys = array($keys => 1);
         }
 
         $query = new Query($keys, $this);
         $query->compress();
         $query->asDotSyntax();
+
         return $this->native->ensureIndex($query->compressed, $options);
     }
-
 
     /**
      * Delete Index
      */
     public function deleteIndex($keys)
     {
-        if (is_string($keys))
-        {
+        if (is_string($keys)) {
             $keys = array($keys => 1);
         }
 
         $query = new Query($keys, $this);
         $query->compress();
         $query->asDotSyntax();
+
         return $this->native->deleteIndex($query->compressed);
     }
-
 
     /**
      * Delete All Indexes
@@ -331,7 +320,6 @@ class Collection
         return $this->native->deleteIndexes();
     }
 
-
     /**
      * Get all indexes
      */
@@ -339,7 +327,6 @@ class Collection
     {
         return $this->native->getIndexInfo();
     }
-
 
     /**
      * Set Read Preference
@@ -349,7 +336,6 @@ class Collection
         return $this->native->setReadPreference($read_preference, $tags);
     }
 
-
     /**
      * Set Read Preference
      */
@@ -358,7 +344,6 @@ class Collection
         return $this->native->getReadPreference();
     }
 
-
     /**
      * Aggregation Helper
      */
@@ -366,6 +351,7 @@ class Collection
     {
         $pipeline_object = new Pipeline($pipeline, $this);
         $pipeline_object->compress();
+
         return $this->db->command(
             array(
                 'aggregate' => $this->name,

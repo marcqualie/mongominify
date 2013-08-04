@@ -5,7 +5,7 @@ namespace MongoMinify;
 class Cursor implements \Iterator
 {
 
-    static $timeout = 20000;
+    public static $timeout = 20000;
 
     public $collection;
     public $native;
@@ -20,7 +20,6 @@ class Cursor implements \Iterator
         $native = $this->native;
     }
 
-
     /**
      * Await data
      */
@@ -28,7 +27,6 @@ class Cursor implements \Iterator
     {
         return $this->natuve->awaitData($wait);
     }
-
 
     /**
      * Batch size
@@ -38,7 +36,6 @@ class Cursor implements \Iterator
         return $this->native->batchSize($batchSize);
     }
 
-
     /**
      * Get Cursor Info
      */
@@ -47,23 +44,25 @@ class Cursor implements \Iterator
         return $this->native->info();
     }
 
-
     /**
      * Move around cursor
      */
     public function rewind()
     {
         $this->native->rewind();
+
         return $this;
     }
     public function getNext()
     {
         $this->next();
+
         return $this->current();
     }
     public function next()
     {
         $this->native->next();
+
         return $this;
     }
     public function current()
@@ -75,13 +74,13 @@ class Cursor implements \Iterator
         $document = new Document($current, $this->collection);
         $document->state = 'compressed';
         $document->decompress();
+
         return $document->data;
     }
     public function reset()
     {
         return $this->native->reset();
     }
-
 
     /**
      * Counting results
@@ -91,7 +90,6 @@ class Cursor implements \Iterator
         return $this->native->count($foundOnly);
     }
 
-
     /**
      * Data retreival
      */
@@ -100,19 +98,21 @@ class Cursor implements \Iterator
         $fields_query = new Query($fields, $this->collection);
         $fields_query->compress();
         $this->native->sort($fields_query->compressed);
+
         return $this;
     }
     public function skip($num)
     {
         $this->native->skip($num);
+
         return $this;
     }
     public function limit($num)
     {
         $this->native->limit($num);
+
         return $this;
     }
-
 
     /**
      * Native abtracts
@@ -126,7 +126,6 @@ class Cursor implements \Iterator
         return $this->native->valid();
     }
 
-
     /**
      * Set Timeout
      */
@@ -134,9 +133,9 @@ class Cursor implements \Iterator
     {
         $native = $this->native;
         $native->timeout($ms);
+
         return $this;
     }
-
 
     /**
      * Check if cursor is dead
@@ -146,7 +145,6 @@ class Cursor implements \Iterator
         return $this->native->dead();
     }
 
-
     /**
      * Tail a cursor
      */
@@ -155,7 +153,6 @@ class Cursor implements \Iterator
         return $this->native->tailable($tail);
     }
 
-
     /**
      * Array helper for inline cursors
      */
@@ -163,5 +160,4 @@ class Cursor implements \Iterator
     {
         return iterator_to_array($this, false);
     }
-
 }

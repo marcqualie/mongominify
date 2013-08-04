@@ -46,7 +46,6 @@ class Client
 
     }
 
-
     /**
      * Connect to database
      * @return bool True if the connection was successful
@@ -55,7 +54,6 @@ class Client
     {
         return $this->native->connect();
     }
-
 
     /**
      * Close database connection
@@ -66,7 +64,6 @@ class Client
         return $this->native->close($connection);
     }
 
-
     /**
      * Get active connections
      */
@@ -74,7 +71,6 @@ class Client
     {
         return $this->native->getConnections();
     }
-
 
     /**
      * Select Database
@@ -84,16 +80,15 @@ class Client
         return $this->selectDb($name);
     }
 
-
     /**
      * Select Collection
      */
     public function selectDb($name)
     {
         $this->current_db = new Db($name, $this);
+
         return $this->current_db;
     }
-
 
     /**
      * Select Collection
@@ -102,9 +97,9 @@ class Client
     {
         $db = new Db((String) $db_name, $this);
         $collection = $db->selectCollection($collection_name);
+
         return $collection;
     }
-
 
     /**
      * Helper to get most recently selected database
@@ -114,7 +109,6 @@ class Client
         return $this->current_db;
     }
 
-
     /**
      * List Databases
      */
@@ -122,7 +116,6 @@ class Client
     {
         return $this->native->listDBs();
     }
-
 
     /**
      * Gets a list of all host statuses
@@ -132,7 +125,6 @@ class Client
         return $this->native->getHosts();
     }
 
-
     /**
      * Set read preference
      */
@@ -140,7 +132,6 @@ class Client
     {
         return $this->native->setReadPreference($read_preference, $tags);
     }
-
 
     /**
      * Get read preference
@@ -150,7 +141,6 @@ class Client
         return $this->native->getReadPreference();
     }
 
-
     /**
      * String representation of this connection
      */
@@ -158,5 +148,4 @@ class Client
     {
         return (String) $this->native;
     }
-
 }

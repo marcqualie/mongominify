@@ -2,14 +2,10 @@
 
 namespace MongoMinify\Silex;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
-
 class Db extends \MongoMinify\Db
 {
 
     private $app;
-
 
     /**
      * Override default constructor to pass in app reference
@@ -20,20 +16,19 @@ class Db extends \MongoMinify\Db
         $this->app = $app;
     }
 
-
     /**
      * Change database helper
      */
     public function switchDb($db_name)
     {
         $self = $this;
+
         return $this->app['mongo'] = $this->app->share(
             function () use ($db_name, $self) {
                 return new Db($db_name, $self->client, $self->app);
             }
         );
     }
-
 
     /**
      * Select Temporary Database
@@ -42,5 +37,4 @@ class Db extends \MongoMinify\Db
     {
         return $this->client->selectDb($db_name);
     }
-
 }

@@ -26,6 +26,7 @@ class Document
         if (isset($save['ok']) && $save['ok'] == 1) {
             $this->data['_id'] = $this->compressed['_id'];
         }
+
         return $save;
     }
     public function update(array $new_object = array(), array $options = array())
@@ -50,6 +51,7 @@ class Document
         } else {
             $new_object_document = new Document($new_object, $this->collection);
             $new_object_document->compress();
+
             return $this->collection->native->update($this->compressed, $new_object_document->compressed, $options);
         }
 
@@ -71,16 +73,14 @@ class Document
         }
 
         // Update Fields
-        if ($fields !== null)
-        {
+        if ($fields !== null) {
             $fields_object = new Document($fields, $this->collection);
             $fields_object->compress();
             $fields = $fields_object->compressed;
         }
 
         // Modify Sorting Options
-        if ($options && isset($options['sort']))
-        {
+        if ($options && isset($options['sort'])) {
             $sort_object = new Document($options['sort'], $this->collection);
             $sort_object->compress();
             $options['sort'] = $sort_object->compressed;
@@ -92,13 +92,19 @@ class Document
         } else {
             $new_object_document = new Document($new_object, $this->collection);
             $new_object_document->compress();
-            $document = $this->collection->native->findAndModify($this->compressed, $new_object_document->compressed, $fields, $options);
+            $document = $this->collection->native->findAndModify(
+                $this->compressed,
+                $new_object_document->compressed,
+                $fields,
+                $options
+            );
         }
 
         // Decompress returned document
         $document_object = new Document($document, $this->collection);
         $document_object->state = 'compressed';
         $document_object->decompress();
+
         return $document_object->data;
 
     }
@@ -109,6 +115,7 @@ class Document
         if (isset($insert['ok']) && $insert['ok'] == 1) {
             $this->data['_id'] = $this->compressed['_id'];
         }
+
         return $insert;
     }
 
@@ -119,6 +126,7 @@ class Document
     {
         if (!$this->collection->schema) {
             $this->compressed = $this->data;
+
             return;
         }
         if ($this->state !== 'compressed' && $this->collection) {
@@ -135,6 +143,7 @@ class Document
             foreach ($document as $key => $value) {
                 $document[$key] = $this->applyCompression($value, $parent);
             }
+
             return $document;
         }
         */
@@ -176,9 +185,9 @@ class Document
                 : $key;
             $doc[$short] = $value;
         }
+
         return $doc;
     }
-
 
     /**
      * Data Decompression
@@ -201,6 +210,7 @@ class Document
                 foreach ($document as $key => $value) {
                     $document[$key] = $this->applyDecompression($value, $parent);
                 }
+
                 return $document;
             }
 
@@ -227,6 +237,7 @@ class Document
                 }
             }
         }
+
         return $document;
     }
 
@@ -247,6 +258,7 @@ class Document
                 $dotSyntax[$key] = $value;
             }
         }
+
         return $dotSyntax;
     }
 }

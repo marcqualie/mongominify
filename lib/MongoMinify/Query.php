@@ -24,6 +24,7 @@ class Query
     {
         if (!$this->collection->schema) {
             $this->compressed =& $this->data;
+
             return;
         }
         if ($this->state !== 'compressed' && $this->collection) {
@@ -41,6 +42,7 @@ class Query
             foreach ($document as $key => $value) {
                 $document[$key] = $this->applyCompression($value, $parent);
             }
+
             return $document;
         }
         */
@@ -80,8 +82,7 @@ class Query
 
             // $and
             } elseif ($key === '$and' || $key === '$or') {
-                foreach ($value as $sub_index => $sub_value)
-                {
+                foreach ($value as $sub_index => $sub_value) {
                     $value[$sub_index] = $this->applyCompression($sub_value, $parent);
                 }
 
@@ -107,6 +108,7 @@ class Query
             }
             $doc[$short] = $value;
         }
+
         return $doc;
     }
 
@@ -120,6 +122,7 @@ class Query
     {
         $dotSyntax = $this->applyDotSyntax($this->compressed);
         $this->compressed = $dotSyntax;
+
         return $dotSyntax;
     }
     private function applyDotSyntax($data, $ns = '')
@@ -147,13 +150,14 @@ class Query
                     $out[$key] = $value;
                 }
             }
+
             return $out;
         } else {
             return $data;
         }
+
         return $out;
     }
-
 
     /**
      * Check if this array is sequential
@@ -162,11 +166,12 @@ class Query
     {
         $counter = 0;
         foreach ($array as $key => $value) {
-            if ($counter !== $key) return false;
+            if ($counter !== $key) {
+                return false;
+            }
             $counter++;
         }
+
         return true;
     }
-
-
 }

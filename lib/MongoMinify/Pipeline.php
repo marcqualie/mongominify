@@ -21,11 +21,9 @@ class Pipeline
     {
 
         // Set default $project
-        if ( ! isset($this->original[0]['$project']))
-        {
+        if (! isset($this->original[0]['$project'])) {
             $project = array();
-            foreach ($this->collection->schema_reverse_index as $short => $long)
-            {
+            foreach ($this->collection->schema_reverse_index as $short => $long) {
                 $project[$long] = 1;
                 $this->mappings[$long] = $short;
             }
@@ -43,14 +41,13 @@ class Pipeline
                 if ($pipeline_key === '$project') {
                     foreach ($data as $key => $value) {
                         $short_key = array_search($key, $this->collection->schema_reverse_index);
-                        if ($short_key)
-                        {
+                        if ($short_key) {
                             $this->mappings[$key] = $short_key;
                             unset($data[$key]);
                             $data[$short_key] = 1;
                         }
                     }
-                    
+
                 // Match
                 } elseif ($pipeline_key === '$match') {
                     $document = new Document($data, $this->collection);
@@ -61,8 +58,7 @@ class Pipeline
                 } else {
 
                     $schema_keys = array();
-                    foreach ($this->collection->schema_reverse_index as $schema_key => $schema_value)
-                    {
+                    foreach ($this->collection->schema_reverse_index as $schema_key => $schema_value) {
                         $schema_keys['$' . $schema_key] = '$' . $schema_value;
                     }
 
@@ -71,7 +67,6 @@ class Pipeline
 
                     $data = json_decode($json_data, true);
                 }
-
 
                 // Iterate over each section
                 if (is_array($data)) {
@@ -89,6 +84,7 @@ class Pipeline
 
         // Assign to internal variable
         $this->compressed = $pipeline;
+
         return $pipeline;
     }
 }
