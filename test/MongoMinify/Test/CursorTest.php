@@ -247,4 +247,35 @@ class CursorTest extends TestCase
         ));
     }
 
+    /**
+     * Test Reset
+     */
+    public function testReset()
+    {
+
+        // Create a collection
+        $collection = $this->getTestCollection();
+
+        // Fake Document
+        $documents = array();
+        for ($i = 1; $i <= 5; $i++) {
+            $documents[] = array(
+                'user_id' => $i,
+                'email' => 'test' . $i . '@example.com',
+            );
+        }
+        $collection->batchInsert($documents);
+
+        // Make sure cursor is expended, then reset to iterate again
+        $cursor = $collection->find(array(), array('_id' => 0, 'user_id' => 1));
+        $this->assertEquals(array('user_id' => 1), $cursor->getNext());
+        $this->assertEquals(array('user_id' => 2), $cursor->getNext());
+        $this->assertEquals(array('user_id' => 3), $cursor->getNext());
+        $cursor->reset();
+        $this->assertEquals(array('user_id' => 1), $cursor->getNext());
+
+    }
+
+
+
 }
