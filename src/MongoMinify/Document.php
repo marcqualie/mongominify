@@ -39,7 +39,13 @@ class Document
         foreach ($new_object as $key => $value) {
             if (strpos($key, '$') === 0) {
                 $uses_modifiers = true;
-                $set_document = new Document($value, $this->collection);
+
+                if ($key === '$inc') {
+                    $set_document = new Query($value, $this->collection);
+                } else {
+                    $set_document = new Document($value, $this->collection);
+                }
+
                 $set_document->compress();
                 $new_object[$key] = $set_document->compressed;
             }
