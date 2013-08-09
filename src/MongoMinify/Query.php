@@ -36,17 +36,6 @@ class Query
     private function applyCompression($document, $parent = null)
     {
 
-        // If is an array, loop through and apply rules (I don't think this is needed, will see if any use cases arise)
-        /*
-        if (isset($document[0]) && is_array($document[0])) {
-            foreach ($document as $key => $value) {
-                $document[$key] = $this->applyCompression($value, $parent);
-            }
-
-            return $document;
-        }
-        */
-
         // Normalize doc delimited keys
         foreach ($document as $key => $value) {
             if (strpos($key, '.') !== false) {
@@ -75,23 +64,23 @@ class Query
                     }
                 }
 
-            // $elemMatch
             } elseif ($key === '$elemMatch') {
+                // $elemMatch
                 $sub_doc = $this->applyCompression($value, $parent);
                 $value = $sub_doc;
 
-            // $and
             } elseif ($key === '$and' || $key === '$or') {
+                // $and
                 foreach ($value as $sub_index => $sub_value) {
                     $value[$sub_index] = $this->applyCompression($sub_value, $parent);
                 }
 
-            // Loop over arrays recursively
             } elseif (is_array($value)) {
+                // Loop over arrays recursively
                 $value = $this->applyCompression($value, $namespace);
 
-            // Handle actual value conversion
             } elseif (isset($this->collection->schema[$namespace]['values'])) {
+                // Handle actual value conversion
                 $values = $this->collection->schema[$namespace]['values'];
                 $values = array_flip($values);
                 if (isset($values[$value])) {

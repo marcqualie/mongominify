@@ -48,15 +48,14 @@ class Pipeline
                         }
                     }
 
-                // Match
                 } elseif ($pipeline_key === '$match') {
+                    // Match
                     $document = new Document($data, $this->collection);
                     $document->compress();
                     $data = $document->compressed;
 
-                // Grouping
                 } else {
-
+                    // Grouping
                     $schema_keys = array();
                     foreach ($this->collection->schema_reverse_index as $schema_key => $schema_value) {
                         $schema_keys['$' . $schema_key] = '$' . $schema_value;
@@ -75,8 +74,8 @@ class Pipeline
                         $pipeline[$index][$pipeline_key][$key] = $value;
                     }
 
-                // String values such as..
                 } else {
+                    // String values such as..
                     $pipeline[$index][$pipeline_key] = $data;
                 }
             }
