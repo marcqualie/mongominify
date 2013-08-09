@@ -3,7 +3,7 @@
 <phpunit bootstrap="vendor/autoload.php">
     <testsuites>
         <testsuite name="MongoMinify Test Suite">
-            <directory>test/MongoMinify/Test</directory>
+            <directory>tests/</directory>
         </testsuite>
     </testsuites>
 
