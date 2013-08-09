@@ -3,13 +3,13 @@
 <phpunit bootstrap="vendor/autoload.php">
     <testsuites>
         <testsuite name="MongoMinify Test Suite">
-            <directory>test</directory>
+            <directory>test/MongoMinify/Test</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory suffix=".php">lib/MongoMinify/</directory>
+            <directory suffix=".php">src/</directory>
         </whitelist>
     </filter>
 </phpunit>
