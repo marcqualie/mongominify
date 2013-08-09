@@ -64,9 +64,13 @@ class UpdateTest extends TestCase
             'notifications.messages' => 10
         )));
 
+        // Make sure value is updated normally
+        $document_lookup = $collection->findOne(array('email' => 'test@example.com'));
+        $this->assertEquals($document_lookup['notifications']['messages'], 11);
+
         // Check Data stored in database is compressed
-        $document_native = $collection->findOne(array('email' => 'test@example.com'));
-        $this->assertEquals($document_native['notifications']['messages'], 11);
+        $document_native = $collection->native->findOne(array('e' => 'test@example.com'));
+        $this->assertEquals($document_native['n']['m'], 11);
 
     }
 
