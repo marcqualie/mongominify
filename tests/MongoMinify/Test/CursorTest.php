@@ -250,10 +250,18 @@ class CursorTest extends TestCase
     public function testInfo()
     {
         $collection = $this->getTestCollection();
-        $cursor = $collection->find();
+        $cursor = $collection
+            ->find(array('test' => 5), array('field1' => 1))
+            ->skip(2)
+            ->limit(3)
+            ->timeout(0);
         $info = $cursor->info();
         $this->assertArrayHasKey('ns', $info);
-        $this->assertEquals($info['ns'], 'mongominify.test');
+        $this->assertEquals('mongominify.test', $info['ns']);
+        $this->assertEquals(array('test' => 5), $info['query']);
+        $this->assertEquals(array('field1' => 1), $info['fields']);
+        $this->assertEquals(2, $info['skip']);
+        $this->assertEquals(3, $info['limit']);
     }
 
 
