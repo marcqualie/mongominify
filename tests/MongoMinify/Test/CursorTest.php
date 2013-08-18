@@ -2,8 +2,12 @@
 
 namespace MongoMinify\Test;
 
+use MongoCursorTimeoutException;
+
 class CursorTest extends TestCase
 {
+
+
     /**
      * Make sure cursors are limited
      */
@@ -32,6 +36,7 @@ class CursorTest extends TestCase
 
     }
 
+
     /**
      * Check if cursors can be skipped
      */
@@ -59,6 +64,7 @@ class CursorTest extends TestCase
 
     }
 
+
     /**
      * Make sure counts are applied even after skipping
      */
@@ -84,10 +90,11 @@ class CursorTest extends TestCase
 
     }
 
+
     /**
-     * Test Timeouts
+     * Test global timeouts and native mappings
      */
-    public function testTimeout()
+    public function testGlobalTimeout()
     {
 
         // Create collection
@@ -100,7 +107,6 @@ class CursorTest extends TestCase
 
         // Assert cursor timeouts are updated
         $this->assertEquals($cursor::$timeout, $native_cursor::$timeout);
-        $cursor->timeout(1000);
 
         // Check that static timeouts are binded
         $default_timeout = \MongoCursor::$timeout;
@@ -113,6 +119,32 @@ class CursorTest extends TestCase
         \MongoCursor::$timeout = $default_timeout;
 
     }
+
+
+    /**
+     * Test timeout on single cursor
+     * @expectedException MongoCursorTimeoutException
+     */
+    public function testInstanceTimeout()
+    {
+        $collection = $this->getTestCollection();
+        $documents = array();
+        for ($i = 0; $i < 10000; $i++) {
+            $documents[] = array(
+                '_id' => $i,
+                'random' => rand(0, 999999)
+            );
+            if ($i % 1000 === 0) {
+                $collection->batchInsert($documents);
+                $documents = array();
+            }
+        }
+        $collection->batchInsert($documents);
+        $cursor = $collection->find(array('random' => array('$gte' => 0)))->sort(array('random' => -1));
+        $cursor->timeout(1);
+        $cursor->getNext();
+    }
+
 
     /**
      * Sorting (Ascending)
@@ -162,6 +194,7 @@ class CursorTest extends TestCase
 
     }
 
+
     /**
      * Sorting (Ascending)
      */
@@ -210,6 +243,7 @@ class CursorTest extends TestCase
 
     }
 
+
     /**
      * Test Info
      */
@@ -221,6 +255,7 @@ class CursorTest extends TestCase
         $this->assertArrayHasKey('ns', $info);
         $this->assertEquals($info['ns'], 'mongominify.test');
     }
+
 
     /**
      * Inline Helpers
@@ -246,6 +281,7 @@ class CursorTest extends TestCase
             array('_id' => 1, 'role' => 'admin')
         ));
     }
+
 
     /**
      * Test Reset
@@ -275,7 +311,4 @@ class CursorTest extends TestCase
         $this->assertEquals(array('user_id' => 1), $cursor->getNext());
 
     }
-
-
-
 }

@@ -131,9 +131,7 @@ class Cursor implements \Iterator
      */
     public function timeout($ms)
     {
-        $native = $this->native;
-        $native->timeout($ms);
-
+        $native = $this->native->timeout($ms);
         return $this;
     }
 
