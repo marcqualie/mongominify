@@ -211,7 +211,8 @@ class Collection
             $this->schema[$subkey] = $value;
             if (! isset($value['short'])) {
                 if ($key === '*') {
-                    $value['short'] = $this->schema_index[$namespace];
+                    $value['short'] = $this->schema_index[$namespace] . '.*';
+                    $namespace = '';
                 } else {
                     $value['short'] = $key;
                 }
@@ -227,17 +228,21 @@ class Collection
         }
     }
 
+
     /**
      * Get short definitions based on full key
      */
     public function getShort($full)
     {
+        if (strpos($full, '*') !== false) {
+            return $this->schema_index[str_replace('.*', '', $full)] . '.*';
+        }
         if (isset($this->schema[$full]['short'])) {
             return $this->schema[$full]['short'];
         }
-
         return $full;
     }
+
 
     /**
      * Batch Insert

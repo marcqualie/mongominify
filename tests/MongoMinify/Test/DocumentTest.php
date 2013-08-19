@@ -147,4 +147,54 @@ class DocumentTest extends TestCase
 
     }
 
+
+    /**
+     * Wildcard keys should compress
+     */
+    public function testWildcardSchemaDecompression()
+    {
+
+        // Compress document
+        $collection = $this->getTestCollection();
+        $document = array(
+            '_id' => 1,
+            't' => array(
+                2 => array(
+                    's' => 'test-tag',
+                    'n' => 'Test Tag'
+                )
+            ),
+            'o' => array(
+                '13l22' => array(
+                    'n' => 'example.org',
+                    'r' => 'CEO'
+                )
+            )
+        );
+        $document_object = new Document($document, $collection);
+        $document_object->state = 'compressed';
+        $document_object->decompress();
+
+        // Assert compressed object is as expected
+        $this->assertEquals(
+            array(
+                '_id' => 1,
+                'tags' => array(
+                    2 => array(
+                        'slug' => 'test-tag',
+                        'name' => 'Test Tag'
+                    )
+                ),
+                'organisations' => array(
+                    '13l22' => array(
+                        'name' => 'example.org',
+                        'role' => 'CEO'
+                    )
+                )
+            ),
+            $document_object->data
+        );
+
+    }
+
 }
