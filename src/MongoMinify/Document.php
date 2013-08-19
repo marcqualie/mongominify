@@ -173,7 +173,11 @@ class Document
         $doc = array();
         foreach ($document as $key => $value) {
             $namespace = ($parent ? $parent . '.' : '') . $key;
-            if (is_numeric($key)) {
+            if (isset($this->collection->schema_index[$parent . '.*'])) {
+                $namespace = $parent . '.*';
+                $value = $this->applyCompression($value, $namespace);
+                $namespace = ($parent ? $parent . '.' : '') . $key;
+            } elseif (is_numeric($key)) {
                 $namespace = $parent;
                 $value = $this->applyCompression($value, $namespace);
                 $namespace = ($parent ? $parent . '.' : '') . $key;

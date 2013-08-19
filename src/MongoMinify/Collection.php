@@ -209,15 +209,20 @@ class Collection
         foreach ($array as $key => $value) {
             $subkey = ($namespace ? $namespace . '.' : '') . $key;
             $this->schema[$subkey] = $value;
+            if (! isset($value['short'])) {
+                if ($key === '*') {
+                    $value['short'] = $this->schema_index[$namespace];
+                } else {
+                    $value['short'] = $key;
+                }
+            }
+            $short = $this->getShort($namespace);
+            $parent_short = $short ? $short . '.' : '';
+            $this->schema_index[$subkey] = $value['short'];
+            $this->schema_reverse_index[$parent_short . $value['short']] = $subkey;
             if (isset($value['subset'])) {
                 $this->setSchemaArray($value['subset'], $subkey);
                 unset($value['subset']);
-            }
-            if (isset($value['short'])) {
-                $short = $this->getShort($namespace);
-                $parent_short = $short ? $short . '.' : '';
-                $this->schema_index[$subkey] = $value['short'];
-                $this->schema_reverse_index[$parent_short . $value['short']] = $subkey;
             }
         }
     }
@@ -227,7 +232,7 @@ class Collection
      */
     public function getShort($full)
     {
-        if (isset($this->schema[$full])) {
+        if (isset($this->schema[$full]['short'])) {
             return $this->schema[$full]['short'];
         }
 

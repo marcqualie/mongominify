@@ -11,6 +11,8 @@ class AggregationTest extends TestCase
     public function testPipelineBuilder()
     {
 
+        $this->markTestIncomplete();
+
         $collection = $this->getTestCollection();
 
         $pipeline_input = array(
@@ -69,6 +71,7 @@ class AggregationTest extends TestCase
     public function testPipelineProjectionBuilder()
     {
 
+        $this->markTestIncomplete();
         $collection = $this->getTestCollection();
 
         $pipeline_input = array(

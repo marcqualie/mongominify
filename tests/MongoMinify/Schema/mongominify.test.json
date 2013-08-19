@@ -87,6 +87,21 @@
             }
         }
     },
+    "organisations": {
+        "short": "o",
+        "subset": {
+            "*": {
+                "subset": {
+                    "name": {
+                        "short": "n"
+                    },
+                    "role": {
+                        "short": "r"
+                    }
+                }
+            }
+        }
+    },
     "meta": {
         "short": "m"
     }
