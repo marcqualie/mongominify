@@ -2,7 +2,7 @@
 
 namespace MongoMinify\Test;
 use Silex\Application;
-use MongoMinify\Silex\ServiceProvider;
+use MongoMinify\Provider\Silex\ServiceProvider;
 
 class SilexTest extends TestCase
 {

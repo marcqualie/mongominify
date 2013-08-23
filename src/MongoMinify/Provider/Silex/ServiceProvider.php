@@ -1,6 +1,6 @@
 <?php
 
-namespace MongoMinify\Silex;
+namespace MongoMinify\Provider\Silex;
 
 use MongoMinify\Client;
 use Silex\Application;
@@ -12,7 +12,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Register provider
      * @param  Application    $app Global Application instance
-     * @return MongoMinify\Db MongoMinify Database Wrapper
+     * @return Db Silex Database Wrapper
      */
     public function register(Application $app)
     {
