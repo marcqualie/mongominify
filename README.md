@@ -1,6 +1,6 @@
 ## MongoMinify
 
-[![Build Status](https://travis-ci.org/marcqualie/mongominify.png?branch=master)](https://travis-ci.org/marcqualie/mongominify)
+[![Build Status](https://travis-ci.org/marcqualie/mongominify.png?branch=v1.0)](https://travis-ci.org/marcqualie/mongominify)
 [![Total Downloads](https://poser.pugx.org/marcqualie/mongominify/d/total.png)](https://packagist.org/packages/marcqualie/mongominify)
 [![Latest Stable Version](https://poser.pugx.org/marcqualie/mongominify/version.png)](https://packagist.org/packages/marcqualie/mongominify)
 [![Dependency Status](https://www.versioneye.com/user/projects/520f85d5632bac1d74000287/badge.png)](https://www.versioneye.com/user/projects/520f85d5632bac1d74000287)
