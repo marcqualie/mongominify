@@ -97,6 +97,16 @@
                     },
                     "role": {
                         "short": "r"
+                    },
+                    "partners": {
+                        "short": "p",
+                        "subset": {
+                            "*": {
+                                "link": {
+                                    "short": "l"
+                                }
+                            }
+                        }
                     }
                 }
             }

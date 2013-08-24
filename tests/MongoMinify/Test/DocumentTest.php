@@ -149,7 +149,7 @@ class DocumentTest extends TestCase
 
 
     /**
-     * Wildcard keys should compress
+     * Wildcard keys should decompress
      */
     public function testWildcardSchemaDecompression()
     {
@@ -193,6 +193,64 @@ class DocumentTest extends TestCase
                 )
             ),
             $document_object->data
+        );
+
+    }
+
+
+    /**
+     * Multi-level Wildcard keys should compress
+     */
+    public function testMultiLevelWildcardSchemaCompression()
+    {
+        // Compress document
+        $collection = $this->getTestCollection();
+        $document = array(
+            '_id' => 1,
+            'tags' => array(
+                2 => array(
+                    'slug' => 'test-tag',
+                    'name' => 'Test Tag'
+                )
+            ),
+            'organisations' => array(
+                '13l22' => array(
+                    'name' => 'example.org',
+                    'role' => 'CEO',
+                    'partners' => array(
+                        'example_com' => array(
+                            'link' => 'parent'
+                        )
+                    )
+                )
+            )
+        );
+        $document_object = new Document($document, $collection);
+        $document_object->compress();
+
+        // Assert compressed object is as expected
+        $this->assertEquals(
+            array(
+                '_id' => 1,
+                't' => array(
+                    2 => array(
+                        's' => 'test-tag',
+                        'n' => 'Test Tag'
+                    )
+                ),
+                'o' => array(
+                    '13l22' => array(
+                        'n' => 'example.org',
+                        'r' => 'CEO',
+                        'p' => array(
+                            'example_com' => array(
+                                'l' => 'parent'
+                            )
+                        )
+                    )
+                )
+            ),
+            $document_object->compressed
         );
 
     }
