@@ -235,7 +235,7 @@ class Collection
     public function getShort($full)
     {
         if (strpos($full, '*') !== false) {
-            return $this->schema_index[str_replace('.*', '', $full)] . '.*';
+            return $this->schema_index[substr($full, 0, -2)] . '.*';
         }
         if (isset($this->schema[$full]['short'])) {
             return $this->schema[$full]['short'];

@@ -102,8 +102,10 @@
                         "short": "p",
                         "subset": {
                             "*": {
-                                "link": {
-                                    "short": "l"
+                                "subset": {
+                                    "link": {
+                                        "short": "l"
+                                    }
                                 }
                             }
                         }
