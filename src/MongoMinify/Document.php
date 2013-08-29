@@ -216,6 +216,7 @@ class Document
         if (is_array($document)) {
 
             // Integar based arrays don't have key decompression
+            /*
             if (array_key_exists(0, $document)) {
                 foreach ($document as $key => $value) {
                     $document[$key] = $this->applyDecompression($value, $parent);
@@ -223,6 +224,7 @@ class Document
 
                 return $document;
             }
+            */
 
             // Standard document traversal
             foreach ($document as $key => $value) {
