@@ -47,3 +47,7 @@ The aggregation framework is very complex with a lot of use cases. I've tried to
 ## Feedback / Contributing
 
 Feedback and pull requests on Github are always welcome and encouraged.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/marcqualie/mongominify/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
