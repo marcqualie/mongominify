@@ -5,6 +5,7 @@
 [![Latest Stable Version](https://poser.pugx.org/marcqualie/mongominify/version.png)](https://packagist.org/packages/marcqualie/mongominify)
 [![Dependency Status](https://www.versioneye.com/user/projects/520f85d5632bac1d74000287/badge.png)](https://www.versioneye.com/user/projects/520f85d5632bac1d74000287)
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/marcqualie/mongominify/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Say Tahanks](https://s3.amazonaws.com/github-thank-you-button/thank-you-button.png)](http://twitter.com/home/?status=Thanks @marcqualie for making Mongo+Minify: https%3A%2F%2Fgithub.com%2Fmarcqualie%2Fmongominify)
 
 MongoMinify is a drop-in library which acts as a transparent filter to MongoDB documents and compresses/decompresses data on the fly.
 PSR-2 compliant and works with PHP 5.3+.
