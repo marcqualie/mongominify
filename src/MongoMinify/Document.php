@@ -259,7 +259,6 @@ class Document
 
     /**
      * As dot syntax for index ensuring
-     * TODO: This is a quick hack to get indexes working with embedded document syntax
      */
     public function asDotSyntax()
     {
