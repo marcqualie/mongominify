@@ -12,7 +12,7 @@ class Cursor implements \Iterator
 
     public $native_query = array();
 
-    public function __construct($collection, array $query = array(), array $fields = array())
+    public function __construct(Collection $collection, array $query = array(), array $fields = array())
     {
         $this->collection = $collection;
         $this->native_query = $query;

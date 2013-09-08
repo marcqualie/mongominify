@@ -18,7 +18,7 @@ class Collection
     /**
      * Initialize
      */
-    public function __construct($name, $db)
+    public function __construct($name, Db $db)
     {
         $this->name = $name;
         $this->db = $db;

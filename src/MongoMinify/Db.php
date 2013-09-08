@@ -11,7 +11,7 @@ class Db
 
     public $collection_cache = array();
 
-    public function __construct($name, $client)
+    public function __construct($name, Client $client)
     {
         $this->name = $name;
         $this->client = $client;
