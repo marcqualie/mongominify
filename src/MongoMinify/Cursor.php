@@ -17,7 +17,6 @@ class Cursor implements \Iterator
         $this->collection = $collection;
         $this->native_query = $query;
         $this->native = $collection->native->find($query, $fields);
-        $native = $this->native;
     }
 
     /**
@@ -131,7 +130,7 @@ class Cursor implements \Iterator
      */
     public function timeout($ms)
     {
-        $native = $this->native->timeout($ms);
+        $this->native->timeout($ms);
         return $this;
     }
 

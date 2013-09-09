@@ -105,7 +105,6 @@ class Query
     /**
      * As dot syntax for index ensuring
      */
-    private $dotSyntax = array();
     public function asDotSyntax()
     {
         $dotSyntax = $this->applyDotSyntax($this->compressed);
